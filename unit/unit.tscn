@@ -16,6 +16,7 @@ shape = SubResource("CircleShape2D_dvrw8")
 [node name="AttackRange" type="Area2D" parent="." unique_id=973229644]
 scale = Vector2(3.6215632, 3.6215632)
 collision_layer = 0
+collision_mask = 3
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange" unique_id=1111209301]
