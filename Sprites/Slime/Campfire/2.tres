@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://biamrg8jqo0fv"]
+
+[ext_resource type="Texture2D" uid="uid://baa7js0hshje6" path="res://Sprites/Slime/Campfire/Slime_Campfires.png" id="1_mf4s1"]
+
+[resource]
+atlas = ExtResource("1_mf4s1")
+region = Rect2(0, 64, 32, 32)
