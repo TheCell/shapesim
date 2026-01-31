@@ -10,6 +10,7 @@ region = Rect2(704, 32, 16, 16)
 
 [node name="Building" unique_id=2008346303 instance=ExtResource("1_00mc3")]
 script = ExtResource("2_faj8c")
+buildingType = 2
 
 [node name="Sprite2D" parent="AnimationPivot" parent_id_path=PackedInt32Array(1095099242) index="0" unique_id=1927129681]
 texture = SubResource("AtlasTexture_mnvfb")

@@ -11,7 +11,7 @@ const chillingDoNothingChance = 0.2
 	Constants.BuildingType.WarriorHut: null,
 }
 
-@export var civilizationStyle: Constants.CivilizationStyle
+@export var style: Constants.CivilizationStyle
 @export var unitScene: PackedScene
 
 @export var hostility = 1.0 # Ranges [0, 1]. How likely this civ is to attack others.
@@ -20,9 +20,9 @@ const chillingDoNothingChance = 0.2
 
 @export var buildingPlaceCooldown: float = 3
 var untilBuildingPlaced: float = 3
-@export var currentCivilizationGoal: Constants.CivilizationGoal = Constants.CivilizationGoal.Chilling
-@export var reevaluateCivilizationGoalCooldown: float = 20
-var untilReevaluateCivilizationGoal: float = 5
+@export var currentGoal: Constants.CivilizationGoal = Constants.CivilizationGoal.Chilling
+@export var reevaluateGoalCooldown: float = 20
+var untilReevaluateGoal: float = 5
 
 var activeBuildings: Array = []
 var campfire: Campfire
@@ -37,7 +37,7 @@ var otherCivToHostilityValue: Dictionary[Constants.Civilization, float] = {
 
 func _ready() -> void:
 	untilBuildingPlaced = buildingPlaceCooldown
-	untilReevaluateCivilizationGoal = reevaluateCivilizationGoalCooldown
+	untilReevaluateGoal = reevaluateGoalCooldown
 	makeCampfire()
 
 func makeCampfire():
@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 		untilBuildingPlaced += buildingPlaceCooldown
 		
 func reevaluateCivilizationGoals():
-	currentCivilizationGoal = sampleCivilizationGoal()
+	currentGoal = sampleCivilizationGoal()
 
 func sampleCivilizationGoal():
 	return Constants.CivilizationGoal.values().pick_random()
@@ -63,7 +63,7 @@ func sampleCivilizationGoal():
 func placeRandomBuilding():
 	var chosenBuilding = Constants.BuildingType.None
 	
-	match currentCivilizationGoal:
+	match currentGoal:
 		Constants.CivilizationGoal.Chilling:
 			if randf() >= chillingDoNothingChance:
 				chosenBuilding = Constants.BuildingType.values().pick_random()

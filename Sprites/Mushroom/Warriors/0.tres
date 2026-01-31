@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://d4h8yonwparx3"]
+
+[ext_resource type="Texture2D" uid="uid://c2sv4r2ttgb40" path="res://Sprites/Mushroom/Warriors/Mushroom_Warrior.png" id="1_0uc4k"]
+
+[resource]
+atlas = ExtResource("1_0uc4k")
+region = Rect2(0, 16, 16, 16)
