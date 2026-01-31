@@ -9,7 +9,6 @@ var civilizations = []
 
 static var this: World
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	this = self
 	init_civilizations()
@@ -22,6 +21,5 @@ func init_civilizations():
 		civilizations.append(civ)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
