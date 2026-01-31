@@ -1,7 +1,0 @@
-[gd_resource type="Theme" format=3 uid="uid://cajajooggw50v"]
-
-[ext_resource type="FontFile" uid="uid://d1cospmse57g4" path="res://newsticker/TruetypewriterPolyglott-mELa.ttf" id="1_if70l"]
-
-[resource]
-default_font = ExtResource("1_if70l")
-default_font_size = 48

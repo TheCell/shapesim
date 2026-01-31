@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://beruq8ofrhsfi"]
 
 [ext_resource type="Script" uid="uid://d2hx8vo1efok0" path="res://newsticker/news_ticker.gd" id="1_jdx5n"]
-[ext_resource type="PackedScene" uid="uid://suqwx7v7gn5w" path="res://newsticker/news_article.tscn" id="1_ourss"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jdx5n"]
+light_mode = 1
 
 [node name="NewsTicker" type="Node2D" unique_id=491788212]
 script = ExtResource("1_jdx5n")
@@ -12,38 +14,14 @@ offset_right = 200.0
 offset_bottom = 500.0
 vertical_scroll_mode = 3
 
-[node name="NewsFeed" type="VBoxContainer" parent="ScrollContainer" unique_id=809648248]
+[node name="ColorRect" type="ColorRect" parent="ScrollContainer" unique_id=1968678]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+color = Color(0.52, 0.32118666, 0.19759999, 1)
 
-[node name="NewsArticle" parent="ScrollContainer/NewsFeed" unique_id=1834659992 instance=ExtResource("1_ourss")]
+[node name="NewsFeed" type="VBoxContainer" parent="ScrollContainer" unique_id=809648248]
+material = SubResource("CanvasItemMaterial_jdx5n")
 layout_mode = 2
-
-[node name="NewsArticle2" parent="ScrollContainer/NewsFeed" unique_id=1243272092 instance=ExtResource("1_ourss")]
-layout_mode = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=531166947]
-layout_mode = 2
-text = "fds faadsfdsa dadsa fasd fsa"
-fit_content = true
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=918780317]
-layout_mode = 2
-text = "fds faadsfdsa dadsa fasd fsa"
-fit_content = true
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=1579609290]
-layout_mode = 2
-text = "fds faadsfdsa dadsa fasd fsa"
-fit_content = true
-
-[node name="RichTextLabel4" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=241596824]
-layout_mode = 2
-text = "fds faadsfdsa dadsa fasd fsa"
-fit_content = true
-
-[node name="RichTextLabel5" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=431828267]
-layout_mode = 2
-text = "fds faadsfdsa dadsa fasd fsa"
-fit_content = true
+size_flags_horizontal = 3
+size_flags_vertical = 3
