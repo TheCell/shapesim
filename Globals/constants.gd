@@ -51,6 +51,13 @@ enum CivilizationStyle {
 	FishPeople
 }
 
+enum AbilityType{
+	Speedup,
+	Slowdown,
+	Heal,
+	Meteorite
+}
+
 const spriteFolder = "res://Sprites/"
 
 static func getWarriorTexture(civStyle: CivilizationStyle, level: int) -> Texture2D:
