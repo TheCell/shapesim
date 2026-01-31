@@ -1,6 +1,7 @@
 name: Godot CI/CD Pipeline
 
-on: [push, pull_request]
+#on: [push, pull_request]
+on: []
 
 env:
   GODOT_VERSION: "4.6"
