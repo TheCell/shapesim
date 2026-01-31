@@ -38,6 +38,3 @@ func hurt(damage: float):
 	health -= damage
 	if health <= 0:
 		queue_free()
-
-func _on_attack(damage: float) -> void:
-	hurt(damage)

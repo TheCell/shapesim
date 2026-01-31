@@ -7,18 +7,7 @@ extends Node2D
 func _ready() -> void:
 	button_a.pressed.connect(_on_button_a_pressed)
 	button_b.pressed.connect(_on_button_b_pressed)
-	$Building.civilization = Civilization.new()
-	$Building.civilization.faction = Constants.Civilization.Blue
-	$Building2.civilization = Civilization.new()
-	$Building2.civilization.faction = Constants.Civilization.Blue
-	$Building3.civilization = Civilization.new()
-	$Building3.civilization.faction = Constants.Civilization.Blue
-	$Building4.civilization = Civilization.new()
-	$Building4.civilization.faction = Constants.Civilization.Blue
-	$Building5.civilization = Civilization.new()
-	$Building5.civilization.faction = Constants.Civilization.Blue
-	$Building6.civilization = Civilization.new()
-	$Building6.civilization.faction = Constants.Civilization.Blue
+	$Unit.target = Vector2(1300, 300)
 
 func spawn_unit(pos: Vector2, target: Vector2, civilization: Constants.Civilization) -> void:
 	var scene: PackedScene = load("res://unit/unit.tscn")
