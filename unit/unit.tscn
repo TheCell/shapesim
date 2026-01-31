@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://chkb8yps44ino"]
+
+[ext_resource type="Script" uid="uid://cei8oierqlab3" path="res://unit/unit.gd" id="1_hy15m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dvrw8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hy15m"]
+
+[node name="Unit" type="CharacterBody2D" unique_id=1284902279 node_paths=PackedStringArray("attack_range")]
+script = ExtResource("1_hy15m")
+attack_range = NodePath("AttackRange")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1754523167]
+shape = SubResource("CircleShape2D_dvrw8")
+
+[node name="AttackRange" type="Area2D" parent="." unique_id=973229644]
+scale = Vector2(3.6215632, 3.6215632)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange" unique_id=1111209301]
+shape = SubResource("CircleShape2D_hy15m")

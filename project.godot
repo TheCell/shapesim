@@ -11,13 +11,22 @@ config_version=5
 [application]
 
 config/name="Shapesim"
-run/main_scene="uid://c1oqaxsoxgcbt"
+run/main_scene="uid://dc6sjpf3b75x"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Events="*uid://gjhcsvxympov"
+Eventbusasdfasdf="*uid://gjhcsvxympov"
+
+[display]
+
+window/canvas_textures/default_texture_filter=1
+
+[layer_names]
+
+2d_physics/layer_1="unit"
 
 [physics]
 
@@ -25,4 +34,5 @@ Events="*uid://gjhcsvxympov"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"

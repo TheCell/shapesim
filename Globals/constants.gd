@@ -7,3 +7,18 @@ enum Civilization {
 	Yellow,
 	Purple
 }
+
+enum CivilizationGoal {
+	Chilling,
+	War,
+	Defense,
+	Science,
+}
+
+enum BuildingType {
+	None = -1,
+	Campfire,
+	Science,
+	WatchTower,
+	WarriorHut,
+}
