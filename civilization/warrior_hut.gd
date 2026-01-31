@@ -24,6 +24,7 @@ func _process(delta: float) -> void:
 		warrior.global_position = global_position + Vector2(cos(randomSpawnAngle), sin(randomSpawnAngle)) * randomDistance
 		warrior.target = global_position
 		warrior.civilization = faction
+		warrior.civilizationStyle = civilizationStyle
 		spawnedWarrior.emit(warrior)
 		World.this.factionToUnits[civilization.faction].append(warrior)
 		World.this.add_child(warrior)

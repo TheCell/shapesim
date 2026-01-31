@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dn4bhohu6vaxt"]
+
+[ext_resource type="Script" uid="uid://bhgnptt4j8wnj" path="res://civilization/civilization.gd" id="1_kguow"]
+[ext_resource type="PackedScene" uid="uid://c8ux5xwhox06o" path="res://civilization/campfire.tscn" id="2_kmsuw"]
+[ext_resource type="PackedScene" uid="uid://dppqqcsr14xaa" path="res://civilization/science.tscn" id="3_rj7wi"]
+[ext_resource type="PackedScene" uid="uid://cy70ndojco8qd" path="res://civilization/watch_tower.tscn" id="4_xwumb"]
+[ext_resource type="PackedScene" uid="uid://neyblr11vstt" path="res://civilization/warrior_hut.tscn" id="5_6jh7m"]
+
+[node name="Civilization" type="Node2D" unique_id=2020301776]
+script = ExtResource("1_kguow")
+buildingToScene = Dictionary[int, PackedScene]({
+0: ExtResource("2_kmsuw"),
+1: ExtResource("3_rj7wi"),
+2: ExtResource("4_xwumb"),
+3: ExtResource("5_6jh7m")
+})
+style = 1
+hostility = 0.5
+buildingPlaceCooldown = 2.0
+redirectWarriorCooldown = 6.0

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://ct00bvq2lp3bq"]
+
+[ext_resource type="Script" uid="uid://bhgnptt4j8wnj" path="res://civilization/civilization.gd" id="1_5mhas"]
+[ext_resource type="PackedScene" uid="uid://c8ux5xwhox06o" path="res://civilization/campfire.tscn" id="2_l7i8o"]
+[ext_resource type="PackedScene" uid="uid://dppqqcsr14xaa" path="res://civilization/science.tscn" id="3_8nkj2"]
+[ext_resource type="PackedScene" uid="uid://cy70ndojco8qd" path="res://civilization/watch_tower.tscn" id="4_04g0c"]
+[ext_resource type="PackedScene" uid="uid://neyblr11vstt" path="res://civilization/warrior_hut.tscn" id="5_7ib0y"]
+
+[node name="Civilization" type="Node2D" unique_id=2020301776]
+script = ExtResource("1_5mhas")
+buildingToScene = Dictionary[int, PackedScene]({
+0: ExtResource("2_l7i8o"),
+1: ExtResource("3_8nkj2"),
+2: ExtResource("4_04g0c"),
+3: ExtResource("5_7ib0y")
+})
+currentGoal = 1
+redirectWarriorCooldown = 6.0

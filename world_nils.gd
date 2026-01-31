@@ -4,8 +4,13 @@ extends Node2D
 static var this: World
 
 
-
-@export var civScenes: Array[PackedScene]
+@export var civScenes: Dictionary[Constants.Civilization, PackedScene] = {
+	Constants.Civilization.Red: null,
+	Constants.Civilization.Blue: null,
+	Constants.Civilization.Green: null,
+	Constants.Civilization.Yellow: null,
+	Constants.Civilization.Purple: null,
+}
 @export var ground: TileMapLayer
 
 var civilizations: Dictionary[Constants.Civilization, Civilization] = {}
@@ -24,7 +29,7 @@ func _ready() -> void:
 
 func init_civilizations():
 	for faction in Constants.Civilization.values():
-		var civ = civScenes.pick_random().instantiate() as Civilization
+		var civ = civScenes[faction].instantiate() as Civilization
 		civ.position = Vector2(randf() * get_viewport_rect().grow(-100).size.x, randf() * get_viewport_rect().grow(-50).size.y)
 		civ.faction = faction
 		add_child(civ)
@@ -60,4 +65,14 @@ func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighti
 	return target
 
 func _process(delta: float) -> void:
-	pass
+	spawn.call_deferred()
+	
+func spawn():
+	#TODO: remove this test method.
+	if Input.is_action_just_pressed("ui_accept"):
+		var building = load("res://civilization/watch_tower.tscn").instantiate() as Building
+		building.position = get_global_mouse_position()
+		building.faction = Constants.Civilization.Blue
+		building.civilization = civilizations[Constants.Civilization.Blue]
+		World.this.add_child(building)
+		pass

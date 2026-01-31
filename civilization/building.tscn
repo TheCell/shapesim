@@ -78,8 +78,7 @@ _data = {
 
 [node name="Building" type="Area2D" unique_id=843902316 node_paths=PackedStringArray("animation_player", "sprite_2d")]
 collision_layer = 2
-collision_mask = 0
-monitoring = false
+collision_mask = 2
 script = ExtResource("1_p3b7u")
 animation_player = NodePath("AnimationPlayer")
 sprite_2d = NodePath("AnimationPivot/Sprite2D")
@@ -95,3 +94,6 @@ libraries/ = SubResource("AnimationLibrary_lq42j")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=767266246]
 shape = SubResource("RectangleShape2D_p3b7u")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

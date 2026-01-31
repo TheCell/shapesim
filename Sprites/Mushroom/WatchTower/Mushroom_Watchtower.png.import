@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xrppb8tsx04j"
-path="res://.godot/imported/Mushroom_Watchtower.png-75a82733fa264b27b0a43c0172407dc8.ctex"
+path="res://.godot/imported/Mushroom_Watchtower.png-eb4706be3e6fb804ae854b1078c099e2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Mushroom/Watchtower/Mushroom_Watchtower.png"
-dest_files=["res://.godot/imported/Mushroom_Watchtower.png-75a82733fa264b27b0a43c0172407dc8.ctex"]
+source_file="res://Sprites/Mushroom/WatchTower/Mushroom_Watchtower.png"
+dest_files=["res://.godot/imported/Mushroom_Watchtower.png-eb4706be3e6fb804ae854b1078c099e2.ctex"]
 
 [params]
 

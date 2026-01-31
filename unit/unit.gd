@@ -6,10 +6,14 @@ signal attack(damage: float)
 @export var health: float = 100.0
 @export var damage: float = 10.0
 @export var speed: float = 100.0
-@export var civilization: Constants.Civilization
+
 @export var attack_range: Area2D
 @export var sprite_2d: Sprite2D
 @export var nav: NavigationAgent2D
+
+var civilization: Constants.Civilization
+var civilizationStyle: Constants.CivilizationStyle
+var level: int = 0
 
 var target: Vector2
 var is_fighting: bool = false
@@ -20,11 +24,12 @@ var overlappingUnits: Dictionary[Unit, bool] = {} # Hashset
 var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
 
 func _ready() -> void:
-	setColor()
 	_actor_setup.call_deferred()
 	nav.velocity_computed.connect(_velocity_computed)
+	initSprite()
 
-func setColor():
+func initSprite():
+	sprite_2d.texture = Constants.getWarriorTexture(civilizationStyle, level)
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("faction", civilization)
 
 func _process(_delta: float) -> void:
@@ -119,7 +124,7 @@ func _on_attack_range_area_entered(area: Area2D) -> void:
 
 
 func _on_attack_range_area_exited(area: Area2D) -> void:
-	overlappingBuildings.erase(area)
+	overlappingBuildings.erase(area as Building)
 
 
 func _on_attack_range_body_entered(body: Node2D) -> void:

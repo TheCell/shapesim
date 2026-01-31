@@ -113,13 +113,11 @@ func placeRandomBuilding():
 		Constants.CivilizationGoal.War:
 			chosenBuilding = Constants.BuildingType.WarriorHut
 		Constants.CivilizationGoal.Defense:
-			chosenBuilding = Constants.BuildingType.WatchTower
+			chosenBuilding = Constants.BuildingType.WatchTower if randf() < 0.5 else Constants.BuildingType.WarriorHut
 		Constants.CivilizationGoal.Science:
 			chosenBuilding = Constants.BuildingType.Science
 
 	if chosenBuilding != Constants.BuildingType.None:
-		if chosenBuilding == Constants.BuildingType.Campfire:
-			pass
 		place(buildingToScene[chosenBuilding])
 
 func place(buildingScene: PackedScene):
@@ -127,6 +125,7 @@ func place(buildingScene: PackedScene):
 	building.global_position = samplePosForBuilding()
 	building.civilization = self
 	building.faction = faction
+	building.civilizationStyle = style
 	activeBuildings.append(building)
 	World.this.add_child(building)
 

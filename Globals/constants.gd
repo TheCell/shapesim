@@ -17,7 +17,7 @@ enum CivilizationGoal {
 
 enum BuildingType {
 	None = -1,
-	Campfire,
+	Campfire = 0,
 	Science,
 	WatchTower,
 	WarriorHut,
@@ -32,7 +32,7 @@ enum CivilizationStyle {
 const spriteFolder = "res://Sprites/"
 
 static func getWarriorTexture(civStyle: CivilizationStyle, level: int) -> Texture2D:
-	var path = spriteFolder.path_join(CivilizationStyle.find_key(civStyle)).path_join("Warrior").path_join("%s.tres" % [level])
+	var path = spriteFolder.path_join(CivilizationStyle.find_key(civStyle)).path_join("Warriors").path_join("%s.tres" % [level])
 	if !FileAccess.file_exists(path):
 		return load("res://defaultWarriorIcon.png")
 	return load(path)

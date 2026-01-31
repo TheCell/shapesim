@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dnd8bqnw7wg7l"
-path="res://.godot/imported/Slime_Watchtowers.png-21da6112f8705e5703cc24c83d55750f.ctex"
+path="res://.godot/imported/Slime_Watchtowers.png-0b33468c5ba8150c5ac0b7d1b4ef99c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Slime/Watchtower/Slime_Watchtowers.png"
-dest_files=["res://.godot/imported/Slime_Watchtowers.png-21da6112f8705e5703cc24c83d55750f.ctex"]
+source_file="res://Sprites/Slime/WatchTower/Slime_Watchtowers.png"
+dest_files=["res://.godot/imported/Slime_Watchtowers.png-0b33468c5ba8150c5ac0b7d1b4ef99c5.ctex"]
 
 [params]
 
