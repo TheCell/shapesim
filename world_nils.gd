@@ -4,6 +4,7 @@ extends Node2D
 static var this: World
 
 
+
 @export var civScenes: Array[PackedScene]
 @export var ground: TileMapLayer
 

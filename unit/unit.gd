@@ -34,7 +34,7 @@ func _process(_delta: float) -> void:
 		attack_building()
 
 func _physics_process(delta: float) -> void:
-	if has_buildings_in_range() or has_buildings_in_range():
+	if has_buildings_in_range() or has_enemies_in_range():
 		velocity = Vector2.ZERO
 	else:
 		move_to_hub()
@@ -52,12 +52,12 @@ func move_to_hub() -> void:
 	
 	if nav.is_navigation_finished():
 		return
-	
+
 	var current_position := global_position
 	var next_position := nav.get_next_path_position()
-	
+
 	var new_velocity := current_position.direction_to(next_position) * speed
-	
+
 	_velocity_computed(new_velocity)
 
 func attack_unit() -> void:
