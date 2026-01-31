@@ -42,7 +42,7 @@ func _process(delta: float) -> void:
 		handle_queued_news(queued_news)
 	else:
 		new_generic_news()
-	
+	clean_oldest_headline()
 	#if (triggered_news != null):
 		#switch (triggered_news.type):
 			#case war:
