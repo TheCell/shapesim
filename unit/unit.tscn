@@ -8,10 +8,6 @@
 
 [node name="Unit" type="CharacterBody2D" unique_id=1284902279 node_paths=PackedStringArray("attack_range")]
 script = ExtResource("1_hy15m")
-health = null
-damage = null
-speed = null
-civilization = null
 attack_range = NodePath("AttackRange")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1754523167]

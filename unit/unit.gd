@@ -18,13 +18,6 @@ func _process(_delta: float) -> void:
 		attack_unit()
 	elif has_buildings_in_range() and not is_fighting:
 		attack_building()
-	elif not has_enemies_in_range():
-		if last_attacked_enemy:
-			if attack.is_connected(last_attacked_enemy._on_attack):
-				attack.disconnect(last_attacked_enemy._on_attack)
-		if last_attacked_building:
-			if attack.is_connected(last_attacked_building._on_attack):
-				attack.disconnect(last_attacked_building._on_attack)
 
 func _physics_process(delta: float) -> void:
 	if not has_enemies_in_range() and not has_buildings_in_range():
@@ -38,10 +31,8 @@ func attack_unit() -> void:
 	var enemies_in_range := get_enemies_in_range()
 	if last_attacked_enemy == null:
 		last_attacked_enemy = enemies_in_range.pick_random()
-	if not attack.is_connected(last_attacked_enemy._on_attack):
-		attack.connect(last_attacked_enemy._on_attack)
 	var random_damage_modifier := randf_range(1.0, 5.0)
-	attack.emit(damage + random_damage_modifier)
+	last_attacked_enemy.hurt(damage + random_damage_modifier)
 	is_fighting = false
 
 func attack_building() -> void:
@@ -49,10 +40,8 @@ func attack_building() -> void:
 	var enemies_in_range := get_buildings_in_range()
 	if last_attacked_building == null:
 		last_attacked_building = enemies_in_range.pick_random()
-	if not attack.is_connected(last_attacked_building._on_attack):
-		attack.connect(last_attacked_building._on_attack)
 	var random_damage_modifier := randf_range(1.0, 5.0)
-	attack.emit(damage + random_damage_modifier)
+	last_attacked_building.hurt(damage + random_damage_modifier)
 	is_fighting = false
 
 func get_enemies_in_range() -> Array[Unit]:
@@ -105,7 +94,11 @@ func hurt(enemy_damage: float) -> void:
 	if health - enemy_damage > 0:
 		health -= enemy_damage
 	else:
-		queue_free.call_deferred()
+		queue_free()
 
 func _on_attack(enemy_damage: float) -> void:
 	hurt(enemy_damage)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		World.this.factionToUnits[civilization].erase(self)
