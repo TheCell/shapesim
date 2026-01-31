@@ -20,8 +20,6 @@ func _process(delta: float) -> void:
 
 # News Triggers
 func news_on_death_count() -> void:
-	if wasDone:
-		return
 	if deathCount > deathCountNewsTreshold:
 		news_ticker.add_to_queue({
 			"type": Constants.NewsType.War,

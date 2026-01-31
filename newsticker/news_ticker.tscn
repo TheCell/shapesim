@@ -29,4 +29,3 @@ size_flags_vertical = 3
 
 [node name="EventAggregator" type="Node2D" parent="." unique_id=1793117591]
 script = ExtResource("2_jdx5n")
-deathCountNewsTresholdRange = null
