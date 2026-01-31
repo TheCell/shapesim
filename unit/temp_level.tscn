@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cjqpoqgeb008d"]
+
+[ext_resource type="Script" uid="uid://diyq6lipujxfy" path="res://unit/temp_level.gd" id="1_oafa1"]
+
+[node name="TempLevel" type="Node2D" unique_id=1541864159 node_paths=PackedStringArray("button_a", "button_b")]
+script = ExtResource("1_oafa1")
+button_a = NodePath("Button")
+button_b = NodePath("Button2")
+
+[node name="Button" type="Button" parent="." unique_id=1188580888]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Spawn A"
+
+[node name="Button2" type="Button" parent="." unique_id=1183637725]
+offset_left = 80.0
+offset_right = 154.0
+offset_bottom = 31.0
+text = "Spawn B"
