@@ -25,7 +25,6 @@ signal destroyed()
 func _ready() -> void:
 	animation_player.play("spawn")
 	level = civilization.level
-	sprite_2d.texture = Constants.getBuildingTexture(civilization.style, buildingType, level)
 	setColor()
 
 func _process(delta: float) -> void:
@@ -49,7 +48,8 @@ func _notification(what: int) -> void:
 		destroyed.emit()
 
 func setColor():
-	(sprite_2d.material as ShaderMaterial).set_shader_parameter("faction", civilization.faction)
+	sprite_2d.texture = Constants.getBuildingTexture(civilization.style, buildingType, level)
+	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.paletteFilePaths.pick_random()))
 
 func hurt(damage: float):
 	health -= damage

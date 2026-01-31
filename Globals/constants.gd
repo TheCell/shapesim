@@ -30,6 +30,15 @@ const EVENT_COLORS := {
 	"event":   Color("#ffff55"),
 }
 
+const paletteFilePaths = [
+	"res://Sprites/Palettes/aqua.png",
+	"res://Sprites/Palettes/flamingo.png",
+	"res://Sprites/Palettes/gold.png",
+	"res://Sprites/Palettes/icecream.png",
+	"res://Sprites/Palettes/lightpurple.png",
+]
+
+
 enum CivilizationGoal {
 	Chilling,
 	War,

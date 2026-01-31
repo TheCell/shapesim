@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Shapesim"
-run/main_scene="uid://djxweffs4h575"
+run/main_scene="uid://cdg3ojkxn1yr7"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Eventbusasdfasdf="*uid://gjhcsvxympov"
 Events="*uid://gjhcsvxympov"
+Eventbusasdfasdf="*uid://gjhcsvxympov"
 
 [display]
 
