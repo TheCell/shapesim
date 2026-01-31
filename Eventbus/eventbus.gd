@@ -13,3 +13,5 @@ signal unit_died(attacker_civ: Constants.Civilization, attacked_civ: Constants.C
 signal died(unit: Unit)
 signal building_destroyed(attack_civ: Constants.Civilization, attacked_civ: Constants.Civilization, was_god_intervention: bool)
 signal civ_reached_level(civ: Constants.Civilization, level: int)
+signal warriors_pushed(count: int)
+signal buildings_pushed(count: int)
