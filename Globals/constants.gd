@@ -57,7 +57,8 @@ enum AbilityType{
 	Heal,
 	Meteorite,
 	Push,
-	Pull
+	Pull,
+	Duplicate
 }
 
 const spriteFolder = "res://Sprites/"
