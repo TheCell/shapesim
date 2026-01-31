@@ -1117,3 +1117,6 @@ tile_set = SubResource("TileSet_tv236")
 
 [node name="MouseFollower" parent="." unique_id=61948950 instance=ExtResource("4_p8g6e")]
 position = Vector2(352, 281)
+activeAbility = 3
+abilityCooldown = 5.0
+pushDuration = 1.0

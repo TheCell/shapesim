@@ -14,6 +14,8 @@ const OVERLAP_VELOCITY_DECAY = 0.10
 var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
 var overlapVelocityPush: Vector2 = Vector2.ZERO
 
+var isRegisteredOnAbility : bool = false
+var godAbility : GodAbility
 
 var level: int
 var civilization: Civilization
@@ -26,12 +28,21 @@ func _ready() -> void:
 	animation_player.play("spawn")
 	level = civilization.level
 	setColor()
+	
+	godAbility = GodAbility.this
 
 func _process(delta: float) -> void:
 	deteriorationCountdown -= delta
 	if deteriorationCountdown <= 0:
 		queue_free()
 	pushBuildingsAway(delta)
+	
+	if !isRegisteredOnAbility && godAbility.is_inside_ability(global_position):
+		godAbility.register_unit(self)
+		isRegisteredOnAbility = true
+	elif isRegisteredOnAbility && !godAbility.is_inside_ability(global_position):
+		godAbility.deregister_unit(self)
+		isRegisteredOnAbility = false
 	
 func pushBuildingsAway(delta: float):
 	overlapVelocityPush *= OVERLAP_VELOCITY_DECAY ** delta

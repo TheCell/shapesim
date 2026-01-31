@@ -5,15 +5,19 @@
 
 [node name="GodAbility" type="Node2D" unique_id=61948950 node_paths=PackedStringArray("abilityTimer")]
 script = ExtResource("1_bscov")
-radius = 200.0
+radius = 50.0
+abilityCooldown = 1.0
 abilityTimer = NodePath("Timer")
+healAmount = 50.0
+damageAmount = 100.0
+pushForce = 200.0
+pullForce = 200.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1876900305]
 modulate = Color(1, 1, 1, 0.15294118)
 texture = ExtResource("2_37ipy")
 
 [node name="Timer" type="Timer" parent="." unique_id=1507320937]
-wait_time = 5.0
 autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="apply_timed_ability"]
