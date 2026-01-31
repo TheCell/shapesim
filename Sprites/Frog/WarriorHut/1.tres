@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://csfehcyscwh6s"]
+
+[ext_resource type="Texture2D" uid="uid://dr88mw5n6tqfe" path="res://Sprites/Frog/WarriorHut/Frog_WarriorsHut.png" id="1_3tgow"]
+
+[resource]
+atlas = ExtResource("1_3tgow")
+region = Rect2(32, 16, 32, 32)

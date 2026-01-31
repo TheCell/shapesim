@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr8exg0cu1vno"
-path="res://.godot/imported/gold.png-36ea738f94e9a2d93a9dfcc2d49e39b7.ctex"
+uid="uid://c6dddso0yne71"
+path="res://.godot/imported/Frog_Science.png-d61a30591d9cdfe556c190368b9b9749.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Palettes/gold.png"
-dest_files=["res://.godot/imported/gold.png-36ea738f94e9a2d93a9dfcc2d49e39b7.ctex"]
+source_file="res://Sprites/Frog/Science/Frog_Science.png"
+dest_files=["res://.godot/imported/Frog_Science.png-d61a30591d9cdfe556c190368b9b9749.ctex"]
 
 [params]
 

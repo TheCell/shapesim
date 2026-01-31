@@ -1,13 +1,13 @@
-[gd_scene format=4 uid="uid://djxweffs4h575"]
+[gd_scene format=4 uid="uid://cdg3ojkxn1yr7"]
 
 [ext_resource type="Script" uid="uid://cbao24bw7h8if" path="res://world_nils.gd" id="1_47vl4"]
 [ext_resource type="PackedScene" uid="uid://sw7hfyfgh26t" path="res://civilization/civilization.tscn" id="2_a57ms"]
-[ext_resource type="PackedScene" uid="uid://ct00bvq2lp3bq" path="res://civilization/civilization_angry.tscn" id="2_aiegr"]
+[ext_resource type="PackedScene" path="res://civilization/civilization_angry.tscn" id="2_aiegr"]
 [ext_resource type="Texture2D" uid="uid://8m01rykobaa6" path="res://placeholder_sprites/colored_packed.png" id="3_ycogg"]
-[ext_resource type="PackedScene" uid="uid://c4m1xrhrpndd1" path="res://civilization/civilization_defensive.tscn" id="4_4fxlr"]
+[ext_resource type="PackedScene" path="res://civilization/civilization_defensive.tscn" id="4_4fxlr"]
 [ext_resource type="PackedScene" uid="uid://dufmi8wujmuys" path="res://GodAbility/GodAbility.tscn" id="4_14xng"]
 [ext_resource type="PackedScene" uid="uid://beruq8ofrhsfi" path="res://newsticker/news_ticker.tscn" id="5_7el6r"]
-[ext_resource type="PackedScene" uid="uid://dn4bhohu6vaxt" path="res://civilization/civilization_fast.tscn" id="5_r7nxj"]
+[ext_resource type="PackedScene" path="res://civilization/civilization_fast.tscn" id="5_r7nxj"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_dposi"]
 vertices = PackedVector2Array(1783.0781, 1017.27344, -318.75, 1071.7188, -288.21875, -247.10156, 1667.8594, -267.89844)

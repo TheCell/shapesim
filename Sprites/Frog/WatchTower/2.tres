@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://dhvp5snhuho22"]
+
+[ext_resource type="Texture2D" uid="uid://dbrluwt26qhn" path="res://Sprites/Frog/WatchTower/Frog_WatchTower.png" id="1_i3l1x"]
+
+[resource]
+atlas = ExtResource("1_i3l1x")
+region = Rect2(64, 0, 32, 48)

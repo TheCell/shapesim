@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvapn02cwg2ra"
-path="res://.godot/imported/icecream.png-61dce43e1c6c134e6f17ae87f7c8940e.ctex"
+uid="uid://4ecib33ctuv0"
+path="res://.godot/imported/Frog_Warriors.png-d8030dd0be0f7cafc5e0f32711aaa7bd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Palettes/icecream.png"
-dest_files=["res://.godot/imported/icecream.png-61dce43e1c6c134e6f17ae87f7c8940e.ctex"]
+source_file="res://Sprites/Frog/Warriors/Frog_Warriors.png"
+dest_files=["res://.godot/imported/Frog_Warriors.png-d8030dd0be0f7cafc5e0f32711aaa7bd.ctex"]
 
 [params]
 
