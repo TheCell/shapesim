@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://gwvkem1gcsor"]
+
+[ext_resource type="Script" uid="uid://gjhcsvxympov" path="res://Eventbus/eventbus.gd" id="1_1uyr5"]
+
+[node name="Node" type="Node" unique_id=2081944673]
+process_mode = 3
+script = ExtResource("1_1uyr5")

@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="Shapesim"
+run/main_scene="uid://c1oqaxsoxgcbt"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Events="*uid://gjhcsvxympov"
 
 [physics]
 
