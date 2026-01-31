@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://cjlrl2k880vym"]
+
+[ext_resource type="Texture2D" uid="uid://dnd8bqnw7wg7l" path="res://Sprites/Slime/Watchtower/Slime_Watchtowers.png" id="1_1b5g6"]
+
+[resource]
+atlas = ExtResource("1_1b5g6")
+region = Rect2(0, 64, 32, 32)

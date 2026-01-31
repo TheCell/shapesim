@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://ce15qr2m06t3p"]
+
+[ext_resource type="Texture2D" uid="uid://jl4j2vq2qcog" path="res://Sprites/Slime/WarriorHut/Slime_WarriorHuts.png" id="1_s7h5e"]
+
+[resource]
+atlas = ExtResource("1_s7h5e")
+region = Rect2(16, 32, 32, 32)

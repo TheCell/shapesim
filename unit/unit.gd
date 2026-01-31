@@ -5,10 +5,11 @@ signal attack(damage: float)
 
 @export var health: float = 100.0
 @export var damage: float = 10.0
-@export var speed: float = 80.0
+@export var speed: float = 100.0
 @export var civilization: Constants.Civilization
 @export var attack_range: Area2D
 @export var sprite_2d: Sprite2D
+@export var nav: NavigationAgent2D
 
 var target: Vector2
 var is_fighting: bool = false
@@ -20,6 +21,8 @@ var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
 
 func _ready() -> void:
 	setColor()
+	_actor_setup.call_deferred()
+	nav.velocity_computed.connect(_velocity_computed)
 
 func setColor():
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("faction", civilization)
@@ -31,11 +34,31 @@ func _process(_delta: float) -> void:
 		attack_building()
 
 func _physics_process(delta: float) -> void:
-	if not has_enemies_in_range() and not has_buildings_in_range():
-		velocity = global_position.direction_to(target) * speed
-	else:
+	if has_buildings_in_range() or has_buildings_in_range():
 		velocity = Vector2.ZERO
+	else:
+		move_to_hub()
 	move_and_slide()
+
+func _velocity_computed(safe_velocity: Vector2):
+	velocity = safe_velocity
+
+func _actor_setup() -> void:
+	await get_tree().physics_frame
+	nav.target_position = target
+
+func move_to_hub() -> void:
+	nav.target_position = target
+	
+	if nav.is_navigation_finished():
+		return
+	
+	var current_position := global_position
+	var next_position := nav.get_next_path_position()
+	
+	var new_velocity := current_position.direction_to(next_position) * speed
+	
+	_velocity_computed(new_velocity)
 
 func attack_unit() -> void:
 	is_fighting = true
@@ -84,9 +107,6 @@ func hurt(enemy_damage: float) -> void:
 		health -= enemy_damage
 	else:
 		queue_free()
-
-func _on_attack(enemy_damage: float) -> void:
-	hurt(enemy_damage)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
