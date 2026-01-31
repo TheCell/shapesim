@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cvbiepkw231dt"
-path="res://.godot/imported/Mushroom_WarriorHut.png-259f76bcb31d82ba41ff8004de93d557.ctex"
+path="res://.godot/imported/Mushroom_WarriorHut.png-bedede93a898a5caa71f0826583bd5ee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Mushroom/Mushroom_WarriorHut.png"
-dest_files=["res://.godot/imported/Mushroom_WarriorHut.png-259f76bcb31d82ba41ff8004de93d557.ctex"]
+source_file="res://Sprites/Mushroom/Mushroom_WarriorHut/Mushroom_WarriorHut.png"
+dest_files=["res://.godot/imported/Mushroom_WarriorHut.png-bedede93a898a5caa71f0826583bd5ee.ctex"]
 
 [params]
 
