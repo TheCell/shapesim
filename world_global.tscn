@@ -1117,5 +1117,6 @@ tile_map_data = PackedByteArray("AAD1//T/AAAEAAAAAAD1//X/AAAEAAAAAAD1//b/AAAEAAA
 tile_set = SubResource("TileSet_tv236")
 
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
+activeAbility = 4
 
 [node name="NewsTicker" parent="." unique_id=491788212 instance=ExtResource("5_7el6r")]

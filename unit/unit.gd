@@ -140,6 +140,7 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 			Events.died.emit(self)
 			disable()
 			dead_timer.start()
+			print("UNIT IS DEAD")
 		#else:
 			#Events.unit_died.emit()
 

@@ -83,7 +83,7 @@ texture = ExtResource("3_hs7ws")
 libraries/ = SubResource("AnimationLibrary_japly")
 
 [node name="DeadTimer" type="Timer" parent="." unique_id=1247210142]
-wait_time = 30.0
+wait_time = 5.0
 one_shot = true
 
 [connection signal="area_entered" from="AttackRange" to="." method="_on_attack_range_area_entered"]
