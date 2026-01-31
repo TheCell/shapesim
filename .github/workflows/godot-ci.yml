@@ -1,131 +1,180 @@
-name: Godot CI/CD Pipeline
+image: barichello/godot-ci:4.6
 
-on: [push, pull_request]
+# Cache imported assets between runs
+cache:
+  key: import-assets
+  paths:
+    - .godot/imported/
 
-env:
-  GODOT_VERSION: "4.6"
-  GODOT_STATUS: "stable"
-jobs:
-  import-assets:
-    runs-on: ubuntu-latest
-    container: barichello/godot-ci:4.6
-    steps:
-      - uses: actions/checkout@v4
-      - name: Cache import assets
-        uses: actions/cache@v3
-        with:
-          path: .godot/imported/
-          key: import-assets-${{ runner.os }}-${{ github.sha }}
-      - name: Import assets
-        run: godot --headless --verbose --editor --quit
+stages:
+  - import-assets
+  - export
+  - deploy
 
-  export-game:
-    runs-on: ubuntu-latest
-    needs: import-assets
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v3
-        with:
-          path: .godot/imported/
-          key: import-assets-${{ runner.os }}-${{ github.sha }}
-      - name: install wine
-        run: |
-          sudo apt install wine64
-          echo "WINE_PATH=$(which wine64)" >> $GITHUB_ENV
-      - name: Export Game using Godot
-        uses: firebelley/godot-export@v5.6
-        with:
-          godot_executable_download_url: "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-${{ env.GODOT_STATUS }}/Godot_v${{ env.GODOT_VERSION }}-${{ env.GODOT_STATUS }}_linux.x86_64.zip"
-          godot_export_templates_download_url: "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-${{ env.GODOT_STATUS }}/Godot_v${{ env.GODOT_VERSION }}-${{ env.GODOT_STATUS }}_export_templates.tpz"
-          relative_project_path: "./godot"
-          archive_output: true
-          cache: false
-          wine_path: ${{ env.WINE_PATH }}
-      - name: Upload HTML5
-        uses: actions/upload-artifact@v4
-        with:
-          name: HTML5
-          path: /home/runner/.local/share/godot/archives/HTML5.zip
-      - name: Upload Linux
-        uses: actions/upload-artifact@v4
-        with:
-          name: LinuxX11
-          path: /home/runner/.local/share/godot/archives/LinuxX11.zip
-      - name: Upload Windows
-        uses: actions/upload-artifact@v4
-        with:
-          name: Windows
-          path: /home/runner/.local/share/godot/archives/Windows.zip
-      - name: Upload MacOS
-        uses: actions/upload-artifact@v4
-        with:
-          name: macOS
-          path: /home/runner/.local/share/godot/archives/macOS.zip
+variables:
+  EXPORT_NAME: GGJ2026
 
-  deploy-to-itchio-linux:
-    runs-on: ubuntu-latest
-    needs: export-game
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: LinuxX11
-      - name: Deploy to Itch.io (Windows)
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: linux
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
-          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
-          PACKAGE: LinuxX11.zip
+# Open the editor to import assets in case the cache was empty or outdated
+import-assets:
+  stage: import-assets
+  script:
+    - godot --headless --verbose --editor --quit
 
-  deploy-to-itchio-windows:
-    runs-on: ubuntu-latest
-    needs: export-game
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: Windows
-      - name: Deploy to Itch.io (Windows)
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: windows
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
-          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
-          PACKAGE: Windows.zip
+linux:
+  stage: export
+  script:
+    - mkdir -v -p build/linux
+    - godot --headless --verbose --export-release "Linux" ./build/linux/$EXPORT_NAME.x86_64
+  artifacts:
+    name: $EXPORT_NAME-$CI_JOB_NAME
+    paths:
+      - build/linux
 
-  deploy-to-itchio-mac:
-    runs-on: ubuntu-latest
-    needs: export-game
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: macOS
-      - name: Deploy to Itch.io (MacOS)
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: mac
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
-          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
-          PACKAGE: macOS.zip
+#  deploy-to-itchio-linux:
+#    runs-on: ubuntu-latest
+#    needs: export-game
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/download-artifact@v4
+#        with:
+#          name: LinuxX11
+#      - name: Deploy to Itch.io (Windows)
+#        uses: manleydev/butler-publish-itchio-action@master
+#        env:
+#          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+#          CHANNEL: linux
+#          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
+#          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
+#          PACKAGE: LinuxX11.zip
 
-  deploy-to-itchio-web:
-    runs-on: ubuntu-latest
-    needs: export-game
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: HTML5
-      - name: Deploy to Itch.io (HTML5)
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: web
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
-          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
-          PACKAGE: HTML5.zip
+windows:
+  stage: export
+  script:
+    - mkdir -v -p build/windows
+    - godot --headless --verbose --export-release "Windows Desktop" ./build/windows/$EXPORT_NAME.exe
+  artifacts:
+    name: $EXPORT_NAME-$CI_JOB_NAME
+    paths:
+      - build/windows
+
+#  deploy-to-itchio-windows:
+#    runs-on: ubuntu-latest
+#    needs: export-game
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/download-artifact@v4
+#        with:
+#          name: Windows
+#      - name: Deploy to Itch.io (Windows)
+#        uses: manleydev/butler-publish-itchio-action@master
+#        env:
+#          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+#          CHANNEL: windows
+#          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
+#          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
+#          PACKAGE: Windows.zip
+
+#mac:
+#  stage: export
+#  script:
+#    - mkdir -v -p build/mac
+#    - godot --headless --verbose --export-release "macOS" ./build/mac/$EXPORT_NAME.zip
+#  artifacts:
+#    name: $EXPORT_NAME-$CI_JOB_NAME
+#    paths:
+#      - build/mac
+
+#  deploy-to-itchio-mac:
+#    runs-on: ubuntu-latest
+#    needs: export-game
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/download-artifact@v4
+#        with:
+#          name: macOS
+#      - name: Deploy to Itch.io (MacOS)
+#        uses: manleydev/butler-publish-itchio-action@master
+#        env:
+#          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+#          CHANNEL: mac
+#          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
+#          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
+#          PACKAGE: macOS.zip
+web:
+  stage: export
+  script:
+    - mkdir -v -p build/web
+    - godot --headless --verbose --export-release "Web" ./build/web/index.html
+  artifacts:
+    name: $EXPORT_NAME-$CI_JOB_NAME
+    paths:
+      - build/web
+
+#  deploy-to-itchio-web:
+#    runs-on: ubuntu-latest
+#    needs: export-game
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/download-artifact@v4
+#        with:
+#          name: HTML5
+#      - name: Deploy to Itch.io (HTML5)
+#        uses: manleydev/butler-publish-itchio-action@master
+#        env:
+#          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+#          CHANNEL: web
+#          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
+#          ITCH_USER: ${{ secrets.ITCHIO_USERNAME }}
+#          PACKAGE: HTML5.zip
+# Android Debug Job. It will use the generated debug.keystore.
+#android_debug:
+#  stage: export
+#  script:
+#    - mkdir -v -p build/android
+#    - godot --headless --verbose --export-debug "Android Debug" /build/android/$EXPORT_NAME-debug.apk
+#  artifacts:
+#    name: $EXPORT_NAME-$CI_JOB_NAME
+#    paths:
+#      - build/android
+
+# Android Release Job. You will need to include keystore and password in the GitLab variable settings:
+# 1. Take your generated keystore and convert it to Base64:
+#   Linux & macOS: `base64 release.keystore -w 0`
+#   Windows: `certutil -encodehex -f release.keystore encoded.txt 0x40000001`
+# 2. Go to GitLab Project > Settings > CI/CD > Variables and copy the Base64-encoded keystore value in a new variable `SECRET_RELEASE_KEYSTORE_BASE64` as type variable.
+# 3. Create a second variable SECRET_RELEASE_KEYSTORE_USER as type variable with the alias of your keystore as value.
+# 4. Create a third variable SECRET_RELEASE_KEYSTORE_PASSWORD as type variable with the password of your keystore as value.
+#android:
+#  stage: export
+#  rules:
+#    - if: $SECRET_RELEASE_KEYSTORE_BASE64
+#    - if: $SECRET_RELEASE_KEYSTORE_USER
+#    - if: $SECRET_RELEASE_KEYSTORE_PASSWORD
+#  script:
+#    - echo $SECRET_RELEASE_KEYSTORE_BASE64 | base64 --decode > /root/release.keystore
+#    - mkdir -v -p build/android
+#    - cd $EXPORT_NAME
+#    - sed 's@keystore/release=".*"@keystore/release="'/root/release.keystore'"@g' -i export_presets.cfg
+#    - sed 's@keystore/release_user=".*"@keystore/release_user="'$SECRET_RELEASE_KEYSTORE_USER'"@g' -i export_presets.cfg
+#    - sed 's@keystore/release_password=".*"@keystore/release_password="'$SECRET_RELEASE_KEYSTORE_PASSWORD'"@g' -i export_presets.cfg
+#    - godot --headless --verbose --export-release "Android" ../build/android/$EXPORT_NAME.apk
+##  artifacts:
+#    name: $EXPORT_NAME-$CI_JOB_NAME
+#    paths:
+#      - build/android
+
+# GitLab Pages Deploy
+pages:
+  stage: deploy
+  dependencies:
+    - web
+  script:
+    - rm -f *.md
+    - mkdir -v -p public
+    - mv build/web/** ./public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+
