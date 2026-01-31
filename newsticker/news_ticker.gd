@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 	next_news_timestamp = 2.0 + randf() * 3.0;
 	#new_headline();
 	#new_styled_headline();
-	var triggered_news = news_queue.front()
+	#var triggered_news = news_queue.front()
 	
 	if not news_queue.is_empty():
 		var queued_news: Dictionary = news_queue.pop_front()
