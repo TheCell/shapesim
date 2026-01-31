@@ -28,6 +28,8 @@ const EVENT_COLORS := {
 	"death":   Color("#ff4444"),
 	"science": Color("#66ccff"),
 	"event":   Color("#ffff55"),
+	"heal":    Color("#55ff55"),
+	"push_pull": Color("#5599ff"),
 }
 
 const paletteFilePaths = [
@@ -136,8 +138,8 @@ const GOD_PUSH := {
 		"God's Hand Pushes Back the Masses"
 	],
 	"descriptions": [
-		"{COUNT} units and structures were violently displaced by an invisible force.",
-		"Witnesses report {COUNT} entities suddenly flung across the map by divine intervention."
+		"{COUNT} units and structures were {DISPLACED} by an invisible force.",
+		"Witnesses report {COUNT} entities suddenly {DISPLACED} across the map by divine intervention."
 	]
 }
 
@@ -147,8 +149,8 @@ const GOD_PULL := {
 		"God's Grasp Pulls Forces Inward"
 	],
 	"descriptions": [
-		"{COUNT} units and buildings were pulled toward a central point against their will.",
-		"An inexplicable force drew {COUNT} entities together in an instant."
+		"{COUNT} units and buildings were {PULLED} toward a central point against their will.",
+		"An inexplicable force {PULLED} {COUNT} entities together in an instant."
 	]
 }
 
@@ -158,8 +160,8 @@ const GOD_DUPLICATE := {
 		"Miracle or Madness? Entities Doubled"
 	],
 	"descriptions": [
-		"{COUNT} warriors and buildings were duplicated in an unprecedented divine act.",
-		"Observers question reality itself as {COUNT} entities spontaneously doubled."
+		"{COUNT} warriors and buildings were {DUPLICATED} in an unprecedented divine act.",
+		"Observers question reality itself as {COUNT} entities spontaneously {DUPLICATED}."
 	]
 }
 
@@ -169,8 +171,8 @@ const GOD_HEAL := {
 		"Miraculous Recovery Sweeps the Land"
 	],
 	"descriptions": [
-		"{COUNT} units and structures were miraculously healed by divine grace.",
-		"A healing radiance touched {COUNT} entities, restoring them to full strength."
+		"{COUNT} units and structures were {HEALED} by divine grace.",
+		"A healing radiance touched {COUNT} entities, {HEALED} them to full strength."
 	]
 }
 

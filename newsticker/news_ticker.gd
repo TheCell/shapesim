@@ -136,6 +136,12 @@ func colorize(text: String, color: String) -> String:
 func shake(text: String) -> String:
 	return "[shake rate=20 level=10]%s[/shake]" % [text]
 
+func wave(text: String) -> String:
+	return "[wave amp=50 freq=5]%s[/wave]" % [text]
+
+func fade(text: String) -> String:
+	return "[fade start=4 length=14]%s[/fade]" % [text]
+
 func civ(civ: Constants.Civilization) -> String:
 	var name: String = Constants.CIV_NAMES[civ]
 	var color: Color = Constants.CIV_COLORS[civ]
@@ -146,6 +152,12 @@ func event(text: String, type: String) -> String:
 
 func death(text: String) -> String:
 	return shake(event(text, "death"))
+
+func push_pull_event(text: String) -> String:
+	return wave(event(text, "push_pull"))
+
+func heal_event(text: String) -> String:
+	return fade(event(text, "heal"))
 
 func format_text(template: String, ctx: Dictionary) -> String:
 	var t := template
@@ -163,6 +175,18 @@ func format_text(template: String, ctx: Dictionary) -> String:
 	if "{DEATH}" in t:
 		var death_words = ["perished", "died", "decomposed", "succumbed"]
 		t = t.replace("{DEATH}", death(death_words[randi_range(0, death_words.size() - 1)]))
+	if "{DISPLACED}" in t:
+		var displaced_words = ["violently displaced", "flung aside", "scattered", "hurled away"]
+		t = t.replace("{DISPLACED}", push_pull_event(displaced_words[randi_range(0, displaced_words.size() - 1)]))
+	if "{PULLED}" in t:
+		var pulled_words = ["pulled", "drawn", "dragged", "yanked"]
+		t = t.replace("{PULLED}", push_pull_event(pulled_words[randi_range(0, pulled_words.size() - 1)]))
+	if "{DUPLICATED}" in t:
+		var duplicated_words = ["duplicated", "cloned", "replicated", "doubled"]
+		t = t.replace("{DUPLICATED}", wave(event(duplicated_words[randi_range(0, duplicated_words.size() - 1)], "event")))
+	if "{HEALED}" in t:
+		var healed_words = ["miraculously healed", "restored", "rejuvenated", "regenerated"]
+		t = t.replace("{HEALED}", heal_event(healed_words[randi_range(0, healed_words.size() - 1)]))
 
 	if ctx.get("god", false):
 		t = "[s]%s[/s] %s" % [
