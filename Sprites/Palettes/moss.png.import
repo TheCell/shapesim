@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cvapn02cwg2ra"
-path="res://.godot/imported/icecream.png-61dce43e1c6c134e6f17ae87f7c8940e.ctex"
+path="res://.godot/imported/moss.png-6ce9841e4773767b1ecc9c10d74814a4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Palettes/icecream.png"
-dest_files=["res://.godot/imported/icecream.png-61dce43e1c6c134e6f17ae87f7c8940e.ctex"]
+source_file="res://Sprites/Palettes/moss.png"
+dest_files=["res://.godot/imported/moss.png-6ce9841e4773767b1ecc9c10d74814a4.ctex"]
 
 [params]
 

@@ -33,8 +33,8 @@ const EVENT_COLORS := {
 const paletteFilePaths = [
 	"res://Sprites/Palettes/aqua.png",
 	"res://Sprites/Palettes/flamingo.png",
-	"res://Sprites/Palettes/gold.png",
-	"res://Sprites/Palettes/icecream.png",
+	"res://Sprites/Palettes/orsage.png",
+	"res://Sprites/Palettes/moss.png",
 	"res://Sprites/Palettes/lightpurple.png",
 ]
 
