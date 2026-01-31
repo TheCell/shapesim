@@ -87,8 +87,8 @@ func attack_unit() -> void:
 	await get_tree().create_timer(battle_timout).timeout
 	anim.play("attack")
 	var random_damage_modifier := randf_range(1.0, 5.0)
-	if is_instance_valid(last_attacked_building):
-		last_attacked_enemy.hurt(damage + random_damage_modifier)
+	if is_instance_valid(last_attacked_enemy):
+		last_attacked_enemy.hurt(self, damage + random_damage_modifier)
 	is_fighting = false
 
 func attack_building() -> void:
@@ -127,11 +127,14 @@ func has_buildings_in_range() -> bool:
 			return !is_instance_valid(building.civilization) || self.civilization != building.faction
 	)
 
-func hurt(enemy_damage: float) -> void:
+func hurt(entity: Node2D, enemy_damage: float) -> void:
 	if health - enemy_damage > 0:
 		health -= enemy_damage
 	else:
-		Events.unit_died.emit(last_attacked_enemy.civilization, civilization, false)
+		if entity is Unit:
+			Events.unit_died.emit(entity.civilization, civilization, false)
+		#else:
+			#Events.unit_died.emit()
 		queue_free()
 
 func _notification(what: int) -> void:
