@@ -1,4 +1,4 @@
-extends Node
+class_name Constants
 
 enum Civilization {
 	Red,

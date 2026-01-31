@@ -22,7 +22,7 @@ func take_damage(damage: int) -> void:
 	health -= damage;
 	print_debug("I lost health, remaining %f" % health)
 	if (health <= 0):
-		Events.unit_died_for_civ.emit(Events.Civilization.Red)
+		Events.unit_died_for_civ.emit(Constants.Civilization.Red)
 		print_debug('oh no I died');
 		queue_free();
 	
