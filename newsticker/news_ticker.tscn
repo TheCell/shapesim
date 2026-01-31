@@ -1,33 +1,49 @@
 [gd_scene format=3 uid="uid://beruq8ofrhsfi"]
 
+[ext_resource type="Script" uid="uid://d2hx8vo1efok0" path="res://newsticker/news_ticker.gd" id="1_jdx5n"]
 [ext_resource type="PackedScene" uid="uid://suqwx7v7gn5w" path="res://newsticker/news_article.tscn" id="1_ourss"]
 
 [node name="NewsTicker" type="Node2D" unique_id=491788212]
+script = ExtResource("1_jdx5n")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=809648248]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = -1.0
-offset_right = 401.0
-offset_bottom = 387.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1442420457]
+custom_minimum_size = Vector2(400, 600)
+offset_right = 200.0
+offset_bottom = 500.0
+vertical_scroll_mode = 3
+
+[node name="NewsFeed" type="VBoxContainer" parent="ScrollContainer" unique_id=809648248]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="NewsArticle" parent="VBoxContainer" unique_id=1834659992 instance=ExtResource("1_ourss")]
+[node name="NewsArticle" parent="ScrollContainer/NewsFeed" unique_id=1834659992 instance=ExtResource("1_ourss")]
 layout_mode = 2
 
-[node name="NewsArticle2" parent="VBoxContainer" unique_id=1243272092 instance=ExtResource("1_ourss")]
+[node name="NewsArticle2" parent="ScrollContainer/NewsFeed" unique_id=1243272092 instance=ExtResource("1_ourss")]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=224737113]
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=531166947]
 layout_mode = 2
-text = "jojo testest"
+text = "fds faadsfdsa dadsa fasd fsa"
 fit_content = true
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=597781656]
+[node name="RichTextLabel2" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=918780317]
 layout_mode = 2
-text = "label test"
+text = "fds faadsfdsa dadsa fasd fsa"
+fit_content = true
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=1579609290]
+layout_mode = 2
+text = "fds faadsfdsa dadsa fasd fsa"
+fit_content = true
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=241596824]
+layout_mode = 2
+text = "fds faadsfdsa dadsa fasd fsa"
+fit_content = true
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="ScrollContainer/NewsFeed" unique_id=431828267]
+layout_mode = 2
+text = "fds faadsfdsa dadsa fasd fsa"
+fit_content = true
