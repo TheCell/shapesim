@@ -12,6 +12,9 @@ var time_since_last_news := 0.0;
 var next_news_timestamp := 2.0 + randf() * 3.0;
 var max_news_count := 8;
 
+var generic_headline_usage: Dictionary = {}
+var generic_description_usage: Dictionary = {}
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -105,13 +108,44 @@ func create_war_news() -> void:
 		#spawn_news(Constants.CIV_LEVEL, ctx);
 
 func new_generic_news() -> void:
-	spawn_news(Constants.GENERIC_NEWS, {})
+	var headline_index := get_weighted_random_index(Constants.GENERIC_NEWS.headlines.size(), generic_headline_usage)
+	var description_index := get_weighted_random_index(Constants.GENERIC_NEWS.descriptions.size(), generic_description_usage)
+	
+	generic_headline_usage[headline_index] = generic_headline_usage.get(headline_index, 0) + 1
+	generic_description_usage[description_index] = generic_description_usage.get(description_index, 0) + 1
+	
+	var ctx := {
+		"headline_override": Constants.GENERIC_NEWS.headlines[headline_index],
+		"description_override": Constants.GENERIC_NEWS.descriptions[description_index]
+	}
+	spawn_news(Constants.GENERIC_NEWS, ctx)
+
+func get_weighted_random_index(max_size: int, usage_dict: Dictionary) -> int:
+	# Collect all unused indices (not in dict or count == 0)
+	var unused_indices: Array[int] = []
+	for i in range(max_size):
+		if usage_dict.get(i, 0) == 0:
+			unused_indices.append(i)
+	
+	# If there are unused items, pick randomly from them
+	if not unused_indices.is_empty():
+		return unused_indices[randi() % unused_indices.size()]
+	
+	# All items have been used - reset usage dict and pick from all
+	usage_dict.clear()
+	return randi() % max_size
 
 func spawn_news(template_set: Dictionary, ctx: Dictionary) -> void:
-	var i: int = randi() % template_set.headlines.size()
-
-	var headline := format_text(template_set.headlines[i], ctx)
-	var description := format_text(template_set.descriptions[i], ctx)
+	var headline: String
+	var description: String
+	
+	if ctx.has("headline_override"):
+		headline = format_text(ctx.headline_override, ctx)
+		description = format_text(ctx.description_override, ctx)
+	else:
+		var i: int = randi() % template_set.headlines.size()
+		headline = format_text(template_set.headlines[i], ctx)
+		description = format_text(template_set.descriptions[i], ctx)
 
 	var instance := news_article.instantiate()
 	instance.headline_text = headline
