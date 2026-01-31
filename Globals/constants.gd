@@ -92,7 +92,11 @@ static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: Buildi
 enum NewsType {
 	War,
 	CivFight,
-	CivLevel
+	CivLevel,
+	Push,
+	Pull,
+	Duplicate,
+	Heal
 }
 
 const UNIT_DIED := {
@@ -123,6 +127,50 @@ const CIV_LEVEL := {
 	],
 	"descriptions": [
         "{CIV} reached level {LEVEL}, worrying nearby civilizations."
+	]
+}
+
+const GOD_PUSH := {
+	"headlines": [
+		"Divine Force Scatters the Battlefield",
+		"God's Hand Pushes Back the Masses"
+	],
+	"descriptions": [
+		"{COUNT} units and structures were violently displaced by an invisible force.",
+		"Witnesses report {COUNT} entities suddenly flung across the map by divine intervention."
+	]
+}
+
+const GOD_PULL := {
+	"headlines": [
+		"Mysterious Attraction Draws Units Together",
+		"God's Grasp Pulls Forces Inward"
+	],
+	"descriptions": [
+		"{COUNT} units and buildings were pulled toward a central point against their will.",
+		"An inexplicable force drew {COUNT} entities together in an instant."
+	]
+}
+
+const GOD_DUPLICATE := {
+	"headlines": [
+		"Reality Fractures—Duplicates Appear",
+		"Miracle or Madness? Entities Doubled"
+	],
+	"descriptions": [
+		"{COUNT} warriors and buildings were duplicated in an unprecedented divine act.",
+		"Observers question reality itself as {COUNT} entities spontaneously doubled."
+	]
+}
+
+const GOD_HEAL := {
+	"headlines": [
+		"Divine Light Restores the Wounded",
+		"Miraculous Recovery Sweeps the Land"
+	],
+	"descriptions": [
+		"{COUNT} units and structures were miraculously healed by divine grace.",
+		"A healing radiance touched {COUNT} entities, restoring them to full strength."
 	]
 }
 

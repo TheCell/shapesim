@@ -72,6 +72,18 @@ func handle_queued_news(news: Dictionary) -> void:
 			}
 			spawn_news(Constants.CIV_LEVEL, ctx)
 
+		Constants.NewsType.Push:
+			spawn_news(Constants.GOD_PUSH, news)
+
+		Constants.NewsType.Pull:
+			spawn_news(Constants.GOD_PULL, news)
+
+		Constants.NewsType.Duplicate:
+			spawn_news(Constants.GOD_DUPLICATE, news)
+
+		Constants.NewsType.Heal:
+			spawn_news(Constants.GOD_HEAL, news)
+
 		_:
 			new_generic_news()
 

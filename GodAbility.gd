@@ -95,63 +95,84 @@ func apply_timed_ability():
 			if unit is Unit:
 				var warrior : Unit = unit
 				hurt_warrior(warrior, damageAmount)
-				
 				print("hurt warrior %s" + unit.name)
 			if unit is Building:
 				var building : Building = unit
 				hurt_building(building, damageAmount)
-				
 				print("hurt building %s" + unit.name)
 	elif activeAbility == Constants.AbilityType.Heal:
+		var warrior_count := 0
+		var building_count := 0
 		for unit in units:
 			if unit is Unit:
 				var warrior : Unit = unit
 				heal_warrior(warrior, healAmount)
-				
+				warrior_count += 1
 				print("healed warrior %s" % unit.name)
 			if unit is Building:
 				var building : Building = unit
 				heal_building(building, healAmount)
-				
+				building_count += 1
 				print("healed building %s" % unit.name)
+				
+		Eventbus.this.warriors_healed.emit(warrior_count)
+		Eventbus.this.buildings_healed.emit(building_count)
+		
 	elif activeAbility == Constants.AbilityType.Push:
+		var warrior_count := 0
+		var building_count := 0
 		for unit in units:
 			if unit is Unit:
 				var warrior: Unit = unit
 				var dir := warrior.global_position - global_position
 				_apply_push_pull(warrior, dir, pushForce)
-				
-				print("pushed warrior %s" % unit.name)
+				warrior_count += 1
+				#print("pushed warrior %s" % unit.name)
 			elif unit is Building:
 				var building: Building = unit
 				var dir := building.global_position - global_position
 				_apply_push_pull_building(building, dir, pushForce)
+				building_count += 1
+				#print("pushed building %s" % unit.name)
 				
-				print("pushed building %s" % unit.name)
+		Eventbus.this.warriors_pushed.emit(warrior_count)
+		Eventbus.this.buildings_pushed.emit(building_count)
+		
 	elif activeAbility == Constants.AbilityType.Pull:
+		var warrior_count := 0
+		var building_count := 0
 		for unit in units:
 			if unit is Unit:
 				var warrior: Unit = unit
 				var dir := global_position - warrior.global_position
 				_apply_push_pull(warrior, dir, pullForce)
-				
-				print("pulled warrior %s" % unit.name)
+				warrior_count += 1
+				#print("pulled warrior %s" % unit.name)
 			elif unit is Building:
 				var building: Building = unit
 				var dir := global_position - building.global_position
 				_apply_push_pull_building(building, dir, pullForce)
+				building_count += 1
+				#print("pulled building %s" % unit.name)
 				
-				print("pulled building %s" % unit.name)
+		Eventbus.this.warriors_pulled.emit(warrior_count)
+		Eventbus.this.buildings_pulled.emit(building_count)
+		
 	elif activeAbility == Constants.AbilityType.Duplicate:
+		var warrior_count := 0
+		var building_count := 0
 		for unit in units:
 				if unit is Unit:
 					var warrior : Unit = unit
 					WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
+					warrior_count += 1
 					print("duplicated enemy %s" % unit.name)
 				if unit is Building:
+					building_count += 1
 					print("HOW DO I SPAWN A BUILDING SO IT DOES ITS SHIIII")
-	
-	
+					
+		Eventbus.this.warriors_duplicated.emit(warrior_count)
+		Eventbus.this.buildings_duplicated.emit(building_count)
 	
 	pass
 
