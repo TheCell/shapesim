@@ -104,11 +104,21 @@ enum NewsType {
 const UNIT_DIED := {
 	"headlines": [
 		"War is war",
-		"Nothing new in the west"
+		"Nothing new in the west",
+		"Casualties Mount in Latest Engagement",
+		"Another Day, Another Battle",
+		"Warriors Fail to Return Home",
+		"Recruitment Offices Report Increased Demand",
+		"Battlefield Cleanup Crews Overwhelmed"
 	],
 	"descriptions": [
 		"{COUNT} warriors {DEATH} for a better future.",
 		"{COUNT} warriors {DEATH} in a battle.",
+		"{COUNT} fighters {DEATH} before achieving their objectives.",
+		"Military analysts confirm {COUNT} casualties from recent skirmishes.",
+		"Families mourn as {COUNT} warriors {DEATH} in the endless conflict.",
+		"The steppe claims {COUNT} more souls in today's fighting.",
+		"{COUNT} warriors won't be coming home—ever."
 	]
 }
 
@@ -135,44 +145,84 @@ const CIV_LEVEL := {
 const GOD_PUSH := {
 	"headlines": [
 		"Divine Force Scatters the Battlefield",
-		"God's Hand Pushes Back the Masses"
+		"God's Hand Pushes Back the Masses",
+		"Invisible Shove Disrupts Combat",
+		"'Did You Feel That?' Ask Confused Warriors",
+		"Units Experience Sudden Relocation",
+		"Physics Optional, Apparently",
+		"God Plays Billiards with Mortals"
 	],
 	"descriptions": [
 		"{COUNT} units and structures were {DISPLACED} by an invisible force.",
-		"Witnesses report {COUNT} entities suddenly {DISPLACED} across the map by divine intervention."
+		"Witnesses report {COUNT} entities suddenly {DISPLACED} across the map by divine intervention.",
+		"{COUNT} warriors and buildings experienced involuntary relocation.",
+		"A mysterious force {DISPLACED} {COUNT} entities in what can only be described as 'divine pest control.'",
+		"Strategic positions mean nothing when {COUNT} units get {DISPLACED} by godly whim.",
+		"{COUNT} entities learned that free will has its limits.",
+		"Personal space violated for {COUNT} units as an invisible hand {DISPLACED} them elsewhere."
 	]
 }
 
 const GOD_PULL := {
 	"headlines": [
 		"Mysterious Attraction Draws Units Together",
-		"God's Grasp Pulls Forces Inward"
+		"God's Grasp Pulls Forces Inward",
+		"Unexpected Group Hug Disrupts Warfare",
+		"Gravity? No, Something Worse",
+		"Divine Vacuum Claims {COUNT} Victims",
+		"Entities Experience Involuntary Convergence",
+		"'Why Are We All Here?' Wonder Confused Units"
 	],
 	"descriptions": [
 		"{COUNT} units and buildings were {PULLED} toward a central point against their will.",
-		"An inexplicable force {PULLED} {COUNT} entities together in an instant."
+		"An inexplicable force {PULLED} {COUNT} entities together in an instant.",
+		"{COUNT} warriors and structures found themselves suddenly very close to each other.",
+		"Personal boundaries mean nothing as {COUNT} entities were {PULLED} into an unwanted gathering.",
+		"Strategic dispersion failed when {COUNT} units were {PULLED} together like magnets.",
+		"Social distancing impossible after {COUNT} entities were {PULLED} to the same spot.",
+		"{COUNT} units experienced what scholars call 'divine clustering.'"
 	]
 }
 
 const GOD_DUPLICATE := {
 	"headlines": [
 		"Reality Fractures—Duplicates Appear",
-		"Miracle or Madness? Entities Doubled"
+		"Miracle or Madness? Entities Doubled",
+		"'I'm Seeing Double' Reports Entire Army",
+		"Cloning Technology Obsolete After Divine Act",
+		"Identity Crisis Sweeps Battlefield",
+		"Philosophers Question Nature of Self",
+		"Two for the Price of One (No Refunds)"
 	],
 	"descriptions": [
 		"{COUNT} warriors and buildings were {DUPLICATED} in an unprecedented divine act.",
-		"Observers question reality itself as {COUNT} entities spontaneously {DUPLICATED}."
+		"Observers question reality itself as {COUNT} entities spontaneously {DUPLICATED}.",
+		"An impossible miracle {DUPLICATED} {COUNT} units, doubling their numbers instantly.",
+		"{COUNT} entities met their exact copies and immediately felt awkward about it.",
+		"Census takers baffled as {COUNT} units were suddenly {DUPLICATED}.",
+		"The concept of 'unique individual' becomes meaningless for {COUNT} {DUPLICATED} entities.",
+		"{COUNT} warriors now have trust issues after being {DUPLICATED} without consent."
 	]
 }
 
 const GOD_HEAL := {
 	"headlines": [
 		"Divine Light Restores the Wounded",
-		"Miraculous Recovery Sweeps the Land"
+		"Miraculous Recovery Sweeps the Land",
+		"Medical Professionals Suddenly Unemployed",
+		"'I Feel Great!' Shout Previously Dying Warriors",
+		"Wounds Vanish in Inexplicable Event",
+		"Health Insurance Companies Hate This One Trick",
+		"Instant Recovery Baffles Military Medics"
 	],
 	"descriptions": [
 		"{COUNT} units and structures were {HEALED} by divine grace.",
-		"A healing radiance touched {COUNT} entities, {HEALED} them to full strength."
+		"A healing radiance touched {COUNT} entities, {HEALED} them to full strength.",
+		"{COUNT} wounded warriors were {HEALED} in what can only be called a miracle.",
+		"Injuries vanished from {COUNT} units as they were {HEALED} by an unknown power.",
+		"{COUNT} entities experienced instant recovery after being {HEALED} by divine light.",
+		"Battlefield triage became unnecessary when {COUNT} units were suddenly {HEALED}.",
+		"Death itself stepped back as {COUNT} damaged entities were {HEALED} to perfection."
 	]
 }
 
@@ -187,18 +237,32 @@ const GENERIC_NEWS := {
 		"Calm Before Something Worse",
 		"Activity Observed, Meaning Unclear",
 		"Strategists Remain Vigilant",
-		"No Major Developments Reported"
+		"No Major Developments Reported",
+		"Civilization Continues to Civilize",
+		"Weather: Still Exists",
+		"Breaking: Absolutely Nothing Breaks",
+		"Existential Dread Remains Constant",
+		"War Delayed Due to Scheduling Conflicts",
+		"Peace Accidentally Breaks Out",
+		"Universe Fails to End, Surprisingly"
 	],
 	"descriptions": [
-		"Units repositioned and supplies were gathered, but no decisive actions were taken. Observers describe the situation as \"temporarily stable.\"",
-		"Despite underlying hostility, no significant clashes occurred during this period. Leaders appear to be waiting for an opening.",
-		"Buildings deteriorated slightly, warriors marched their usual routes, and the land changed as it always does. Nothing remarkable happened.",
-		"Scouting parties returned with reports of normal movement patterns and unchanged borders. Analysts advise continued monitoring.",
-		"Minor maneuvers were detected near several hubs, though none resulted in open conflict. Tension remains high.",
-		"The passage of time brought small changes across the map, none of which altered the balance of power in a meaningful way.",
-		"No breakthroughs, no disasters, and no divine interference were recorded this cycle. The world endures.",
+		"Units repositioned and supplies were gathered, but no decisive actions were taken.",
+		"Despite underlying hostility, no significant clashes occurred during this period.",
+		"Buildings deteriorated slightly, warriors marched their usual routes, and the land changed as it always does.",
+		"Scouting parties returned with reports of normal movement patterns and unchanged borders.",
+		"Minor maneuvers were detected near several hubs, though none resulted in open conflict.",
+		"The passage of time brought small changes across the map, none of which altered the balance of power.",
+		"No breakthroughs, no disasters, and no divine interference were recorded this cycle.",
 		"Environmental effects continued to shape the terrain while civilizations quietly adjusted their priorities.",
-		"Commanders reviewed reports and maintained defensive postures. For now, restraint appears to be the dominant strategy.",
-		"All systems continue to operate within expected parameters. The next development remains unpredictable."
+		"Commanders reviewed reports and maintained defensive postures as restraint appears to be the dominant strategy.",
+		"All systems continue to operate within expected parameters and the next development remains unpredictable.",
+		"Warriors wandered aimlessly while leaders contemplated the meaning of existence.",
+		"Absolutely nothing happened, which is somehow both boring and terrifying.",
+		"The gods appear to be on lunch break as normalcy persists.",
+		"Units stood around wondering when the next catastrophe would strike.",
+		"Civilization proves it can function without constant violence—who knew?",
+		"An eerie calm settles over the land, making everyone deeply uncomfortable.",
+		"Historians will probably skip this tick entirely when writing the chronicles."
 	]
 }
