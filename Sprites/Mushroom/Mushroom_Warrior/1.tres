@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://bi5nuecdl1f1e"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nvxrq"]
+load_path = "res://.godot/imported/Mushroom_Warrior.png-d57b69337c91b5620ce44b7988c1eb0c.ctex"
+
+[resource]
+atlas = SubResource("CompressedTexture2D_nvxrq")
+region = Rect2(16, 0, 16, 32)
