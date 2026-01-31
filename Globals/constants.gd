@@ -55,7 +55,9 @@ enum AbilityType{
 	Speedup,
 	Slowdown,
 	Heal,
-	Meteorite
+	Meteorite,
+	Push,
+	Pull
 }
 
 const spriteFolder = "res://Sprites/"
