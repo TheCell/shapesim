@@ -1,6 +1,7 @@
 class_name Unit
 extends CharacterBody2D
 
+const MAX_HEALTH: float = 100.0
 @export var health: float = 100.0
 @export var damage: float = 10.0
 @export var speed: float = 100.0
@@ -133,9 +134,13 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 	else:
 		if entity is Unit:
 			Events.unit_died.emit(entity.civilization, civilization, false)
+			Events.died.emit(self)
 		#else:
 			#Events.unit_died.emit()
-		queue_free()
+
+func heal(amount: float) -> void:
+	if health + amount < MAX_HEALTH:
+		health += amount
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
