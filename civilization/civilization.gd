@@ -1,7 +1,7 @@
 class_name Civilization
 extends Node2D
 
-
+var faction: Constants.Civilization
 const chillingDoNothingChance = 0.2
 
 @export var buildingToScene: Dictionary[Constants.BuildingType, PackedScene] = {

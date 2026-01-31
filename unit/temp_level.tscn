@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cjqpoqgeb008d"]
 
 [ext_resource type="Script" uid="uid://diyq6lipujxfy" path="res://unit/temp_level.gd" id="1_oafa1"]
+[ext_resource type="PackedScene" uid="uid://b7714igdawxkl" path="res://civilization/building.tscn" id="2_oafa1"]
 
 [node name="TempLevel" type="Node2D" unique_id=1541864159 node_paths=PackedStringArray("button_a", "button_b")]
 script = ExtResource("1_oafa1")
@@ -10,10 +11,28 @@ button_b = NodePath("Button2")
 [node name="Button" type="Button" parent="." unique_id=1188580888]
 offset_right = 8.0
 offset_bottom = 8.0
-text = "Spawn A"
+text = "Red"
 
 [node name="Button2" type="Button" parent="." unique_id=1183637725]
 offset_left = 80.0
 offset_right = 154.0
 offset_bottom = 31.0
-text = "Spawn B"
+text = "Blue"
+
+[node name="Building" parent="." unique_id=2008346303 instance=ExtResource("2_oafa1")]
+position = Vector2(519, 387)
+
+[node name="Building2" parent="." unique_id=160137373 instance=ExtResource("2_oafa1")]
+position = Vector2(465, 334)
+
+[node name="Building3" parent="." unique_id=1747713440 instance=ExtResource("2_oafa1")]
+position = Vector2(501, 276)
+
+[node name="Building4" parent="." unique_id=843902316 instance=ExtResource("2_oafa1")]
+position = Vector2(379, 283)
+
+[node name="Building5" parent="." unique_id=942067206 instance=ExtResource("2_oafa1")]
+position = Vector2(359, 332)
+
+[node name="Building6" parent="." unique_id=1617154144 instance=ExtResource("2_oafa1")]
+position = Vector2(619, 317)
