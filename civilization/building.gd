@@ -4,26 +4,21 @@ extends Area2D
 @export var deteriorationCountdown: float = INF
 @export var health: float = 100.0
 @export var animation_player: AnimationPlayer
-@export_dir var spriteFolder: String
 @export var sprite_2d: Sprite2D
 @export var buildingType: Constants.BuildingType
 
 var level: int
 var civilization: Civilization
-
+var faction: Constants.Civilization
 
 signal destroyed()
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	animation_player.play("spawn")
 	level = civilization.level
 	sprite_2d.texture = Constants.getBuildingTexture(civilization.style, buildingType, level)
+	setColor()
 
-func setSprite():
-	sprite_2d.texture = load(spriteFolder + "%s.tres" ) # TODO
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	deteriorationCountdown -= delta
 	if deteriorationCountdown <= 0:
@@ -31,8 +26,12 @@ func _process(delta: float) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
-		civilization.activeBuildings.erase(self)
+		if is_instance_valid(civilization):
+			civilization.activeBuildings.erase(self)
 		destroyed.emit()
+
+func setColor():
+	(sprite_2d.material as ShaderMaterial).set_shader_parameter("faction", civilization.faction)
 
 func hurt(damage: float):
 	health -= damage

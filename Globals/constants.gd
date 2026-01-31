@@ -34,7 +34,7 @@ const spriteFolder = "res://Sprites/"
 static func getWarriorTexture(civStyle: CivilizationStyle, level: int) -> Texture2D:
 	var path = spriteFolder.path_join(CivilizationStyle.find_key(civStyle)).path_join("Warrior").path_join("%s.tres" % [level])
 	if !FileAccess.file_exists(path):
-		return load("res://icon.png")
+		return load("res://defaultWarriorIcon.png")
 	return load(path)
 
 static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: BuildingType, level: int) -> Texture2D:
