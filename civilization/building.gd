@@ -1,8 +1,8 @@
 class_name Building
-extends Node2D
+extends Area2D
 
-@export var deteriorationCountdown = INF
-@export var health = 100
+@export var deteriorationCountdown: float = INF
+@export var health: float = 100.0
 @export var animation_player: AnimationPlayer
 @export_dir var spriteFolder: String
 @export var sprite_2d: Sprite2D
@@ -34,7 +34,10 @@ func _notification(what: int) -> void:
 		civilization.activeBuildings.erase(self)
 		destroyed.emit()
 
-func hurt(damage: int):
+func hurt(damage: float):
 	health -= damage
 	if health <= 0:
 		queue_free()
+
+func _on_attack(damage: float) -> void:
+	hurt(damage)
