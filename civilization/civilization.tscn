@@ -2,12 +2,15 @@
 
 [ext_resource type="Script" uid="uid://bhgnptt4j8wnj" path="res://civilization/civilization.gd" id="1_7qums"]
 [ext_resource type="PackedScene" uid="uid://c8ux5xwhox06o" path="res://civilization/campfire.tscn" id="2_hsco1"]
+[ext_resource type="PackedScene" uid="uid://dppqqcsr14xaa" path="res://civilization/science.tscn" id="3_hot43"]
+[ext_resource type="PackedScene" uid="uid://cy70ndojco8qd" path="res://civilization/watch_tower.tscn" id="4_e07w0"]
+[ext_resource type="PackedScene" uid="uid://neyblr11vstt" path="res://civilization/warrior_hut.tscn" id="5_e07w0"]
 
 [node name="Civilization" type="Node2D" unique_id=2020301776]
 script = ExtResource("1_7qums")
 buildingToScene = Dictionary[int, PackedScene]({
 0: ExtResource("2_hsco1"),
-1: ExtResource("2_hsco1"),
-2: ExtResource("2_hsco1"),
-3: ExtResource("2_hsco1")
+1: ExtResource("3_hot43"),
+2: ExtResource("4_e07w0"),
+3: ExtResource("5_e07w0")
 })
