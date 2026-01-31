@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://bocl1agrwgvio"]
+
+[ext_resource type="Texture2D" uid="uid://bf6wek5mbv6ej" path="res://Sprites/Mushroom/Campfire/Mushroom_Campfire.png" id="1_okdda"]
+
+[resource]
+atlas = ExtResource("1_okdda")
+region = Rect2(0, 16, 32, 32)
