@@ -73,7 +73,7 @@ func apply_timed_ability():
 		for unit in units:
 			if unit.get_script() == unit:
 				var warrior : Unit = unit
-				warrior.hurt(100)
+				warrior.hurt(self, 100)
 				log("hurt enemy %s" + unit.name)
 	
 	pass
