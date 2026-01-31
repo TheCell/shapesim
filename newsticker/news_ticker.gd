@@ -5,7 +5,8 @@ extends Node2D
 
 var news_article = preload("res://newsticker/news_article.tscn")
 var time_since_last_news := 0.0;
-var next_news_timestamp := 1.0 + randf() * 3.0;
+var next_news_timestamp := 1.5 + randf() * 3.0;
+var max_news_count := 5;
 
 var headline_text: Array[String] = [
 	"Blood on the Steppe",
@@ -46,6 +47,7 @@ func _process(delta: float) -> void:
 		new_headline();
 		# scroll_container.get_v_scroll_bar().max_value
 		#scroll_container.set_deferred("scroll_vertical", scroll_container.get_v_scroll_bar().max_value)
+		clean_oldest_headline()
 
 func new_headline() -> void:
 	var index := randi() % headline_text.size();
@@ -58,4 +60,12 @@ func new_headline() -> void:
 	news_feed.move_child(instance, 0)
 	# await get_tree().process_frame
 	# scroll_container.scroll_vertical = scroll_container.get_v_scroll_bar().max_value
-	
+
+func clean_oldest_headline() -> void:
+	if news_feed.get_child_count() > max_news_count:
+		var children := news_feed.get_children();
+		children.reverse()
+		for n in children.size():
+			if  n < children.size() - max_news_count:
+				children[n].queue_free()
+			
