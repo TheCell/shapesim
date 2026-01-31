@@ -2,28 +2,13 @@ class_name Civilization
 extends Node2D
 
 
-enum CivilizationGoal {
-	Chilling,
-	War,
-	Defense,
-	Science,
-}
-
-enum BuildingType {
-	None = -1,
-	Campfire,
-	Science,
-	WatchTower,
-	WarriorHut,
-}
-
 const chillingDoNothingChance = 0.2
 
-@export var buildingToScene: Dictionary[BuildingType, PackedScene] = {
-	BuildingType.Campfire: null,
-	BuildingType.Science: null,
-	BuildingType.WatchTower: null,
-	BuildingType.WarriorHut: null,
+@export var buildingToScene: Dictionary[Constants.BuildingType, PackedScene] = {
+	Constants.BuildingType.Campfire: null,
+	Constants.BuildingType.Science: null,
+	Constants.BuildingType.WatchTower: null,
+	Constants.BuildingType.WarriorHut: null,
 }
 
 @export var unitScene: PackedScene
@@ -41,7 +26,7 @@ var hostilityAgainstCiv: Dictionary[int, float] = {
 
 @export var buildingPlaceCooldown: float = 3
 var untilBuildingPlaced: float = 3
-@export var currentCivilizationGoal: CivilizationGoal = CivilizationGoal.Chilling
+@export var currentCivilizationGoal: Constants.CivilizationGoal = Constants.CivilizationGoal.Chilling
 @export var reevaluateCivilizationGoalCooldown: float = 20
 var untilReevaluateCivilizationGoal = 5
 
@@ -55,7 +40,7 @@ func _ready() -> void:
 	makeCampfire()
 
 func makeCampfire():
-	campfire = buildingToScene[BuildingType.Campfire].instantiate() as Campfire
+	campfire = buildingToScene[Constants.BuildingType.Campfire].instantiate() as Campfire
 	campfire.destroyed.connect(queue_free)
 	campfire.global_position = global_position
 	activeBuildings.append(campfire)
@@ -71,23 +56,23 @@ func reevaluateCivilizationGoals():
 	currentCivilizationGoal = sampleCivilizationGoal()
 
 func sampleCivilizationGoal():
-	return CivilizationGoal.values().pick_random()
+	return Constants.CivilizationGoal.values().pick_random()
 
 func placeBuilding():
-	var chosenBuilding = BuildingType.None
+	var chosenBuilding = Constants.BuildingType.None
 	
 	match currentCivilizationGoal:
-		CivilizationGoal.Chilling:
+		Constants.CivilizationGoal.Chilling:
 			if randf() >= chillingDoNothingChance:
-				chosenBuilding = BuildingType.values().pick_random()
-		CivilizationGoal.War:
-			chosenBuilding = BuildingType.WarriorHut
-		CivilizationGoal.Defense:
-			chosenBuilding = BuildingType.WatchTower
-		CivilizationGoal.Science:
-			chosenBuilding = BuildingType.Science
+				chosenBuilding = Constants.BuildingType.values().pick_random()
+		Constants.CivilizationGoal.War:
+			chosenBuilding = Constants.BuildingType.WarriorHut
+		Constants.CivilizationGoal.Defense:
+			chosenBuilding = Constants.BuildingType.WatchTower
+		Constants.CivilizationGoal.Science:
+			chosenBuilding = Constants.BuildingType.Science
 
-	if chosenBuilding != BuildingType.None:
+	if chosenBuilding != Constants.BuildingType.None:
 		placeCloseby(buildingToScene[chosenBuilding])
 
 func placeCloseby(buildingScene: PackedScene):
