@@ -1,5 +1,12 @@
+class_name Eventbus
 extends Node
 
-signal attack_focus(civilization: Constants.Civilization)
-signal unit_died_for_civ(civilization: Constants.Civilization)
-signal civ_reached_level(level: int)
+static var this: Eventbus
+
+func _ready():
+	this = self
+
+
+signal attack_focus(attacker_civ: Constants.Civilization, target_civ: Constants.Civilization, was_god_intervention: bool)
+signal unit_died(attacker_civ: Constants.Civilization, attacked_civ: Constants.Civilization, was_god_intervention: bool)
+signal civ_reached_level(civ: Constants.Civilization, level: int)
