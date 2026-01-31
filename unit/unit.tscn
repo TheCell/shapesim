@@ -14,11 +14,48 @@ shader = ExtResource("2_hs7ws")
 shader_parameter/colorChoices = PackedColorArray(1, 0.6901961, 0, 1, 0, 0.6117647, 0, 1, 0.8392157, 0, 0, 1, 0, 0.7647059, 0.94509804, 1, 0.7876666, 0.51, 1, 1)
 shader_parameter/faction = 0
 
-[node name="Unit" type="CharacterBody2D" unique_id=1284902279 node_paths=PackedStringArray("attack_range", "sprite_2d", "nav")]
+[sub_resource type="Animation" id="Animation_japly"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_hs7ws"]
+resource_name = "attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333333, 0.43333334, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.17453292, 0.0, -0.17453292, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_japly"]
+_data = {
+&"RESET": SubResource("Animation_japly"),
+&"attack": SubResource("Animation_hs7ws")
+}
+
+[node name="Unit" type="CharacterBody2D" unique_id=1284902279 node_paths=PackedStringArray("attack_range", "sprite_2d", "anim", "nav")]
 collision_mask = 7
 script = ExtResource("1_hy15m")
 attack_range = NodePath("AttackRange")
 sprite_2d = NodePath("Sprite2D")
+anim = NodePath("AnimationPlayer")
 nav = NodePath("NavigationAgent2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1754523167]
@@ -41,6 +78,9 @@ debug_enabled = true
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1929367902]
 material = SubResource("ShaderMaterial_3k25b")
 texture = ExtResource("3_hs7ws")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=615781745]
+libraries/ = SubResource("AnimationLibrary_japly")
 
 [connection signal="area_entered" from="AttackRange" to="." method="_on_attack_range_area_entered"]
 [connection signal="area_exited" from="AttackRange" to="." method="_on_attack_range_area_exited"]

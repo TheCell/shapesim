@@ -6,7 +6,7 @@ extends Control
 @onready var headline: RichTextLabel = $Headline
 @onready var text: RichTextLabel = $Text
 
-var threshold := 0.5;
+var threshold := 0.2;
 var elapsed_time := 0.0;
 var animation_played := false;
 

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://suqwx7v7gn5w"]
 
 [ext_resource type="Script" uid="uid://dfhhnfiwo54hx" path="res://newsticker/news_article.gd" id="1_lscyb"]
-[ext_resource type="Theme" uid="uid://cajajooggw50v" path="res://newsticker/headline_theme.tres" id="2_mw0hf"]
 [ext_resource type="Theme" uid="uid://bn400ovbcummx" path="res://newsticker/article_theme.tres" id="3_mw0hf"]
 
 [sub_resource type="Animation" id="Animation_yknmc"]
@@ -79,7 +78,9 @@ libraries/ = SubResource("AnimationLibrary_ipwtw")
 
 [node name="Headline" type="RichTextLabel" parent="." unique_id=230350389]
 layout_mode = 2
-theme = ExtResource("2_mw0hf")
+theme = ExtResource("3_mw0hf")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
 text = "Headlines"
 fit_content = true
 visible_characters = 0
@@ -88,6 +89,7 @@ visible_ratio = 0.0
 [node name="Text" type="RichTextLabel" parent="." unique_id=429641841]
 layout_mode = 2
 theme = ExtResource("3_mw0hf")
+bbcode_enabled = true
 text = "Suscipit rerum consequatur quis adipisci maiores. Rem voluptas repudiandae asperiores voluptas ullam et est. Omnis quia aliquid sint eum sequi nemo. Eos provident temporibus animi. Doloremque omnis quidem voluptate doloremque sit molestias debitis rerum."
 fit_content = true
 visible_characters = 0

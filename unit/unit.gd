@@ -1,14 +1,13 @@
 class_name Unit
 extends CharacterBody2D
 
-signal attack(damage: float)
-
 @export var health: float = 100.0
 @export var damage: float = 10.0
 @export var speed: float = 100.0
 
 @export var attack_range: Area2D
 @export var sprite_2d: Sprite2D
+@export var anim: AnimationPlayer
 @export var nav: NavigationAgent2D
 
 var civilization: Constants.Civilization
@@ -19,6 +18,10 @@ var target: Vector2
 var is_fighting: bool = false
 var last_attacked_enemy: Unit
 var last_attacked_building: Building
+var battle_timout: float = 0.5
+
+var isRegisteredOnAbility : bool = false
+var godAbility : GodAbility
 
 var overlappingUnits: Dictionary[Unit, bool] = {} # Hashset
 var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
@@ -27,6 +30,7 @@ func _ready() -> void:
 	_actor_setup.call_deferred()
 	nav.velocity_computed.connect(_velocity_computed)
 	initSprite()
+	godAbility = GodAbility.this
 
 func initSprite():
 	sprite_2d.texture = Constants.getWarriorTexture(civilizationStyle, level)
@@ -37,8 +41,18 @@ func _process(_delta: float) -> void:
 		attack_unit()
 	elif has_buildings_in_range() and not is_fighting:
 		attack_building()
+	
+	
+	if !isRegisteredOnAbility && godAbility.is_inside_ability(global_position):
+		godAbility.register_unit(self)
+		isRegisteredOnAbility = true
+	elif isRegisteredOnAbility && !godAbility.is_inside_ability(global_position):
+		godAbility.deregister_unit(self)
+		isRegisteredOnAbility = false
+		
+	
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if has_buildings_in_range() or has_enemies_in_range():
 		velocity = Vector2.ZERO
 	else:
@@ -70,8 +84,11 @@ func attack_unit() -> void:
 	var enemies_in_range := get_enemies_in_range()
 	if last_attacked_enemy == null:
 		last_attacked_enemy = enemies_in_range.pick_random()
+	await get_tree().create_timer(battle_timout).timeout
+	anim.play("attack")
 	var random_damage_modifier := randf_range(1.0, 5.0)
-	last_attacked_enemy.hurt(damage + random_damage_modifier)
+	if is_instance_valid(last_attacked_building):
+		last_attacked_enemy.hurt(damage + random_damage_modifier)
 	is_fighting = false
 
 func attack_building() -> void:
@@ -79,8 +96,11 @@ func attack_building() -> void:
 	var enemies_in_range := get_buildings_in_range()
 	if last_attacked_building == null:
 		last_attacked_building = enemies_in_range.pick_random()
+	await get_tree().create_timer(battle_timout).timeout
+	anim.play("attack")
 	var random_damage_modifier := randf_range(1.0, 5.0)
-	last_attacked_building.hurt(damage + random_damage_modifier)
+	if is_instance_valid(last_attacked_building):
+		last_attacked_building.hurt(damage + random_damage_modifier)
 	is_fighting = false
 
 func get_enemies_in_range() -> Array[Unit]:
@@ -111,6 +131,7 @@ func hurt(enemy_damage: float) -> void:
 	if health - enemy_damage > 0:
 		health -= enemy_damage
 	else:
+		Events.unit_died.emit(last_attacked_enemy.civilization, civilization, false)
 		queue_free()
 
 func _notification(what: int) -> void:

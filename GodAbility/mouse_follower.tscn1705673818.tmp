@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dufmi8wujmuys"]
+
+[ext_resource type="Script" uid="uid://hh7yv5eip1hl" path="res://mouse_follower.gd" id="1_bscov"]
+[ext_resource type="Texture2D" uid="uid://d3tolxm1x44sg" path="res://icon.svg" id="2_37ipy"]
+
+[node name="MouseFollower" type="Node2D" unique_id=61948950]
+script = ExtResource("1_bscov")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1876900305]
+texture = ExtResource("2_37ipy")
