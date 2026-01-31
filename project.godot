@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Shapesim"
-run/main_scene="uid://c1oqaxsoxgcbt"
+run/main_scene="uid://dc6sjpf3b75x"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

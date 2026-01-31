@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://sw7hfyfgh26t"]
+
+[ext_resource type="Script" uid="uid://bhgnptt4j8wnj" path="res://civilization/civilization.gd" id="1_7qums"]
+[ext_resource type="PackedScene" uid="uid://c8ux5xwhox06o" path="res://civilization/campfire.tscn" id="2_hsco1"]
+
+[node name="Civilization" type="Node2D" unique_id=2020301776]
+script = ExtResource("1_7qums")
+buildingToScene = Dictionary[int, PackedScene]({
+0: ExtResource("2_hsco1"),
+1: ExtResource("2_hsco1"),
+2: ExtResource("2_hsco1"),
+3: ExtResource("2_hsco1")
+})
