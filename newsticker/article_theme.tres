@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://bn400ovbcummx"]
+
+[ext_resource type="FontFile" uid="uid://d1cospmse57g4" path="res://newsticker/TruetypewriterPolyglott-mELa.ttf" id="1_soo13"]
+
+[resource]
+default_font = ExtResource("1_soo13")
+default_font_size = 20

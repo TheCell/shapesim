@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Events="*uid://gjhcsvxympov"
 Eventbusasdfasdf="*uid://gjhcsvxympov"
+Events="*uid://gjhcsvxympov"
 
 [display]
 
