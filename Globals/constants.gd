@@ -22,3 +22,9 @@ enum BuildingType {
 	WatchTower,
 	WarriorHut,
 }
+
+enum CivilizationStyle {
+	Slime,
+	Mushroom,
+	FishPeople
+}

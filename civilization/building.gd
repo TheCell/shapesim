@@ -4,7 +4,10 @@ extends Node2D
 @export var deteriorationCountdown = INF
 @export var health = 100
 @export var animation_player: AnimationPlayer
+@export_dir var spriteFolder: String
+@export var sprite_2d: Sprite2D
 
+var buildingLevel: int
 var civilization: Civilization
 
 signal destroyed()
@@ -12,6 +15,12 @@ signal destroyed()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	animation_player.play("spawn")
+	buildingLevel = civilization.level
+	setSprite()
+
+func setSprite():
+	pass
+	#sprite_2d.texture = load(spriteFolder + "%s.tres" ) # TODO
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
