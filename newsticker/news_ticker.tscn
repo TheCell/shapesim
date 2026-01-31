@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://beruq8ofrhsfi"]
 
 [ext_resource type="Script" uid="uid://d2hx8vo1efok0" path="res://newsticker/news_ticker.gd" id="1_jdx5n"]
+[ext_resource type="Script" uid="uid://cqulpd4pkfkc1" path="res://newsticker/event_aggregator.gd" id="2_jdx5n"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jdx5n"]
 light_mode = 1
@@ -25,3 +26,7 @@ material = SubResource("CanvasItemMaterial_jdx5n")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="EventAggregator" type="Node2D" parent="." unique_id=1793117591]
+script = ExtResource("2_jdx5n")
+deathCountNewsTresholdRange = null

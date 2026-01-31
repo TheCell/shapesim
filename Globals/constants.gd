@@ -79,8 +79,25 @@ static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: Buildi
 		return load("res://icon.png")
 	return load(path)
 
-# News texts
+# News types and texts
+enum NewsType {
+	War,
+	CivFight,
+	CivLevel
+}
+
 const UNIT_DIED := {
+	"headlines": [
+		"War is war",
+		"Nothing new in the west"
+	],
+	"descriptions": [
+		"{COUNT} warriors {DEATH} for a better future.",
+		"{COUNT} warriors {DEATH} in a battle.",
+	]
+}
+
+const UNIT_DIED_IN_CLASH := {
 	"headlines": [
 		"Blood on the Steppe",
 		"Skirmish Turns Deadly",
@@ -97,5 +114,32 @@ const CIV_LEVEL := {
 	],
 	"descriptions": [
         "{CIV} reached level {LEVEL}, worrying nearby civilizations."
+	]
+}
+
+const GENERIC_NEWS := {
+	"headlines": [
+		"Another Quiet Tick Passes",
+		"Tensions Remain Unresolved",
+		"Life Continues on the Grid",
+		"Scouts Report Nothing Unusual",
+		"Borders Hold—for Now",
+		"The World Keeps Spinning",
+		"Calm Before Something Worse",
+		"Activity Observed, Meaning Unclear",
+		"Strategists Remain Vigilant",
+		"No Major Developments Reported"
+	],
+	"descriptions": [
+		"Units repositioned and supplies were gathered, but no decisive actions were taken. Observers describe the situation as \"temporarily stable.\"",
+		"Despite underlying hostility, no significant clashes occurred during this period. Leaders appear to be waiting for an opening.",
+		"Buildings deteriorated slightly, warriors marched their usual routes, and the land changed as it always does. Nothing remarkable happened.",
+		"Scouting parties returned with reports of normal movement patterns and unchanged borders. Analysts advise continued monitoring.",
+		"Minor maneuvers were detected near several hubs, though none resulted in open conflict. Tension remains high.",
+		"The passage of time brought small changes across the map, none of which altered the balance of power in a meaningful way.",
+		"No breakthroughs, no disasters, and no divine interference were recorded this cycle. The world endures.",
+		"Environmental effects continued to shape the terrain while civilizations quietly adjusted their priorities.",
+		"Commanders reviewed reports and maintained defensive postures. For now, restraint appears to be the dominant strategy.",
+		"All systems continue to operate within expected parameters. The next development remains unpredictable."
 	]
 }
