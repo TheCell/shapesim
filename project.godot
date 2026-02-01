@@ -21,6 +21,7 @@ Eventbusasdfasdf="*uid://gjhcsvxympov"
 
 [display]
 
+window/stretch/mode="canvas_items"
 window/canvas_textures/default_texture_filter=1
 
 [layer_names]
