@@ -60,7 +60,7 @@ func pushBuildingsAway(delta: float):
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
-		audioPlayer.play()
+		#audioPlayer.play()
 		
 		if is_instance_valid(civilization):
 			civilization.removeBuilding(self)

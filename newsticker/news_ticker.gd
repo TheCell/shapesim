@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 	#new_styled_headline();
 	#var triggered_news = news_queue.front()
 	var random_change_for_generic_news := randf();
-	print_debug(random_change_for_generic_news)
+	#print_debug(random_change_for_generic_news)
 	if not news_queue.is_empty() && random_change_for_generic_news < 0.9:
 		var queued_news: Dictionary = news_queue.pop_front()
 		handle_queued_news(queued_news)
