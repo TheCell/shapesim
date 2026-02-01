@@ -5,10 +5,12 @@ var faction: Constants.Civilization = 0
 var direction: Vector2
 @export var speed = 300
 @export var damage: int = 40
+@export var sprite: Sprite2D
 
 var collided: bool = false
 
 func _ready() -> void:
+	sprite.material.set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[faction]))
 	pass
 
 func _process(delta: float) -> void:

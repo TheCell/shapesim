@@ -1,18 +1,22 @@
 [gd_scene format=3 uid="uid://0jligx3am73p"]
 
 [ext_resource type="Script" uid="uid://c7bqnfjdky8ps" path="res://shot.gd" id="1_dv4o0"]
-[ext_resource type="Texture2D" uid="uid://daxc1qjejqih2" path="res://icon.png" id="2_j6nj1"]
+[ext_resource type="Texture2D" uid="uid://dogs3hxdivt2r" path="res://Sprites/Projectile/Projectile.png" id="2_dv4o0"]
+[ext_resource type="Shader" uid="uid://r5f26ul0yfun" path="res://Sprites/Palettes/paletteSwap.gdshader" id="2_j6nj1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2toa2"]
+shader = ExtResource("2_j6nj1")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2toa2"]
 
-[node name="Shot" type="Area2D" unique_id=36283019]
+[node name="Shot" type="Area2D" unique_id=36283019 node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_dv4o0")
 damage = 50
+sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=974697385]
-position = Vector2(0.5, 0.5000019)
-scale = Vector2(0.59375, 0.6562502)
-texture = ExtResource("2_j6nj1")
+material = SubResource("ShaderMaterial_2toa2")
+texture = ExtResource("2_dv4o0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2025779451]
 shape = SubResource("CircleShape2D_2toa2")
