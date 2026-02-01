@@ -27,8 +27,8 @@ const CIV_COLORS := {
 const EVENT_COLORS := {
 	"death":   Color("#ff4444"),
 	"science": Color("#66ccff"),
-	"event":   Color("#ffff55"),
-	"heal":    Color("#55ff55"),
+	"event":   Color("9c9c33ff"),
+	"heal":    Color("349e34ff"),
 	"push_pull": Color("#5599ff"),
 }
 
@@ -314,6 +314,12 @@ enum NewsType {
 	War,
 	CivFight,
 	CivLevel,
+	CivLevelDown,
+	BuildingDestroyed,
+	BuildingDecayed,
+	StrategyChange,
+	WarDeclaration,
+	ScienceBreakthrough,
 	Push,
 	Pull,
 	Duplicate,
@@ -355,9 +361,101 @@ const UNIT_DIED_IN_CLASH := {
 const CIV_LEVEL := {
 	"headlines": [
 		"{CIV} Reaches New Heights",
+		"{CIV} Ascends to Power",
+		"Breakthrough for {CIV}"
 	],
 	"descriptions": [
-        "{CIV} reached level {LEVEL}, worrying nearby civilizations."
+		"{CIV} reached level {LEVEL}, worrying nearby civilizations.",
+		"{CIV} civilization advanced to level {LEVEL} amid great celebration.",
+		"Level {LEVEL} achieved by {CIV}—rivals take notice."
+	]
+}
+
+const CIV_LEVEL_DOWN := {
+	"headlines": [
+		"{CIV} Suffers Setback",
+		"Decline Hits {CIV}",
+		"{CIV} Falls from Grace"
+	],
+	"descriptions": [
+		"{CIV} civilization declined to level {LEVEL} after recent losses.",
+		"A crushing blow drops {CIV} to level {LEVEL}.",
+		"{CIV} descends to level {LEVEL}—neighbors sense weakness."
+	]
+}
+
+const BUILDING_DESTROYED := {
+	"headlines": [
+		"Infrastructure Under Assault",
+		"Buildings Razed in Conflict",
+		"Destruction Sweeps the Land",
+		"Architecture Meets Artillery"
+	],
+	"descriptions": [
+		"{COUNT} buildings were destroyed in recent conflicts.",
+		"Rubble marks where {COUNT} structures once stood.",
+		"Attackers demolished {COUNT} buildings, leaving devastation in their wake.",
+		"{COUNT} buildings reduced to ruins amid ongoing hostilities."
+	]
+}
+
+const BUILDING_DECAYED := {
+	"headlines": [
+		"Infrastructure Crumbles",
+		"Decay Claims Its Victims",
+		"Neglect Takes Its Toll",
+		"Buildings Fall to Time"
+	],
+	"descriptions": [
+		"{COUNT} buildings collapsed due to poor maintenance.",
+		"Time and neglect claimed {COUNT} structures across the land.",
+		"{COUNT} buildings deteriorated beyond repair.",
+		"Structural decay led to the loss of {COUNT} buildings."
+	]
+}
+
+const STRATEGY_CHANGE := {
+	"headlines": [
+		"{CIV} Shifts Strategy",
+		"Policy Change for {CIV}",
+		"{CIV} Adopts New Approach",
+		"Strategic Pivot by {CIV}"
+	],
+	"descriptions": [
+		"{CIV} abandoned {OLD_STRATEGY} in favor of {NEW_STRATEGY}.",
+		"Surprising shift: {CIV} switches from {OLD_STRATEGY} to {NEW_STRATEGY}.",
+		"{CIV} leadership announces transition to {NEW_STRATEGY} policy.",
+		"Analysts stunned as {CIV} pivots from {OLD_STRATEGY} to {NEW_STRATEGY}."
+	]
+}
+
+const WAR_DECLARATION := {
+	"headlines": [
+		"{CIV_A} Declares War on {CIV_B}",
+		"Hostilities Begin",
+		"{CIV_A} Targets {CIV_B}",
+		"War Drums Sound"
+	],
+	"descriptions": [
+		"{CIV_A} officially declared war against {CIV_B}.",
+		"All-out conflict as {CIV_A} commits to destroying {CIV_B}.",
+		"{CIV_A} leadership vows to eliminate {CIV_B} threat.",
+		"Diplomatic relations collapse as {CIV_A} moves against {CIV_B}."
+	]
+}
+
+const SCIENCE_BREAKTHROUGH := {
+	"headlines": [
+		"Scientific Progress Reported",
+		"Research Yields Results",
+		"Knowledge Advances",
+		"Innovation Accelerates"
+	],
+	"descriptions": [
+		"{COUNT} major research breakthroughs were achieved.",
+		"Scientists celebrate {COUNT} significant discoveries.",
+		"{COUNT} technological advances shift the balance of power.",
+		"Laboratories produce {COUNT} groundbreaking innovations."
 	]
 }
 

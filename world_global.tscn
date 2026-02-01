@@ -18,7 +18,7 @@ vertices = PackedVector2Array(1783.0781, 1017.27344, -318.75, 1071.7188, -288.21
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-298, -257, -329, 1082, 1794, 1027, 1677, -278)])
 
-[node name="World_Global" type="Node2D" unique_id=1210981882 node_paths=PackedStringArray("ground")]
+[node name="World_Global" type="Node2D" unique_id=1210981882]
 script = ExtResource("1_47vl4")
 civScenes = Dictionary[int, PackedScene]({
 0: ExtResource("2_aiegr"),
@@ -27,12 +27,12 @@ civScenes = Dictionary[int, PackedScene]({
 3: ExtResource("5_r7nxj"),
 4: ExtResource("6_4fxlr")
 })
-ground = NodePath("")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=763097128]
 navigation_polygon = SubResource("NavigationPolygon_dposi")
 
 [node name="Ground" parent="NavigationRegion2D" unique_id=109766996 instance=ExtResource("13_qxxs8")]
+cornerBottomRight = Vector2i(30, 20)
 
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
 activeAbility = 6
