@@ -54,6 +54,7 @@ enum CivilizationPersonality {
 	Secular,
 	Normal,
 	Conservative,
+	WarAvoidant,
 }
 
 const personalityTransitionDict = {
@@ -66,7 +67,7 @@ const personalityTransitionDict = {
 			},
 			CivilizationGoal.War: {
 				CivilizationGoal.Chilling: 1.0,
-				CivilizationGoal.War: 0.3,
+				CivilizationGoal.War: 0.2,
 				CivilizationGoal.Defense: 2.4,
 				CivilizationGoal.Science: 1.2
 			},
@@ -124,15 +125,15 @@ const personalityTransitionDict = {
 			},
 			CivilizationGoal.Defense: {
 				CivilizationGoal.Chilling: 1.1,
-				CivilizationGoal.War: 0.3,
+				CivilizationGoal.War: 0.1,
 				CivilizationGoal.Defense: 2.5,
 				CivilizationGoal.Science: 0.6
 			},
 			CivilizationGoal.Science: {
-				CivilizationGoal.Chilling: 1.0,
+				CivilizationGoal.Chilling: 1.2,
 				CivilizationGoal.War: 0.2,
 				CivilizationGoal.Defense: 0.9,
-				CivilizationGoal.Science: 1.2
+				CivilizationGoal.Science: 1.5
 			}
 		},
 		CivilizationPersonality.Normal: {
@@ -186,6 +187,32 @@ const personalityTransitionDict = {
 				CivilizationGoal.Defense: 1.2,
 				CivilizationGoal.Science: 4.0
 			}
+		},
+		CivilizationPersonality.WarAvoidant: {
+			CivilizationGoal.Chilling: {
+				CivilizationGoal.Chilling: 1.6,
+				CivilizationGoal.War: 0.05,
+				CivilizationGoal.Defense: 1.2,
+				CivilizationGoal.Science: 1.0
+			},
+			CivilizationGoal.War: {
+				CivilizationGoal.Chilling: 1.8,
+				CivilizationGoal.War: 0.3,
+				CivilizationGoal.Defense: 1.6,
+				CivilizationGoal.Science: 1.2
+			},
+			CivilizationGoal.Defense: {
+				CivilizationGoal.Chilling: 1.3,
+				CivilizationGoal.War: 0.1,
+				CivilizationGoal.Defense: 1.7,
+				CivilizationGoal.Science: 0.9
+			},
+			CivilizationGoal.Science: {
+				CivilizationGoal.Chilling: 1.2,
+				CivilizationGoal.War: 0.05,
+				CivilizationGoal.Defense: 1.1,
+				CivilizationGoal.Science: 1.5
+			}
 		}
 	}
 
@@ -196,7 +223,7 @@ static func random_enum_except(e, excluded_value: int) -> int:
 			values.append(v)
 	return values.pick_random()
 
-static func performGoalTransition(civilization: Civilization):
+static func performGoalTransition(civilization: Civilization) -> int:
 	var personality = civilization.personality
 	var currentGoal = civilization.currentGoal
 	var transitionDict = personalityTransitionDict[personality][currentGoal]
@@ -214,13 +241,14 @@ static func performGoalTransition(civilization: Civilization):
 		
 	
 	const genocideChance = 0.2
+	var genocideTarget = -1
 	
 	if newGoal != currentGoal:
 		var tryingToGenocide = randf() < genocideChance
 		if newGoal == CivilizationGoal.War:
 			civilization.hostility = clamp(civilization.hostility * 1.1, 0, 1)
 			if tryingToGenocide:
-				var genocideTarget = random_enum_except(Civilization, civilization.faction)
+				genocideTarget = random_enum_except(Civilization, civilization.faction)
 				civilization.otherCivToHostilityValue[genocideTarget] = 1.0
 				for civ in civilization.otherCivToHostilityValue:
 					if civ == genocideTarget:
@@ -236,6 +264,7 @@ static func performGoalTransition(civilization: Civilization):
 	
 	civilization.currentGoal = newGoal
 	print("civ {} (personality {}) from goal {} to goal {}".format([Constants.Civilization.find_key(civilization.faction), Constants.CivilizationPersonality.find_key(civilization.personality), Constants.CivilizationGoal.find_key(currentGoal), Constants.CivilizationGoal.find_key(newGoal)], "{}"))
+	return genocideTarget
 
 static func mellow_distribution(
 	dict: Dictionary,       # Key -> float (assumed >= 0)

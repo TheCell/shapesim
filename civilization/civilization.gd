@@ -110,7 +110,7 @@ func chooseWarriorTargets():
 		for w in warriorGroups[i]:
 			var warrior: Unit = w as Unit
 			warrior.target = World.this.civilizations[civTarget].campfire.global_position # TODO: will become invalid when campfire gone.
-	
+		Eventbus.this.civ_sends_troops.emit(faction, civTarget, len(warriorGroups[i]))
 
 	for j in range(sentOutGroups, len(warriorGroups)):
 		# other warrior groups stay home, partrolling toward a random destination.
@@ -140,7 +140,15 @@ func formWarriorGroups(warriors: Array, groupSize: int, groups: Array) -> Array:
 
 
 func reevaluateCivilizationGoals():
-	Constants.performGoalTransition(self)
+	var current = currentGoal
+	var genocideTarget = Constants.performGoalTransition(self)
+	var next = currentGoal
+	
+	if current != next:
+		var isSurprising = next == Constants.CivilizationGoal.War && personality == Constants.CivilizationPersonality.WarAvoidant
+		Eventbus.this.civ_changes_strategy.emit(faction, current, next, isSurprising)
+	if genocideTarget != -1:
+		Eventbus.this.civ_goes_to_war.emit(faction, genocideTarget) # TODO: this could lead to double invocation in rare cases. Whatever.
 
 func sampleCivilizationGoal():
 	return Constants.CivilizationGoal.values().pick_random()
@@ -178,6 +186,7 @@ func place(buildingScene: PackedScene, optional_pos: Vector2 = samplePosForBuild
 		(building as WarriorHut).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
 		(building as WarriorHut).lastAvailableWarriorHealth = stats.totalWarriorHealth(level)
 	activeBuildings.append(building)
+	Eventbus.this.civ_total_buildings_equal.emit(faction, len(activeBuildings))
 	recalculateLevel()
 	World.this.add_child(building)
 
@@ -204,7 +213,12 @@ func recalculateLevel():
 			(building as WarriorHut).lastAvailableWarriorHealth = stats.totalWarriorHealth(level)
 		elif building is WatchTower:
 			(building as WatchTower).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
-	level = i
+	var newLevel = i
+	if newLevel > level:
+		Eventbus.this.civ_reached_level.emit(faction, newLevel)
+	elif newLevel < level:
+		Eventbus.this.civ_descended_level.emit(faction, newLevel)
+	level = newLevel
 
 func removeBuilding(b: Building):
 	activeBuildings.erase(b)

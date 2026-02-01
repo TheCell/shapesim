@@ -10,6 +10,7 @@ extends Resource
 @export var militaryActionFrequencyModifier: float = 1
 @export var buildingBreakpointsForLevel = [6, 16, 30, 1 << 62]
 
+var totalBuffCount = 0
 var lazyBaseStats: Dictionary[String, float] = {}
 
 var stats = [
@@ -21,6 +22,7 @@ var stats = [
 ]
 
 func buffRandomStat(factor: float, summand: float):
+	totalBuffCount += 1
 	var stat = stats.pick_random()
 	if !lazyBaseStats.has(stat):
 		lazyBaseStats[stat] = get(stat)

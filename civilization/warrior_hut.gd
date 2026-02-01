@@ -39,6 +39,7 @@ func spawnWarrior():
 	warrior.level = level
 	spawnedWarrior.emit(warrior)
 	World.this.factionToUnits[faction].append(warrior)
+	Eventbus.this.civ_total_troops_equal.emit(faction, len(World.this.factionToUnits[faction]))
 	World.this.add_child(warrior)
 	untilWarriorSpawn += warriorSpawnCooldown
 
