@@ -4,7 +4,8 @@
 [ext_resource type="Shader" uid="uid://r5f26ul0yfun" path="res://Sprites/Palettes/paletteSwap.gdshader" id="2_hs7ws"]
 [ext_resource type="Texture2D" uid="uid://bofgtygxeb675" path="res://defaultWarriorIcon.png" id="3_hs7ws"]
 [ext_resource type="Texture2D" uid="uid://ibjjj3mostj1" path="res://Sprites/Palettes/orsage.png" id="3_japly"]
-[ext_resource type="Texture2D" uid="uid://hv6fqj7y5tgv" path="res://Sprites/HealthBar/health_bar.png" id="5_s1ym6"]
+[ext_resource type="Texture2D" uid="uid://bns1rrasiison" path="res://Sprites/Health/HealthBar_Under.png" id="5_7oxhv"]
+[ext_resource type="Texture2D" uid="uid://bynjmy63s201e" path="res://Sprites/Health/HealthBar_Progress.png" id="6_2ul3e"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dvrw8"]
 
@@ -52,13 +53,26 @@ _data = {
 &"attack": SubResource("Animation_hs7ws")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7oxhv"]
-atlas = ExtResource("5_s1ym6")
-region = Rect2(16, 27, 30, 5)
+[sub_resource type="Shader" id="Shader_7oxhv"]
+code = "shader_type canvas_item;
+uniform sampler2D palette;
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s1ym6"]
-atlas = ExtResource("5_s1ym6")
-region = Rect2(16, 16, 30, 5)
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	vec4 bw = texture(TEXTURE, UV);
+	vec4 swappedCol = texture(palette, vec2(bw.r, 0));
+	
+	COLOR = swappedCol;
+	COLOR.a = bw.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7oxhv"]
+resource_local_to_scene = true
+shader = SubResource("Shader_7oxhv")
 
 [node name="Unit" type="CharacterBody2D" unique_id=1284902279 node_paths=PackedStringArray("attack_range", "sprite_2d", "anim", "nav", "dead_timer", "health_bar")]
 collision_mask = 7
@@ -99,12 +113,16 @@ wait_time = 5.0
 one_shot = true
 
 [node name="HealthBar" type="TextureProgressBar" parent="." unique_id=2027822701]
-offset_left = -15.0
+material = SubResource("ShaderMaterial_7oxhv")
+offset_left = -8.0
 offset_top = 17.0
-offset_right = 15.0
+offset_right = 8.0
 offset_bottom = 22.0
-texture_under = SubResource("AtlasTexture_7oxhv")
-texture_progress = SubResource("AtlasTexture_s1ym6")
+nine_patch_stretch = true
+stretch_margin_left = 2
+stretch_margin_right = 2
+texture_under = ExtResource("5_7oxhv")
+texture_progress = ExtResource("6_2ul3e")
 
 [connection signal="area_entered" from="AttackRange" to="." method="_on_attack_range_area_entered"]
 [connection signal="area_exited" from="AttackRange" to="." method="_on_attack_range_area_exited"]

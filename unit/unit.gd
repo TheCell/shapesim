@@ -33,6 +33,7 @@ var overlappingEnemyBuildings: Dictionary[Building, bool] = {} # Hashset
 func _ready() -> void:
 	max_health = health
 	health_bar.max_value = health
+	health_bar.material.set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[civilization]))
 	dead_timer.timeout.connect(_on_dead_timer_timeout)
 	_actor_setup.call_deferred()
 	nav.velocity_computed.connect(_velocity_computed)
