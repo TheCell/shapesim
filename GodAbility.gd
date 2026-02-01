@@ -56,7 +56,6 @@ func is_inside_ability(pos_global: Vector2) -> bool:
 func register_unit(node: Node) -> void:
 	var id := node.get_instance_id()
 	if registered_units.has(id):
-		print("somehow unit tried to re-register even though already present????")
 		return
 	
 	registered_units[node.get_instance_id()] = weakref(node)
@@ -69,6 +68,13 @@ func register_unit(node: Node) -> void:
 				modify_speed_warrior(warrior, 2)
 			Constants.AbilityType.Slowdown: 
 				modify_speed_warrior(warrior, 0.5)
+	elif node is WarriorHut:
+		var hut: WarriorHut = node
+		match activeAbility:
+			Constants.AbilityType.Speedup:
+				modify_warrior_hut_production(hut, 0.5)
+			Constants.AbilityType.Slowdown:
+				modify_warrior_hut_production(hut, 2)
 
 func deregister_unit(node: Node) -> void:
 	var id := node.get_instance_id()
@@ -82,6 +88,13 @@ func deregister_unit(node: Node) -> void:
 					modify_speed_warrior(warrior, 0.5)
 				Constants.AbilityType.Slowdown: 
 					modify_speed_warrior(warrior, 2)
+		elif node is WarriorHut:
+			var hut: WarriorHut = node
+			match activeAbility:
+				Constants.AbilityType.Speedup:
+					modify_warrior_hut_production(hut, 2)
+				Constants.AbilityType.Slowdown:
+					modify_warrior_hut_production(hut, 0.5)
 
 func get_units_alive() -> Array[Node2D]:
 	var result: Array[Node2D] = []
@@ -108,9 +121,6 @@ func Set_Position(target: Vector2) -> void:
 	global_position = target
 
 func apply_timed_ability():
-	print("timed ability %d" % activeAbility)
-	
-	
 	var units : Array[Node2D] = get_units_alive()
 	
 	if activeAbility == Constants.AbilityType.Meteorite:
@@ -119,11 +129,9 @@ func apply_timed_ability():
 			if unit is Unit:
 				var warrior : Unit = unit
 				hurt_warrior(warrior, damageAmount)
-				print("hurt warrior %s" + unit.name)
 			if unit is Building:
 				var building : Building = unit
 				hurt_building(building, damageAmount)
-				print("hurt building %s" + unit.name)
 	elif activeAbility == Constants.AbilityType.Heal:
 		var warrior_count := 0
 		var building_count := 0
@@ -132,12 +140,10 @@ func apply_timed_ability():
 				var warrior : Unit = unit
 				heal_warrior(warrior, healAmount)
 				warrior_count += 1
-				print("healed warrior %s" % unit.name)
 			if unit is Building:
 				var building : Building = unit
 				heal_building(building, healAmount)
 				building_count += 1
-				print("healed building %s" % unit.name)
 				
 		Eventbus.this.warriors_healed.emit(warrior_count)
 		Eventbus.this.buildings_healed.emit(building_count)
@@ -151,13 +157,11 @@ func apply_timed_ability():
 				var dir := warrior.global_position - global_position
 				_apply_push_pull(warrior, dir, pushForce)
 				warrior_count += 1
-				#print("pushed warrior %s" % unit.name)
 			elif unit is Building:
 				var building: Building = unit
 				var dir := building.global_position - global_position
 				_apply_push_pull_building(building, dir, pushForce)
 				building_count += 1
-				#print("pushed building %s" % unit.name)
 				
 		Eventbus.this.warriors_pushed.emit(warrior_count)
 		Eventbus.this.buildings_pushed.emit(building_count)
@@ -171,13 +175,11 @@ func apply_timed_ability():
 				var dir := global_position - warrior.global_position
 				_apply_push_pull(warrior, dir, pullForce)
 				warrior_count += 1
-				#print("pulled warrior %s" % unit.name)
 			elif unit is Building:
 				var building: Building = unit
 				var dir := global_position - building.global_position
 				_apply_push_pull_building(building, dir, pullForce)
 				building_count += 1
-				#print("pulled building %s" % unit.name)
 				
 		Eventbus.this.warriors_pulled.emit(warrior_count)
 		Eventbus.this.buildings_pulled.emit(building_count)
@@ -190,7 +192,6 @@ func apply_timed_ability():
 					var warrior : Unit = unit
 					WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
 					warrior_count += 1
-					print("duplicated enemy %s" % unit.name)
 				if unit is Building:
 					building_count += 1
 					print("HOW DO I SPAWN A BUILDING SO IT DOES ITS SHIIII")
@@ -203,11 +204,14 @@ func apply_timed_ability():
 func modify_speed_warrior(unit : Unit, mult : float):
 	unit.speed = unit.speed * mult
 
+func modify_warrior_hut_production(hut: WarriorHut, mult: float) -> void:
+	hut.warriorSpawnCooldown = hut.warriorSpawnCooldown * mult
+
 func hurt_warrior(unit: Unit, amount : float):
 	unit.hurt(self, amount)
 
 func heal_warrior(unit: Unit, amount : float):
-	unit.health += amount
+	unit.heal(amount)
 
 func apply_force_to_warrior(unit: Unit, force : Vector2):
 	unit.velocity = force
@@ -216,7 +220,7 @@ func hurt_building(building: Building, amount : float):
 	building.hurt(amount);
 
 func heal_building(building : Building, amount : float):
-	building.health += amount
+	building.heal(amount)
 
 func _apply_push_pull(warrior: Unit, dir: Vector2, force: float) -> void:
 	if not is_instance_valid(warrior):
