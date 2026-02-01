@@ -263,7 +263,7 @@ static func performGoalTransition(civilization: Civilization) -> int:
 			civilization.otherCivToHostilityValue = newDist
 	
 	civilization.currentGoal = newGoal
-	print("civ {} (personality {}) from goal {} to goal {}".format([Constants.Civilization.find_key(civilization.faction), Constants.CivilizationPersonality.find_key(civilization.personality), Constants.CivilizationGoal.find_key(currentGoal), Constants.CivilizationGoal.find_key(newGoal)], "{}"))
+	#print("civ {} (personality {}) from goal {} to goal {}".format([Constants.Civilization.find_key(civilization.faction), Constants.CivilizationPersonality.find_key(civilization.personality), Constants.CivilizationGoal.find_key(currentGoal), Constants.CivilizationGoal.find_key(newGoal)], "{}"))
 	return genocideTarget
 
 static func mellow_distribution(
