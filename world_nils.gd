@@ -14,6 +14,8 @@ static var this: World
 @export var ground: TileMapLayer
 
 @export var civRespawnTimer: float = 10
+@export var ground_size: Vector2i = Vector2i(30, 50)
+
 var untilCivRespawn: float = 0
 
 var civilizations: Dictionary[Constants.Civilization, Civilization] = {}
@@ -29,6 +31,7 @@ var factionToUnits: Dictionary[Constants.Civilization, Array] = {
 func _ready() -> void:
 	this = self
 	untilCivRespawn = civRespawnTimer
+	GroundController.this.set_ground(ground_size)
 	init_civilizations()
 
 func init_civilizations():
@@ -37,6 +40,7 @@ func init_civilizations():
 		
 func spawnCivilization(faction: Constants.Civilization):
 	var civ = civScenes[faction].instantiate() as Civilization
+	#print_debug(get_viewport_rect().size, get_viewport_rect().grow(-100).size)
 	civ.position = Vector2(randf() * get_viewport_rect().grow(-100).size.x, randf() * get_viewport_rect().grow(-50).size.y)
 	civ.faction = faction
 	add_child(civ)

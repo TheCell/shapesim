@@ -36,7 +36,6 @@ tile_map_data = PackedByteArray("AAD1//T/AAAEAAAAAAD1//X/AAAEAAAAAAD1//b/AAAEAAA
 tile_set = SubResource("TileSet_jkidh")
 script = ExtResource("2_6008l")
 tileCoords = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0)])
-cornerBottomRight = Vector2i(300, 300)
 
 [node name="RecoverVoidTiles" type="Timer" parent="." unique_id=1493104794]
 wait_time = 60.0

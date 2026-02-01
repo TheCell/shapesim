@@ -4,9 +4,9 @@ extends TileMapLayer
 static var this : GroundController
 
 @export var tileCoords : Array[Vector2i]
-@export var cornerBottomRight : Vector2i
 @onready var navigationRegion : NavigationRegion2D = $".."
 
+var cornerBottomRight : Vector2i
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 var depleted_cells: Dictionary = {}        # Vector2i -> true (hashset)
@@ -17,8 +17,11 @@ func _enter_tree():
 
 func _ready():
 	rng.randomize()
-	
+	#clear()
+
+func set_ground(ground_size: Vector2i) -> void:
 	clear()
+	cornerBottomRight = ground_size
 	
 	for x in range(0, cornerBottomRight.x):
 		for y in range(0, cornerBottomRight.y):
