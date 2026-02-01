@@ -39,8 +39,9 @@ func _process(delta: float) -> void:
 	#new_headline();
 	#new_styled_headline();
 	#var triggered_news = news_queue.front()
-	
-	if not news_queue.is_empty():
+	var random_change_for_generic_news := randf();
+	print_debug(random_change_for_generic_news)
+	if not news_queue.is_empty() && random_change_for_generic_news < 0.9:
 		var queued_news: Dictionary = news_queue.pop_front()
 		handle_queued_news(queued_news)
 	else:
@@ -202,16 +203,17 @@ func clean_oldest_headline() -> void:
 func get_next_news_timestamp() -> float:
 	var next_time := 2.0
 	
-	if news_queue.size() > 6:
-		next_time = 0.2
-	elif news_queue.size() > 4:
-		next_time = 0.5
-	elif news_queue.size() > 3:
-		next_time = 1.0
-	elif news_queue.size() > 2:
-		next_time = 2.0
-	elif news_queue.size() <= 2:
-		next_time = 2.0 + randf() * 2.0
+	#if news_queue.size() > 6:
+		#next_time = 0.2
+	#elif news_queue.size() > 4:
+		#next_time = 0.5
+	#elif news_queue.size() > 3:
+		#next_time = 1.0
+	#elif news_queue.size() > 2:
+		#next_time = 2.0
+	#elif news_queue.size() <= 2:
+		#next_time = 2.0 + randf() * 2.0
+	next_time = 2.0 + randf() * 4.0
 	return next_time
 
 

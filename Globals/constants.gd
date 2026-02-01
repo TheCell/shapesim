@@ -17,11 +17,11 @@ const CIV_NAMES := {
 }
 
 const CIV_COLORS := {
-	Civilization.Red:    Color("#ff5555"),
-	Civilization.Blue:   Color("#5599ff"),
-	Civilization.Green:  Color("#55ff99"),
-	Civilization.Yellow: Color("#ffff55"),
-	Civilization.Purple: Color("#ff66ff"),
+	Civilization.Red:    Color("db7baeff"),
+	Civilization.Blue:   Color("82c8caff"),
+	Civilization.Green:  Color("82a16dff"),
+	Civilization.Yellow: Color("bf531dff"),
+	Civilization.Purple: Color("c17fdbff"),
 }
 
 const EVENT_COLORS := {
@@ -263,7 +263,7 @@ static func performGoalTransition(civilization: Civilization) -> int:
 			civilization.otherCivToHostilityValue = newDist
 	
 	civilization.currentGoal = newGoal
-	print("civ {} (personality {}) from goal {} to goal {}".format([Constants.Civilization.find_key(civilization.faction), Constants.CivilizationPersonality.find_key(civilization.personality), Constants.CivilizationGoal.find_key(currentGoal), Constants.CivilizationGoal.find_key(newGoal)], "{}"))
+	#print("civ {} (personality {}) from goal {} to goal {}".format([Constants.Civilization.find_key(civilization.faction), Constants.CivilizationPersonality.find_key(civilization.personality), Constants.CivilizationGoal.find_key(currentGoal), Constants.CivilizationGoal.find_key(newGoal)], "{}"))
 	return genocideTarget
 
 static func mellow_distribution(
@@ -324,9 +324,9 @@ const spriteFolder = "res://Sprites/"
 
 static func getWarriorTexture(civStyle: CivilizationStyle, level: int) -> Texture2D:
 	var path = spriteFolder.path_join(CivilizationStyle.find_key(civStyle)).path_join("Warriors").path_join("%s.tres" % [level])
-	if !FileAccess.file_exists(path):
+	if !ResourceLoader.exists(path):
 		return load("res://defaultWarriorIcon.png")
-	return load(path)
+	return ResourceLoader.load(path)
 
 static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: BuildingType, level: int) -> Texture2D:
 	var path = spriteFolder.path_join(
@@ -334,9 +334,9 @@ static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: Buildi
 		).path_join(
 			BuildingType.find_key(buildingType)
 		).path_join("%s.tres" % [level])
-	if !FileAccess.file_exists(path):
+	if !ResourceLoader.exists(path):
 		return load("res://icon.png")
-	return load(path)
+	return ResourceLoader.load(path)
 
 # News types and texts
 enum NewsType {
