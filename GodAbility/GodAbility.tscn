@@ -10,12 +10,27 @@
 [ext_resource type="Resource" uid="uid://dhb177j7yrpbu" path="res://GodAbility/AbilityConfig/ability_Slowdown.tres" id="5_nppyf"]
 [ext_resource type="Resource" uid="uid://c5cilyukfa20f" path="res://GodAbility/AbilityConfig/ability_Push.tres" id="6_np2x5"]
 [ext_resource type="Resource" uid="uid://c4ifr8t1k6gd1" path="res://GodAbility/AbilityConfig/ability_Meteorite.tres" id="9_pau5o"]
+[ext_resource type="Shader" uid="uid://b4bj44app0onc" path="res://GodAbility/godAbilitySDF.gdshader" id="10_np2x5"]
 [ext_resource type="Texture2D" uid="uid://bofgtygxeb675" path="res://defaultWarriorIcon.png" id="11_8m2rb"]
 
-[node name="GodAbility" type="Node2D" unique_id=61948950 node_paths=PackedStringArray("abilityTimer", "particleSystem")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8m2rb"]
+shader = ExtResource("10_np2x5")
+shader_parameter/sdf_position = Vector2(0.5, 0.5)
+shader_parameter/sdf_size = 0.3
+shader_parameter/sdf_color = Color(1, 1, 1, 0.49019608)
+shader_parameter/edge_smoothness = 0.0
+shader_parameter/sdf_type = 1
+shader_parameter/shape_param = 0.2
+shader_parameter/capsule_point_a = Vector2(-0.2, 0)
+shader_parameter/capsule_point_b = Vector2(0.2, 0)
+shader_parameter/effect_type = 1
+shader_parameter/effect_intensity = 1.0
+shader_parameter/effect_amount = 0.01
+
+[node name="GodAbility" type="Node2D" unique_id=61948950 node_paths=PackedStringArray("abilityTimer", "particleSystem", "sprite")]
 script = ExtResource("1_bscov")
 ability_config_entries = Array[ExtResource("2_gxcpm")]([ExtResource("4_4uetr"), ExtResource("4_cu7ui"), ExtResource("5_8m2rb"), ExtResource("6_np2x5"), ExtResource("5_nppyf"), ExtResource("3_kh2yg"), ExtResource("9_pau5o")])
-radius = 50.0
+radius = 8.0
 abilityCooldown = 1.0
 abilityTimer = NodePath("Timer")
 particleSystem = NodePath("CPUParticles2D")
@@ -23,9 +38,14 @@ healAmount = 50.0
 damageAmount = 100.0
 pushForce = 200.0
 pullForce = 200.0
+sprite = NodePath("Sprite2D")
+spriteWorldSize = 256.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1876900305]
 modulate = Color(1, 1, 1, 0.15294118)
+z_index = 100
+material = SubResource("ShaderMaterial_8m2rb")
+scale = Vector2(2, 2)
 texture = ExtResource("2_37ipy")
 
 [node name="Timer" type="Timer" parent="." unique_id=1507320937]
