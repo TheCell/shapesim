@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cj28gscsj2o3c" path="res://civilization/civilization_science.tscn" id="6_4fxlr"]
 [ext_resource type="PackedScene" uid="uid://bydew3rmvw0x4" path="res://score/score.tscn" id="10_r7nxj"]
 [ext_resource type="PackedScene" uid="uid://tmcmfoyknani" path="res://Camera/controllable_camera.tscn" id="11_763jv"]
+[ext_resource type="PackedScene" uid="uid://dj1ejgr1ubgdy" path="res://GodAbility/ability_selection.tscn" id="12_b30oh"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_dposi"]
 vertices = PackedVector2Array(1783.0781, 1017.27344, -318.75, 1071.7188, -288.21875, -247.10156, 1667.8594, -267.89844)
@@ -1120,7 +1121,7 @@ tile_map_data = PackedByteArray("AAD1//T/AAAEAAAAAAD1//X/AAAEAAAAAAD1//b/AAAEAAA
 tile_set = SubResource("TileSet_tv236")
 
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
-activeAbility = 4
+activeAbility = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1614583572]
 
@@ -1137,3 +1138,5 @@ grow_horizontal = 1
 size_flags_vertical = 0
 
 [node name="ControllableCamera" parent="." unique_id=2098577878 instance=ExtResource("11_763jv")]
+
+[node name="AbilitySelection" parent="." unique_id=409495653 instance=ExtResource("12_b30oh")]

@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://dj1ejgr1ubgdy"]
+
+[ext_resource type="Script" uid="uid://dajtp62no6luy" path="res://ability_selection.gd" id="1_ne15s"]
+[ext_resource type="Script" uid="uid://b85ime5yeraeo" path="res://radial_menu_button.gd" id="2_aihg6"]
+[ext_resource type="PackedScene" uid="uid://bf2klc1wiho3x" path="res://GodAbility/buttonScene.tscn" id="3_qtjai"]
+
+[node name="AbilitySelection" type="Node2D" unique_id=409495653]
+script = ExtResource("1_ne15s")
+
+[node name="RadialMenuButton" type="Control" parent="." unique_id=629095165]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_aihg6")
+
+[node name="ButtonContainer" type="Control" parent="RadialMenuButton" unique_id=869070536]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityButton" parent="RadialMenuButton/ButtonContainer" unique_id=1742052604 instance=ExtResource("3_qtjai")]
+layout_mode = 0
+text = "ABILITY"
+
+[node name="ShapeButton" parent="RadialMenuButton/ButtonContainer" unique_id=722785526 instance=ExtResource("3_qtjai")]
+layout_mode = 0
+text = "SHAPE"
+
+[node name="AbilityButttonContainer" type="Control" parent="RadialMenuButton" unique_id=162669749]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ShapeButtonContainer" type="Control" parent="RadialMenuButton" unique_id=59772906]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

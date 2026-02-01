@@ -23,9 +23,9 @@ func _input(event: InputEvent) -> void:
 	# Wheel zoom
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			_set_zoom_scalar(zoom.x - zoom_step) # zoom in
+			_set_zoom_scalar(zoom.x + zoom_step) # zoom in
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			_set_zoom_scalar(zoom.x + zoom_step) # zoom out
+			_set_zoom_scalar(zoom.x - zoom_step) # zoom out
 	# Drag motion (use screen delta -> world delta)
 	if event is InputEventMouseMotion and _dragging:
 		var world_delta : Vector2 = event.relative * zoom * drag_sensitivity
@@ -46,7 +46,7 @@ func _clamp_to_ground_bounds() -> void:
 	# IMPORTANT:
 	# Make sure GroundController REALLY has cornerBottomRight.
 	# If not, change this to boundsTopRight (or whatever your variable is).
-	var bottom_right := Vector2(GroundController.this.cornerBottomRight)
+	var bottom_right := Vector2(GroundController.this.cornerBottomRight) * 32
 	
 	# Half of visible size in world units (accounts for zoom)
 	var half_size := get_viewport_rect().size * 0.5 * zoom

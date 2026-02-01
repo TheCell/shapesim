@@ -4,6 +4,7 @@ extends Area2D
 const REPELLANT_FORCE_MAX = 1000
 const DIST_SQR_FOR_MAX_REPELLANT_FORCE = 25
 const OVERLAP_VELOCITY_DECAY = 0.10
+const MAX_HEALTH: float = 100.0
 
 @export var deteriorationCountdown: float = INF
 @export var health: float = 100.0
@@ -73,6 +74,10 @@ func hurt(damage: float):
 	health -= damage
 	if health <= 0:
 		queue_free()
+
+func heal(amount: float) -> void:
+	if health + amount < MAX_HEALTH:
+		health += amount
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Building:

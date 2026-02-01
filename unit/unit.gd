@@ -41,11 +41,10 @@ func initSprite():
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[civilization]))
 
 func _process(_delta: float) -> void:
-	if len(overlappingEnemyUnits) > 0 and not is_fighting:
+	if len(overlappingEnemyUnits) > 0 and not is_fighting and not is_dead:
 		attack_unit()
-	elif len(overlappingEnemyBuildings) and not is_fighting:
+	elif len(overlappingEnemyBuildings) and not is_fighting and not is_dead:
 		attack_building()
-	
 	
 	if !isRegisteredOnAbility && godAbility.is_inside_ability(global_position):
 		godAbility.register_unit(self)
@@ -90,7 +89,7 @@ func move_to_target() -> void:
 func attack_unit() -> void:
 	is_fighting = true
 	var enemies_in_range := get_enemies_in_range()
-	if last_attacked_enemy == null:
+	if last_attacked_enemy == null and enemies_in_range.size() > 0:
 		last_attacked_enemy = enemies_in_range.pick_random()
 	await get_tree().create_timer(battle_timout).timeout
 	anim.play("attack")
@@ -114,7 +113,7 @@ func attack_building() -> void:
 func get_enemies_in_range() -> Array[Unit]:
 	return overlappingEnemyUnits.keys().filter(
 		func(unit: Unit) -> bool:
-			return self.civilization != unit.civilization
+			return self.civilization != unit.civilization and not unit.is_dead
 	)
 
 func get_buildings_in_range() -> Array[Building]:
@@ -132,28 +131,23 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 			Eventbus.this.died.emit(self)
 			disable()
 			dead_timer.start()
-			#print("UNIT IS DEAD")
-		#else:
-			# todo for god intervention
-			#Eventbus.this.unit_died.emit()
 
 func heal(amount: float) -> void:
 	if is_dead:
+		dead_timer.stop()
+		dead_timer.wait_time = 5.0
 		is_dead = false
 		enable()
+		print("REVIVED: ", self.name)
 	if health + amount < MAX_HEALTH:
 		health += amount
 
 func disable() -> void:
 	is_dead = true
-	set_process(false)
-	set_collision_layer_value(1, false)
 	visible = false
 
 func enable() -> void:
 	is_dead = false
-	set_process(true)
-	set_collision_layer_value(1, true)
 	visible = true
 
 func _notification(what: int) -> void:

@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://diyq6lipujxfy" path="res://unit/temp_level.gd" id="1_oafa1"]
 [ext_resource type="PackedScene" uid="uid://chkb8yps44ino" path="res://unit/unit.tscn" id="3_4s5q2"]
 [ext_resource type="Texture2D" uid="uid://8m01rykobaa6" path="res://placeholder_sprites/colored_packed.png" id="3_t2fw4"]
+[ext_resource type="PackedScene" uid="uid://dufmi8wujmuys" path="res://GodAbility/GodAbility.tscn" id="4_4s5q2"]
+[ext_resource type="PackedScene" uid="uid://neyblr11vstt" path="res://civilization/warrior_hut.tscn" id="5_odp5w"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_4s5q2"]
 vertices = PackedVector2Array(1666.4766, -313.9922, 1531.3828, 1086.8984, 271, 223, 271, 65, -277.75, 1074.1094, 175, 303, -194.46875, -313, 225, 65, -178.9375, -153.11719, 129, 177, 129, 257, 127, 257, 127, 177, 63, 177, 63, 175, 127, 175, 129, 175, 127, 127, 129, 127, 225, 177, 223, 175, 223, 65, 177, 65, 177, 129, 175, 129, 175, 81, 81, 81, 81, 129, 17, 129, 17, 223, 81, 223, 81, 303, 175, 223)
@@ -1146,6 +1148,14 @@ script = SubResource("GDScript_t2fw4")
 [node name="Unit" parent="." unique_id=1284902279 instance=ExtResource("3_4s5q2")]
 position = Vector2(69, 178)
 
+[node name="Unit2" parent="." unique_id=926241198 instance=ExtResource("3_4s5q2")]
+position = Vector2(217, 173)
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=347428155]
 position = Vector2(138, 211)
 zoom = Vector2(2, 2)
+
+[node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_4s5q2")]
+
+[node name="Building" parent="." unique_id=2008346303 instance=ExtResource("5_odp5w")]
+position = Vector2(426, 202)

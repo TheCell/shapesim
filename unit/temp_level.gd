@@ -8,6 +8,7 @@ func _ready() -> void:
 	button_a.pressed.connect(_on_button_a_pressed)
 	button_b.pressed.connect(_on_button_b_pressed)
 	$Unit.target = Vector2(1300, 300)
+	$Unit.civilization = Constants.Civilization.Purple
 
 func spawn_unit(pos: Vector2, target: Vector2, civilization: Constants.Civilization) -> void:
 	var scene: PackedScene = load("res://unit/unit.tscn")
