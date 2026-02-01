@@ -31,6 +31,7 @@ var overlappingEnemyUnits: Dictionary[Unit, bool] = {} # Hashset
 var overlappingEnemyBuildings: Dictionary[Building, bool] = {} # Hashset
 
 func _ready() -> void:
+	health_bar.value = MAX_HEALTH
 	dead_timer.timeout.connect(_on_dead_timer_timeout)
 	_actor_setup.call_deferred()
 	nav.velocity_computed.connect(_velocity_computed)
@@ -41,7 +42,7 @@ func initSprite():
 	sprite_2d.texture = Constants.getWarriorTexture(civilizationStyle, level)
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[civilization]))
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	health_bar.value = health
 	if len(overlappingEnemyUnits) > 0 and not is_fighting and not is_dead:
 		attack_unit()

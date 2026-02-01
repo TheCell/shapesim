@@ -127,13 +127,20 @@ func register_unit(node: Node) -> void:
 				modify_speed_warrior(warrior, 2)
 			Constants.AbilityType.Slowdown: 
 				modify_speed_warrior(warrior, 0.5)
-	elif node is WarriorHut:
-		var hut: WarriorHut = node
+	elif node is Building:
+		var building: Building = node
 		match activeAbility:
 			Constants.AbilityType.Speedup:
-				modify_warrior_hut_production(hut, 0.5)
+				modify_detirioration_building(building, 2)
 			Constants.AbilityType.Slowdown:
-				modify_warrior_hut_production(hut, 2)
+				modify_detirioration_building(building, 0.5)
+		if node is WarriorHut:
+			var hut: WarriorHut = node
+			match activeAbility:
+				Constants.AbilityType.Speedup:
+					modify_warrior_hut_production(hut, 0.5)
+				Constants.AbilityType.Slowdown:
+					modify_warrior_hut_production(hut, 2)
 
 func deregister_unit(node: Node) -> void:
 	var id := node.get_instance_id()
@@ -147,13 +154,20 @@ func deregister_unit(node: Node) -> void:
 					modify_speed_warrior(warrior, 0.5)
 				Constants.AbilityType.Slowdown: 
 					modify_speed_warrior(warrior, 2)
-		elif node is WarriorHut:
-			var hut: WarriorHut = node
+		elif node is Building:
+			var building: Building = node
 			match activeAbility:
 				Constants.AbilityType.Speedup:
-					modify_warrior_hut_production(hut, 2)
+					modify_detirioration_building(building, 0.5)
 				Constants.AbilityType.Slowdown:
-					modify_warrior_hut_production(hut, 0.5)
+					modify_detirioration_building(building, 2)
+			if node is WarriorHut:
+				var hut: WarriorHut = node
+				match activeAbility:
+					Constants.AbilityType.Speedup:
+						modify_warrior_hut_production(hut, 2)
+					Constants.AbilityType.Slowdown:
+						modify_warrior_hut_production(hut, 0.5)
 
 func get_units_alive() -> Array[Node2D]:
 	var result: Array[Node2D] = []
@@ -332,6 +346,9 @@ func modify_speed_warrior(unit : Unit, mult : float):
 
 func modify_warrior_hut_production(hut: WarriorHut, mult: float) -> void:
 	hut.warriorSpawnCooldown = hut.warriorSpawnCooldown * mult
+
+func modify_detirioration_building(building: Building, mult: float) -> void:
+	building.multiplier = mult
 
 func hurt_warrior(unit: Unit, amount : float):
 	unit.hurt(self, amount)
