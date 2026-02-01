@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bydew3rmvw0x4"]
+
+[ext_resource type="Script" uid="uid://cnvg8xg3apjck" path="res://score/score.gd" id="1_q4twa"]
+
+[node name="Score" type="Control" unique_id=293657292]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+script = ExtResource("1_q4twa")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1869385387]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -252.0
+offset_bottom = 23.0
+grow_horizontal = 0
+alignment = 2
+
+[node name="PlanetPoints" type="RichTextLabel" parent="HBoxContainer" unique_id=659851740]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Planet Points:"
+fit_content = true
+
+[node name="Score" type="RichTextLabel" parent="HBoxContainer" unique_id=1082755099]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0000"
+fit_content = true
+horizontal_alignment = 2

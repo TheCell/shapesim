@@ -65,7 +65,8 @@ func add_to_queue(dictionary: Dictionary) -> void:
 func handle_queued_news(news: Dictionary) -> void:
 	match news.type:
 		Constants.NewsType.War:
-			spawn_news(Constants.UNIT_DIED, news)
+			var news_desc := spawn_news(Constants.UNIT_DIED, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
 
 		Constants.NewsType.CivLevel:
 			var ctx := {
@@ -73,22 +74,28 @@ func handle_queued_news(news: Dictionary) -> void:
 				"level": news.level,
 				"god": news.god
 			}
-			spawn_news(Constants.CIV_LEVEL, ctx)
+			var news_desc := spawn_news(Constants.CIV_LEVEL, ctx)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
 
 		Constants.NewsType.Push:
-			spawn_news(Constants.GOD_PUSH, news)
+			var news_desc := spawn_news(Constants.GOD_PUSH, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, true)
 
 		Constants.NewsType.Pull:
-			spawn_news(Constants.GOD_PULL, news)
+			var news_desc := spawn_news(Constants.GOD_PULL, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, true)
 
 		Constants.NewsType.Duplicate:
-			spawn_news(Constants.GOD_DUPLICATE, news)
+			var news_desc := spawn_news(Constants.GOD_DUPLICATE, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, true)
 
 		Constants.NewsType.Heal:
-			spawn_news(Constants.GOD_HEAL, news)
+			var news_desc := spawn_news(Constants.GOD_HEAL, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, true)
 
 		_:
-			new_generic_news()
+			var news_desc := new_generic_news()
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
 
 func create_war_news() -> void:
 	pass
@@ -107,7 +114,7 @@ func create_war_news() -> void:
 	#else:
 		#spawn_news(Constants.CIV_LEVEL, ctx);
 
-func new_generic_news() -> void:
+func new_generic_news() -> String:
 	var headline_index := get_weighted_random_index(Constants.GENERIC_NEWS.headlines.size(), generic_headline_usage)
 	var description_index := get_weighted_random_index(Constants.GENERIC_NEWS.descriptions.size(), generic_description_usage)
 	
@@ -118,7 +125,7 @@ func new_generic_news() -> void:
 		"headline_override": Constants.GENERIC_NEWS.headlines[headline_index],
 		"description_override": Constants.GENERIC_NEWS.descriptions[description_index]
 	}
-	spawn_news(Constants.GENERIC_NEWS, ctx)
+	return spawn_news(Constants.GENERIC_NEWS, ctx)
 
 func get_weighted_random_index(max_size: int, usage_dict: Dictionary) -> int:
 	# Collect all unused indices (not in dict or count == 0)
@@ -135,7 +142,7 @@ func get_weighted_random_index(max_size: int, usage_dict: Dictionary) -> int:
 	usage_dict.clear()
 	return randi() % max_size
 
-func spawn_news(template_set: Dictionary, ctx: Dictionary) -> void:
+func spawn_news(template_set: Dictionary, ctx: Dictionary) -> String:
 	var headline: String
 	var description: String
 	
@@ -153,6 +160,7 @@ func spawn_news(template_set: Dictionary, ctx: Dictionary) -> void:
 
 	news_feed.add_child(instance)
 	news_feed.move_child(instance, 0)
+	return description
 	
 func clean_oldest_headline() -> void:
 	if news_feed.get_child_count() > max_news_count:
