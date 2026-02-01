@@ -44,6 +44,8 @@ signal civ_total_buildings_equal(civ: Constants.Civilization, amountOfBuildings:
 # will be emitted quite frequently (each science building does this every few seconds -> multiple times per second total)
 signal civ_science_upgrade(civ: Constants.Civilization, totalStatLevels: int, stats: CivilizationStat)
 
+signal civ_rebirthed(civ: Constants.Civilization, style: Constants.CivilizationStyle, personality: Constants.CivilizationPersonality)
+
 signal warriors_pushed(count: int)
 signal buildings_pushed(count: int)
 signal warriors_pulled(count: int)

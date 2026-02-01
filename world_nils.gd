@@ -39,7 +39,7 @@ func init_civilizations():
 	for faction in Constants.Civilization.values():
 		spawnCivilization(faction)
 		
-func spawnCivilization(faction: Constants.Civilization):
+func spawnCivilization(faction: Constants.Civilization) -> Civilization:
 	var civ = civScenes[faction].instantiate() as Civilization
 	var max_width := ground_size.x * tile_size * 0.8
 	var max_height := ground_size.y * tile_size * 0.8
@@ -47,7 +47,7 @@ func spawnCivilization(faction: Constants.Civilization):
 	var origin_offset := Vector2(ground_size.x * tile_size / 2.0, ground_size.y * tile_size / 2.0)
 	civ.position = Vector2((randf() - 0.5) * max_width + origin_offset.x, (randf() - 0.5) * max_height + origin_offset.y)
 	civ.faction = faction
-	
+	civ.personality = Constants.CivilizationPersonality.values().pick_random()
 	
 	var availableStyles = Constants.CivilizationStyle.values()
 	for alive in civilizations.keys():
@@ -59,6 +59,7 @@ func spawnCivilization(faction: Constants.Civilization):
 	
 	add_child(civ)
 	civilizations[faction] = civ
+	return civ
 
 func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighting: Dictionary) -> Constants.Civilization:
 	var totalWeights = 0
@@ -103,7 +104,8 @@ func respawnNonPresentCiv():
 		dedCivs.erase(alive)
 	
 	var toSpawn = dedCivs.pick_random()
-	spawnCivilization(toSpawn)
+	var newCiv = spawnCivilization(toSpawn)
+	Eventbus.this.civ_rebirthed.emit(newCiv.faction, newCiv.style, newCiv.personality)
 	print("Respawned civ " + Constants.Civilization.find_key(toSpawn))
 
 func spawn():
