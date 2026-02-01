@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://tmcmfoyknani"]
+
+[ext_resource type="Script" uid="uid://cfr103qq5bpif" path="res://ControllableCamera.gd" id="1_aw303"]
+
+[node name="ControllableCamera" type="Camera2D" unique_id=2098577878]
+script = ExtResource("1_aw303")

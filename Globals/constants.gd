@@ -28,7 +28,18 @@ const EVENT_COLORS := {
 	"death":   Color("#ff4444"),
 	"science": Color("#66ccff"),
 	"event":   Color("#ffff55"),
+	"heal":    Color("#55ff55"),
+	"push_pull": Color("#5599ff"),
 }
+
+const paletteFilePaths = [
+	"res://Sprites/Palettes/aqua.png",
+	"res://Sprites/Palettes/flamingo.png",
+	"res://Sprites/Palettes/orsage.png",
+	"res://Sprites/Palettes/moss.png",
+	"res://Sprites/Palettes/lightpurple.png",
+]
+
 
 enum CivilizationGoal {
 	Chilling,
@@ -63,7 +74,10 @@ enum AbilityType{
 	Speedup,
 	Slowdown,
 	Heal,
-	Meteorite
+	Meteorite,
+	Push,
+	Pull,
+	Duplicate
 }
 
 const spriteFolder = "res://Sprites/"
@@ -84,8 +98,39 @@ static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: Buildi
 		return load("res://icon.png")
 	return load(path)
 
-# News texts
+# News types and texts
+enum NewsType {
+	War,
+	CivFight,
+	CivLevel,
+	Push,
+	Pull,
+	Duplicate,
+	Heal
+}
+
 const UNIT_DIED := {
+	"headlines": [
+		"War is war",
+		"Nothing new in the west",
+		"Casualties Mount in Latest Engagement",
+		"Another Day, Another Battle",
+		"Warriors Fail to Return Home",
+		"Recruitment Offices Report Increased Demand",
+		"Battlefield Cleanup Crews Overwhelmed"
+	],
+	"descriptions": [
+		"{COUNT} warriors {DEATH} for a better future.",
+		"{COUNT} warriors {DEATH} in a battle.",
+		"{COUNT} fighters {DEATH} before achieving their objectives.",
+		"Military analysts confirm {COUNT} casualties from recent skirmishes.",
+		"Families mourn as {COUNT} warriors {DEATH} in the endless conflict.",
+		"The steppe claims {COUNT} more souls in today's fighting.",
+		"{COUNT} warriors won't be coming home—ever."
+	]
+}
+
+const UNIT_DIED_IN_CLASH := {
 	"headlines": [
 		"Blood on the Steppe",
 		"Skirmish Turns Deadly",
@@ -102,5 +147,198 @@ const CIV_LEVEL := {
 	],
 	"descriptions": [
         "{CIV} reached level {LEVEL}, worrying nearby civilizations."
+	]
+}
+
+const GOD_PUSH := {
+	"headlines": [
+		"Divine Force Scatters the Battlefield",
+		"God's Hand Pushes Back the Masses",
+		"Invisible Shove Disrupts Combat",
+		"'Did You Feel That?' Ask Confused Warriors",
+		"Units Experience Sudden Relocation",
+		"Physics Optional, Apparently",
+		"God Plays Billiards with Mortals"
+	],
+	"descriptions": [
+		"{COUNT} units and structures were {DISPLACED} by an invisible force.",
+		"Witnesses report {COUNT} entities suddenly {DISPLACED} across the map by divine intervention.",
+		"{COUNT} warriors and buildings experienced involuntary relocation.",
+		"A mysterious force {DISPLACED} {COUNT} entities in what can only be described as 'divine pest control.'",
+		"Strategic positions mean nothing when {COUNT} units get {DISPLACED} by godly whim.",
+		"{COUNT} entities learned that free will has its limits.",
+		"Personal space violated for {COUNT} units as an invisible hand {DISPLACED} them elsewhere."
+	]
+}
+
+const GOD_PULL := {
+	"headlines": [
+		"Mysterious Attraction Draws Units Together",
+		"God's Grasp Pulls Forces Inward",
+		"Unexpected Group Hug Disrupts Warfare",
+		"Gravity? No, Something Worse",
+		"Divine Vacuum Claims {COUNT} Victims",
+		"Entities Experience Involuntary Convergence",
+		"'Why Are We All Here?' Wonder Confused Units"
+	],
+	"descriptions": [
+		"{COUNT} units and buildings were {PULLED} toward a central point against their will.",
+		"An inexplicable force {PULLED} {COUNT} entities together in an instant.",
+		"{COUNT} warriors and structures found themselves suddenly very close to each other.",
+		"Personal boundaries mean nothing as {COUNT} entities were {PULLED} into an unwanted gathering.",
+		"Strategic dispersion failed when {COUNT} units were {PULLED} together like magnets.",
+		"Social distancing impossible after {COUNT} entities were {PULLED} to the same spot.",
+		"{COUNT} units experienced what scholars call 'divine clustering.'"
+	]
+}
+
+const GOD_DUPLICATE := {
+	"headlines": [
+		"Reality Fractures—Duplicates Appear",
+		"Miracle or Madness? Entities Doubled",
+		"'I'm Seeing Double' Reports Entire Army",
+		"Cloning Technology Obsolete After Divine Act",
+		"Identity Crisis Sweeps Battlefield",
+		"Philosophers Question Nature of Self",
+		"Two for the Price of One (No Refunds)"
+	],
+	"descriptions": [
+		"{COUNT} warriors and buildings were {DUPLICATED} in an unprecedented divine act.",
+		"Observers question reality itself as {COUNT} entities spontaneously {DUPLICATED}.",
+		"An impossible miracle {DUPLICATED} {COUNT} units, doubling their numbers instantly.",
+		"{COUNT} entities met their exact copies and immediately felt awkward about it.",
+		"Census takers baffled as {COUNT} units were suddenly {DUPLICATED}.",
+		"The concept of 'unique individual' becomes meaningless for {COUNT} {DUPLICATED} entities.",
+		"{COUNT} warriors now have trust issues after being {DUPLICATED} without consent."
+	]
+}
+
+const GOD_HEAL := {
+	"headlines": [
+		"Divine Light Restores the Wounded",
+		"Miraculous Recovery Sweeps the Land",
+		"Medical Professionals Suddenly Unemployed",
+		"'I Feel Great!' Shout Previously Dying Warriors",
+		"Wounds Vanish in Inexplicable Event",
+		"Health Insurance Companies Hate This One Trick",
+		"Instant Recovery Baffles Military Medics"
+	],
+	"descriptions": [
+		"{COUNT} units and structures were {HEALED} by divine grace.",
+		"A healing radiance touched {COUNT} entities, {HEALED} them to full strength.",
+		"{COUNT} wounded warriors were {HEALED} in what can only be called a miracle.",
+		"Injuries vanished from {COUNT} units as they were {HEALED} by an unknown power.",
+		"{COUNT} entities experienced instant recovery after being {HEALED} by divine light.",
+		"Battlefield triage became unnecessary when {COUNT} units were suddenly {HEALED}.",
+		"Death itself stepped back as {COUNT} damaged entities were {HEALED} to perfection."
+	]
+}
+
+const GENERIC_NEWS := {
+	"headlines": [
+		"Another Quiet Tick Passes",
+		"Tensions Remain Unresolved",
+		"Life Continues on the Grid",
+		"Scouts Report Nothing Unusual",
+		"Borders Hold—for Now",
+		"The World Keeps Spinning",
+		"Calm Before Something Worse",
+		"Activity Observed, Meaning Unclear",
+		"Strategists Remain Vigilant",
+		"No Major Developments Reported",
+		"Civilization Continues to Civilize",
+		"Weather: Still Exists",
+		"Breaking: Absolutely Nothing Breaks",
+		"Existential Dread Remains Constant",
+		"War Delayed Due to Scheduling Conflicts",
+		"Peace Accidentally Breaks Out",
+		"Universe Fails to End, Surprisingly",
+		"Local Grass Continues Growing",
+		"Steppe Remains Steppy",
+		"Time Passes, As Expected",
+		"Silence Deafening on All Fronts",
+		"Waiting Game Intensifies",
+		"Status Quo Maintains Status",
+		"Prediction: More of the Same",
+		"Absolutely No One Surprised",
+		"Boredom Reaches Critical Levels",
+		"Plot Thickens (Just Kidding)",
+		"Warriors Perfect Standing Still Technique",
+		"Diplomatic Relations: Still Awkward",
+		"Nothing to See Here, Move Along",
+		"Tick Counter Increments Successfully",
+		"Reality Check: Everything Normal",
+		"Gods Suspected of Napping",
+		"Routine Maintenance of Existence",
+		"Civilization Collectively Shrugs",
+		"News Ticker Runs Out of Ideas",
+		"Another Day, Another Tick",
+		"Analysts Analyze Nothing in Particular",
+		"Strategic Inaction Proves Effective",
+		"Peace Treaty Not Needed, Nothing Happening",
+		"Watchtowers Report Watching Continues",
+		"Military Drills Postponed Indefinitely",
+		"Leaders Agree to Disagree Later",
+		"Science Buildings Produce Mild Progress",
+		"Warriors Practice Patience",
+		"Campfires Burn Without Incident",
+		"Map Boundaries Remain Where They Were",
+		"Pixels Render Flawlessly",
+		"Simulation Running Nominally",
+		"Background Processes Continue Processing",
+		"No Updates Available at This Time"
+	],
+	"descriptions": [
+		"Units repositioned and supplies were gathered, but no decisive actions were taken.",
+		"Despite underlying hostility, no significant clashes occurred during this period.",
+		"Buildings deteriorated slightly, warriors marched their usual routes, and the land changed as it always does.",
+		"Scouting parties returned with reports of normal movement patterns and unchanged borders.",
+		"Minor maneuvers were detected near several hubs, though none resulted in open conflict.",
+		"The passage of time brought small changes across the map, none of which altered the balance of power.",
+		"No breakthroughs, no disasters, and no divine interference were recorded this cycle.",
+		"Environmental effects continued to shape the terrain while civilizations quietly adjusted their priorities.",
+		"Commanders reviewed reports and maintained defensive postures as restraint appears to be the dominant strategy.",
+		"All systems continue to operate within expected parameters and the next development remains unpredictable.",
+		"Warriors wandered aimlessly while leaders contemplated the meaning of existence.",
+		"Absolutely nothing happened, which is somehow both boring and terrifying.",
+		"The gods appear to be on lunch break as normalcy persists.",
+		"Units stood around wondering when the next catastrophe would strike.",
+		"Civilization proves it can function without constant violence—who knew?",
+		"An eerie calm settles over the land, making everyone deeply uncomfortable.",
+		"Historians will probably skip this tick entirely when writing the chronicles.",
+		"Grass grew at its usual rate while warriors questioned their life choices.",
+		"The steppe remained hostile to life, but nobody was around to care today.",
+		"Clocks ticked, hearts beat, and absolutely nothing of consequence occurred.",
+		"Military bands played soothing music in the absence of battle.",
+		"Civilizations stared at each other awkwardly across their borders.",
+		"Everything remained exactly as it was, which is either good or ominous.",
+		"Seers predict tomorrow will look suspiciously like today.",
+		"Even the most optimistic war hawks found nothing to complain about.",
+		"Warriors reported feeling 'kinda useless' during the extended peace.",
+		"Dramatic music started playing but then stopped when nothing happened.",
+		"Units mastered the ancient art of doing absolutely nothing productive.",
+		"Ambassadors exchanged pleasantries that meant nothing to anyone.",
+		"Observers noted that observing nothing is still technically observing.",
+		"The game engine confirmed all loops are looping correctly.",
+		"Physics simulations ran without producing any interesting physics.",
+		"Divine entities showed no interest in mortal affairs this tick.",
+		"Standard operations continued without deviation or excitement.",
+		"Citizens collectively wondered if maybe war wasn't so bad after all.",
+		"Journalists struggled to make 'nothing happened' sound interesting.",
+		"The sun rose, the sun set, and nobody cared about either.",
+		"Statistical analysis revealed that boredom is trending upward.",
+		"Military strategists strategized about eventually strategizing.",
+		"Lawyers drafted a peace treaty nobody asked for.",
+		"Guards atop watchtowers fought to stay awake during their shifts.",
+		"Training exercises were deemed 'too exciting' and promptly canceled.",
+		"All parties agreed that agreement is currently impossible.",
+		"Scientists discovered that time passes at approximately one second per second.",
+		"Patience proved to be not just a virtue but a requirement.",
+		"Fires crackled peacefully while warriors roasted metaphorical marshmallows.",
+		"Cartographers confirmed the map still has the same number of tiles.",
+		"Every single pixel maintained its assigned color value.",
+		"The simulation's frame rate remained stable at acceptable levels.",
+		"Background tasks completed their tasks in the background.",
+		"The void between news cycles grew uncomfortably long."
 	]
 }

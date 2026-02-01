@@ -1,6 +1,7 @@
 class_name Unit
 extends CharacterBody2D
 
+const MAX_HEALTH: float = 100.0
 @export var health: float = 100.0
 @export var damage: float = 10.0
 @export var speed: float = 100.0
@@ -9,6 +10,7 @@ extends CharacterBody2D
 @export var sprite_2d: Sprite2D
 @export var anim: AnimationPlayer
 @export var nav: NavigationAgent2D
+@export var dead_timer: Timer
 
 var civilization: Constants.Civilization
 var civilizationStyle: Constants.CivilizationStyle
@@ -19,6 +21,7 @@ var is_fighting: bool = false
 var last_attacked_enemy: Unit
 var last_attacked_building: Building
 var battle_timout: float = 0.5
+var is_dead: bool = false
 
 var isRegisteredOnAbility : bool = false
 var godAbility : GodAbility
@@ -27,6 +30,7 @@ var overlappingUnits: Dictionary[Unit, bool] = {} # Hashset
 var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
 
 func _ready() -> void:
+	dead_timer.timeout.connect(_on_dead_timer_timeout)
 	_actor_setup.call_deferred()
 	nav.velocity_computed.connect(_velocity_computed)
 	initSprite()
@@ -34,7 +38,7 @@ func _ready() -> void:
 
 func initSprite():
 	sprite_2d.texture = Constants.getWarriorTexture(civilizationStyle, level)
-	(sprite_2d.material as ShaderMaterial).set_shader_parameter("faction", civilization)
+	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.paletteFilePaths.pick_random()))
 
 func _process(_delta: float) -> void:
 	if has_enemies_in_range() and not is_fighting:
@@ -129,18 +133,46 @@ func has_buildings_in_range() -> bool:
 			return !is_instance_valid(building.civilization) || self.civilization != building.faction
 	)
 
-func hurt(node: Node2D, enemy_damage: float) -> void:
+func hurt(entity: Node2D, enemy_damage: float) -> void:
 	if health - enemy_damage > 0:
 		health -= enemy_damage
 	else:
-		if node is Unit:
-			Events.unit_died.emit(node.civilization, civilization, false)
-		queue_free()
+		if entity is Unit:
+			Eventbus.this.unit_died.emit(entity.civilization, civilization, false)
+			Eventbus.this.died.emit(self)
+			disable()
+			dead_timer.start()
+			print("UNIT IS DEAD")
+		#else:
+			# todo for god intervention
+			#Eventbus.this.unit_died.emit()
+
+func heal(amount: float) -> void:
+	if is_dead:
+		is_dead = false
+		enable()
+	if health + amount < MAX_HEALTH:
+		health += amount
+
+func disable() -> void:
+	is_dead = true
+	set_process(false)
+	set_collision_layer_value(1, false)
+	visible = false
+
+func enable() -> void:
+	is_dead = false
+	set_process(true)
+	set_collision_layer_value(1, true)
+	visible = true
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		World.this.factionToUnits[civilization].erase(self)
 
+func _on_dead_timer_timeout() -> void:
+	if is_dead:
+		queue_free()
 
 func _on_attack_range_area_entered(area: Area2D) -> void:
 	if area is Building:
