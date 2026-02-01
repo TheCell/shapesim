@@ -36,6 +36,12 @@ static func getDamageModifierForLevel(level: int):
 	
 static func getMilitaryFrequencyodifierForLevel(level: int):
 	return 1.1 * level
+	
+static func getDecayCountdown(buildingType: Constants.BuildingType, level: int):
+	var base = 10
+	var r = base + randf() * base * 0.2 - base * 0.1
+	var growthByLevel = 1.3
+	return pow(growthByLevel, level) * r
 
 func getBuildingRange(level: int):
 	return 1.2 * level * buildRangeFromCampfire
