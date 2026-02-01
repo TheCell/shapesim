@@ -79,7 +79,7 @@ libraries/ = SubResource("AnimationLibrary_ipwtw")
 [node name="Headline" type="RichTextLabel" parent="." unique_id=230350389]
 layout_mode = 2
 theme = ExtResource("3_mw0hf")
-theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "Headlines"
 fit_content = true
@@ -89,6 +89,7 @@ visible_ratio = 0.0
 [node name="Text" type="RichTextLabel" parent="." unique_id=429641841]
 layout_mode = 2
 theme = ExtResource("3_mw0hf")
+theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
 text = "Suscipit rerum consequatur quis adipisci maiores. Rem voluptas repudiandae asperiores voluptas ullam et est. Omnis quia aliquid sint eum sequi nemo. Eos provident temporibus animi. Doloremque omnis quidem voluptate doloremque sit molestias debitis rerum."
 fit_content = true
