@@ -176,6 +176,8 @@ func set_active_ability(abilityType : Constants.AbilityType) -> void:
 		particleSystem.emitting = true
 	else :
 		particleSystem.emitting = false
+		
+	(sprite.material as ShaderMaterial).set_shader_parameter("effect_type", int(activeAbility))
 	
 func set_ability_shape(newAbilityShape : AbilityShape) -> void:
 	shape = newAbilityShape

@@ -17,20 +17,24 @@
 shader = ExtResource("10_np2x5")
 shader_parameter/sdf_position = Vector2(0.5, 0.5)
 shader_parameter/sdf_size = 0.3
-shader_parameter/sdf_color = Color(1, 1, 1, 0.49019608)
+shader_parameter/sdf_color = Color(1, 1, 1, 0)
 shader_parameter/edge_smoothness = 0.0
-shader_parameter/sdf_type = 1
+shader_parameter/sdf_type = 0
 shader_parameter/shape_param = 0.2
 shader_parameter/capsule_point_a = Vector2(-0.2, 0)
 shader_parameter/capsule_point_b = Vector2(0.2, 0)
-shader_parameter/effect_type = 1
-shader_parameter/effect_intensity = 1.0
-shader_parameter/effect_amount = 0.01
+shader_parameter/border_enabled = true
+shader_parameter/border_color = Color(1, 1, 1, 1)
+shader_parameter/border_size = 0.01
+shader_parameter/effect_type = 0
+shader_parameter/effect_intensity = 0.5
+shader_parameter/effect_amount = 0.001
+shader_parameter/pull_strength = 0.4
+shader_parameter/pull_center = Vector2(0.5, 0.5)
 
 [node name="GodAbility" type="Node2D" unique_id=61948950 node_paths=PackedStringArray("abilityTimer", "particleSystem", "sprite")]
 script = ExtResource("1_bscov")
 ability_config_entries = Array[ExtResource("2_gxcpm")]([ExtResource("4_4uetr"), ExtResource("4_cu7ui"), ExtResource("5_8m2rb"), ExtResource("6_np2x5"), ExtResource("5_nppyf"), ExtResource("3_kh2yg"), ExtResource("9_pau5o")])
-radius = 8.0
 radiusIncrement = 50.0
 abilityCooldown = 1.0
 abilityTimer = NodePath("Timer")

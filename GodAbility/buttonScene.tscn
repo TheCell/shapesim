@@ -2,7 +2,6 @@
 
 [ext_resource type="Theme" uid="uid://kl4xo2lge00r" path="res://GodAbility/godAbility_theme.tres" id="1_qngvi"]
 [ext_resource type="FontFile" uid="uid://d1cospmse57g4" path="res://newsticker/TruetypewriterPolyglott-mELa.ttf" id="2_qngvi"]
-[ext_resource type="Texture2D" uid="uid://b6pqqo1mw3r00" path="res://Sprites/GodAbility/AbilityButton.png" id="2_yhheh"]
 
 [node name="Button" type="Button" unique_id=1742052604]
 offset_right = 96.0
@@ -15,17 +14,3 @@ theme_override_fonts/font = ExtResource("2_qngvi")
 theme_override_font_sizes/font_size = 12
 text = "Longer text longer logner longer"
 autowrap_mode = 2
-
-[node name="TextureRect" type="NinePatchRect" parent="." unique_id=1781177896]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_yhheh")
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
