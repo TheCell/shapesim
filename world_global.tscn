@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dn4bhohu6vaxt" path="res://civilization/civilization_fast.tscn" id="5_r7nxj"]
 [ext_resource type="PackedScene" uid="uid://cj28gscsj2o3c" path="res://civilization/civilization_science.tscn" id="6_4fxlr"]
 [ext_resource type="PackedScene" uid="uid://bydew3rmvw0x4" path="res://score/score.tscn" id="10_r7nxj"]
+[ext_resource type="PackedScene" uid="uid://tmcmfoyknani" path="res://Camera/controllable_camera.tscn" id="11_763jv"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_dposi"]
 vertices = PackedVector2Array(1783.0781, 1017.27344, -318.75, 1071.7188, -288.21875, -247.10156, 1667.8594, -267.89844)
@@ -1134,3 +1135,5 @@ offset_right = 1279.0
 offset_bottom = 31.0
 grow_horizontal = 1
 size_flags_vertical = 0
+
+[node name="ControllableCamera" parent="." unique_id=2098577878 instance=ExtResource("11_763jv")]
