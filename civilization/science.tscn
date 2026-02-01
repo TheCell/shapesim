@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dppqqcsr14xaa"]
 
 [ext_resource type="PackedScene" uid="uid://b7714igdawxkl" path="res://civilization/building.tscn" id="1_pj8pm"]
-[ext_resource type="Script" uid="uid://1he2mn3qbnc7" path="res://civilization/campfire.gd" id="2_hxvce"]
+[ext_resource type="Script" uid="uid://c64a02p6i5sj5" path="res://civilization/science.gd" id="2_hxvce"]
 [ext_resource type="Texture2D" uid="uid://8m01rykobaa6" path="res://placeholder_sprites/colored_packed.png" id="3_lvjwc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mnvfb"]
@@ -10,6 +10,9 @@ region = Rect2(704, 32, 16, 16)
 
 [node name="Building" unique_id=2008346303 instance=ExtResource("1_pj8pm")]
 script = ExtResource("2_hxvce")
+gainStatPointsCooldown = 3
+statIncreaseFactor = 1.1
+statIncreaseSummand = 0
 buildingType = 1
 
 [node name="Sprite2D" parent="AnimationPivot" parent_id_path=PackedInt32Array(1095099242) index="0" unique_id=1927129681]

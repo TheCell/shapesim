@@ -16,6 +16,23 @@ static var this : GodAbility
 
 @export var pushDuration: float = 0.4
 
+#SHAPES
+enum AbilityShape { CIRCLE, BOX, ROUNDED_BOX, CAPSULE }
+
+@export var shape: AbilityShape = AbilityShape.CIRCLE
+
+# CIRCLE
+@export var circle_radius: float = 64.0
+
+# BOX / ROUNDED_BOX (half extents)
+@export var box_half_size: Vector2 = Vector2(64, 32)
+@export var box_round_radius: float = 8.0
+
+# CAPSULE (segment from -a to +a in local space, plus radius)
+@export var capsule_half_segment: Vector2 = Vector2(60, 0) # along local X by default
+@export var capsule_radius: float = 16.0
+
+
 var registered_units: Dictionary = {} # id -> WeakRef
 
 # id -> { "tween": Tween, "was_physics": bool }
@@ -32,8 +49,9 @@ func _process(_delta: float) -> void:
 		Constants.AbilityType:
 			pass
 
-func is_inside_ability(pos: Vector2) -> bool:
-	return global_position.distance_to(pos) < radius
+func is_inside_ability(pos_global: Vector2) -> bool:
+	return sdf_world(pos_global) <= 0.0
+
 
 func register_unit(node: Node) -> void:
 	var id := node.get_instance_id()
@@ -53,7 +71,6 @@ func register_unit(node: Node) -> void:
 				modify_speed_warrior(warrior, 0.5)
 
 func deregister_unit(node: Node) -> void:
-	
 	var id := node.get_instance_id()
 	if registered_units.has(id):
 		registered_units.erase(id)
@@ -91,6 +108,7 @@ func apply_timed_ability():
 	var units : Array[Node2D] = get_units_alive()
 	
 	if activeAbility == Constants.AbilityType.Meteorite:
+		GroundController.this.ApplyMeteorImpact(global_position, radius)
 		for unit in units:
 			if unit is Unit:
 				var warrior : Unit = unit
@@ -298,3 +316,53 @@ func _restore_after_knockback(id: int) -> void:
 	elif kind == "building":
 		var was_process: bool = data.get("was_process", true)
 		(obj as Building).set_process(was_process)
+
+#ABILITY SHAPES
+
+func sdf_world(pos_global: Vector2) -> float:
+	# Convert world point to ability-local space.
+	# This makes shapes rotate with your Node2D automatically.
+	var p_local: Vector2 = global_transform.affine_inverse() * pos_global
+	return sdf_local(p_local)
+
+func sdf_local(p: Vector2) -> float:
+	match shape:
+		AbilityShape.CIRCLE:
+			return sdf_circle(p, circle_radius)
+		AbilityShape.BOX:
+			return sdf_box(p, box_half_size)
+		AbilityShape.ROUNDED_BOX:
+			return sdf_rounded_box(p, box_half_size, box_round_radius)
+		AbilityShape.CAPSULE:
+			# capsule segment endpoints in local space
+			var a := -capsule_half_segment
+			var b :=  capsule_half_segment
+			return sdf_capsule(p, a, b, capsule_radius)
+		_ :
+			return INF
+
+#SDF CALCULATION METHODS
+
+static func sdf_circle(p: Vector2, r: float) -> float:
+	return p.length() - r
+
+static func sdf_box(p: Vector2, b: Vector2) -> float:
+	# Axis-aligned box centered at origin, with half-size b.
+	var q := Vector2(absf(p.x), absf(p.y)) - b
+	var outside := Vector2(maxf(q.x, 0.0), maxf(q.y, 0.0)).length()
+	var inside := minf(maxf(q.x, q.y), 0.0)
+	return outside + inside
+
+static func sdf_rounded_box(p: Vector2, b: Vector2, r: float) -> float:
+	# Rounded corners: box half-size b, corner radius r.
+	var q := Vector2(absf(p.x), absf(p.y)) - (b - Vector2(r, r))
+	var outside := Vector2(maxf(q.x, 0.0), maxf(q.y, 0.0)).length()
+	var inside := minf(maxf(q.x, q.y), 0.0)
+	return outside + inside - r
+
+static func sdf_capsule(p: Vector2, a: Vector2, b: Vector2, r: float) -> float:
+	# Distance to segment AB minus radius.
+	var pa := p - a
+	var ba := b - a
+	var h : float = clamp(pa.dot(ba) / ba.dot(ba), 0.0, 1.0)
+	return (pa - ba * h).length() - r

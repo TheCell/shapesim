@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dufmi8wujmuys" path="res://GodAbility/GodAbility.tscn" id="4_14xng"]
 [ext_resource type="PackedScene" uid="uid://beruq8ofrhsfi" path="res://newsticker/news_ticker.tscn" id="5_7el6r"]
 [ext_resource type="PackedScene" uid="uid://dn4bhohu6vaxt" path="res://civilization/civilization_fast.tscn" id="5_r7nxj"]
+[ext_resource type="PackedScene" uid="uid://cj28gscsj2o3c" path="res://civilization/civilization_science.tscn" id="6_4fxlr"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_dposi"]
 vertices = PackedVector2Array(1783.0781, 1017.27344, -318.75, 1071.7188, -288.21875, -247.10156, 1667.8594, -267.89844)
@@ -1105,7 +1106,7 @@ civScenes = Dictionary[int, PackedScene]({
 1: ExtResource("2_a57ms"),
 2: ExtResource("4_4fxlr"),
 3: ExtResource("5_r7nxj"),
-4: ExtResource("2_a57ms")
+4: ExtResource("6_4fxlr")
 })
 ground = NodePath("NavigationRegion2D/Ground")
 
@@ -1119,4 +1120,6 @@ tile_set = SubResource("TileSet_tv236")
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
 activeAbility = 4
 
-[node name="NewsTicker" parent="." unique_id=491788212 instance=ExtResource("5_7el6r")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1614583572]
+
+[node name="NewsTicker" parent="CanvasLayer" unique_id=491788212 instance=ExtResource("5_7el6r")]

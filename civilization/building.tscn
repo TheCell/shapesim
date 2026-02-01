@@ -3,10 +3,12 @@
 [ext_resource type="Texture2D" uid="uid://8m01rykobaa6" path="res://placeholder_sprites/colored_packed.png" id="1_fon66"]
 [ext_resource type="Script" uid="uid://dkebgdlyklndt" path="res://civilization/building.gd" id="1_p3b7u"]
 [ext_resource type="Shader" uid="uid://r5f26ul0yfun" path="res://Sprites/Palettes/paletteSwap.gdshader" id="2_0c2ly"]
+[ext_resource type="Texture2D" uid="uid://ibjjj3mostj1" path="res://Sprites/Palettes/orsage.png" id="3_xj7dy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0c2ly"]
 resource_local_to_scene = true
 shader = ExtResource("2_0c2ly")
+shader_parameter/palette = ExtResource("3_xj7dy")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p3b7u"]
 atlas = ExtResource("1_fon66")
@@ -84,6 +86,7 @@ sprite_2d = NodePath("AnimationPivot/Sprite2D")
 [node name="AnimationPivot" type="Node2D" parent="." unique_id=1095099242]
 
 [node name="Sprite2D" type="Sprite2D" parent="AnimationPivot" unique_id=1927129681]
+y_sort_enabled = true
 material = SubResource("ShaderMaterial_0c2ly")
 texture = SubResource("AtlasTexture_p3b7u")
 

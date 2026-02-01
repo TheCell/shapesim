@@ -16,7 +16,7 @@ var civilization: Constants.Civilization
 var civilizationStyle: Constants.CivilizationStyle
 var level: int = 0
 
-var target: Vector2
+var target: Vector2 = Vector2.INF
 var is_fighting: bool = false
 var last_attacked_enemy: Unit
 var last_attacked_building: Building
@@ -57,11 +57,13 @@ func _process(_delta: float) -> void:
 	
 
 func _physics_process(_delta: float) -> void:
-	if has_buildings_in_range() or has_enemies_in_range():
+	if target == Vector2.INF or has_buildings_in_range() or has_enemies_in_range():
 		velocity = Vector2.ZERO
 	else:
 		move_to_hub()
 	move_and_slide()
+	if global_position.distance_squared_to(target) < 2:
+		target = Vector2.INF
 
 func _velocity_computed(safe_velocity: Vector2):
 	velocity = safe_velocity

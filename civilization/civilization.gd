@@ -1,6 +1,9 @@
 class_name Civilization
 extends Node2D
 
+const DEBUG = true
+var debugLabel: Label
+
 var faction: Constants.Civilization
 const chillingDoNothingChance = 0.2
 
@@ -12,12 +15,9 @@ const chillingDoNothingChance = 0.2
 }
 
 @export var style: Constants.CivilizationStyle
-@export var unitScene: PackedScene
 
-@export var hostility = 1.0 # Ranges [0, 1]. How likely this civ is to attack others.
-@export var reactivity = 1.0 # Ranges [0, 1]. How likely this civ is to get mad at other civs when the others kill this civ's buildings or troops
-@export var level: int = 0
-@export var buildingBreakpointsForLevel = [5, 10, 15]
+@export var hostility: float = 1.0 # Ranges [0, 1]. How likely this civ is to attack others.
+@export var reactivity: float = 1.0 # Ranges [0, 1]. How likely this civ is to get mad at other civs when the others kill this civ's buildings or troops
 
 @export var buildingPlaceCooldown: float = 3
 var untilBuildingPlaced: float = 3
@@ -25,9 +25,12 @@ var untilBuildingPlaced: float = 3
 @export var reevaluateGoalCooldown: float = 20
 var untilReevaluateGoal: float = 5
 
-@export var redirectWarriorCooldown: float = 4
+@export var redirectWarriorCooldown: float = 2
 @export var redirectWarriorRandomness: float = 0.2
 var untilWarriorsRedirect: float = 4
+
+var stats: CivilizationStat = CivilizationStat.new()
+var level = 0
 
 var activeBuildings: Array = []
 var campfire: Campfire
@@ -41,11 +44,20 @@ var campfire: Campfire
 	Constants.Civilization.Purple: 0,
 }
 
-
 func _ready() -> void:
 	untilBuildingPlaced = buildingPlaceCooldown
 	untilReevaluateGoal = reevaluateGoalCooldown
 	makeCampfire()
+	if DEBUG:
+		var l = Label.new()
+		l.z_index = 10
+		debugLabel = l
+		debugLabel.add_theme_font_size_override("font_size", 12)
+		add_child(l)
+		
+	
+func getRandomIncreasableStat():
+	return ["health", ""].pick_random()
 
 func makeCampfire():
 	campfire = buildingToScene[Constants.BuildingType.Campfire].instantiate() as Campfire
@@ -60,11 +72,23 @@ func _process(delta: float) -> void:
 	untilBuildingPlaced -= delta
 	while untilBuildingPlaced <= 0:
 		placeRandomBuilding()
-		untilBuildingPlaced += buildingPlaceCooldown
+		untilBuildingPlaced += max(buildingPlaceCooldown / stats.buildFrequencyModifier, 1)
 	untilWarriorsRedirect -= delta
 	if untilWarriorsRedirect <= 0:
 		untilWarriorsRedirect = redirectWarriorCooldown * (1 + redirectWarriorRandomness * randf() - redirectWarriorRandomness / 2)
 		chooseWarriorTargets()
+	untilReevaluateGoal -= delta
+	if untilReevaluateGoal <= 0:
+		reevaluateCivilizationGoals()
+		untilReevaluateGoal = reevaluateGoalCooldown
+	showDebugInfo()
+
+func showDebugInfo():
+	if debugLabel:
+		var s = ["#BUILDINGS = " + str(len(activeBuildings)), "GOAL = " + Constants.CivilizationGoal.find_key(currentGoal)]
+		for stat in stats.stats:
+			s.append("{} = {}".format([stat, stats.get(stat)], "{}"))
+		debugLabel.text = "\n".join(s)
 
 func chooseWarriorTargets():
 	var myWarriors = World.this.factionToUnits[faction]
@@ -72,7 +96,8 @@ func chooseWarriorTargets():
 	var warriorGroupSize = max(int(ceil(sqrt(len(myWarriors)))), 1)
 	
 	# NOTE: warriorGroups variable should only be used in this method, because warriors may be killed between frames.
-	var warriorGroups = formWarriorGroups(myWarriors, warriorGroupSize)
+	var warriorGroups: Array = []
+	formWarriorGroups(myWarriors, warriorGroupSize, warriorGroups)
 	var sentOutGroups = int(len(warriorGroups) * hostility)
 	for i in sentOutGroups:
 		var civTarget = World.this.getRandomWeightedCivilizationTarget(faction, otherCivToHostilityValue)
@@ -82,18 +107,33 @@ func chooseWarriorTargets():
 			var warrior: Unit = w as Unit
 			warrior.target = World.this.civilizations[civTarget].campfire.global_position # TODO: will become invalid when campfire gone.
 	
-	
 
-func formWarriorGroups(warriors: Array, groupSize: int) -> Array:
-	var groups: Array = []
-	for i in (len(warriors) / groupSize):
-		groups.append([])
-		for j in groupSize:
-			var warriorIndex = groupSize * i + j
-			if warriorIndex >= len(warriors):
-				break
-			groups[i].append(warriors[j])
+	for j in range(sentOutGroups, len(warriorGroups)):
+		# other warrior groups stay home, partrolling toward a random destination.
+		var patrolPos = MyMath.samplePosInsideRadius(campfire.global_position, stats.getBuildingRange(level))
+		for w in warriorGroups[j]:
+			w.target = patrolPos
+
+
+func formWarriorGroups(warriors: Array, groupSize: int, groups: Array) -> Array:
+	var currentGroup: Array = []
+
+	for warrior in warriors:
+		if warrior.target != Vector2.INF:
+			continue
+
+		currentGroup.append(warrior)
+
+		if len(currentGroup) >= groupSize:
+			groups.append(currentGroup)
+			currentGroup = []
+
+	# Add leftover warriors as a smaller final group
+	if len(currentGroup) > 0:
+		groups.append(currentGroup)
+
 	return groups
+
 
 func reevaluateCivilizationGoals():
 	currentGoal = sampleCivilizationGoal()
@@ -107,15 +147,13 @@ func placeRandomBuilding():
 	match currentGoal:
 		Constants.CivilizationGoal.Chilling:
 			if randf() >= chillingDoNothingChance:
-				chosenBuilding = Constants.BuildingType.Campfire # TODO ugly
-				while chosenBuilding == Constants.BuildingType.Campfire:
-					chosenBuilding = Constants.BuildingType.values().pick_random()
+				chosenBuilding = Constants.randomPlacableBuilding()
 		Constants.CivilizationGoal.War:
 			chosenBuilding = Constants.BuildingType.WarriorHut
 		Constants.CivilizationGoal.Defense:
-			chosenBuilding = Constants.BuildingType.WatchTower if randf() < 0.5 else Constants.BuildingType.WarriorHut
+			chosenBuilding = Constants.BuildingType.WatchTower if randf() < 0.7 else Constants.BuildingType.WarriorHut
 		Constants.CivilizationGoal.Science:
-			chosenBuilding = Constants.BuildingType.Science
+			chosenBuilding = Constants.BuildingType.Science if randf() < 0.7 else Constants.randomPlacableBuilding()
 
 	if chosenBuilding != Constants.BuildingType.None:
 		place(buildingToScene[chosenBuilding])
@@ -126,12 +164,47 @@ func place(buildingScene: PackedScene):
 	building.civilization = self
 	building.faction = faction
 	building.civilizationStyle = style
+	building.health = stats.baseBuildingHealth * stats.getBuildingHealthModifierForLevel(level)
+	if building is WatchTower:
+		(building as WatchTower).shotCooldown /= stats.totalMilitarySpeedModifier(level)
+		(building as WatchTower).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
+	elif building is WarriorHut:
+		(building as WarriorHut).warriorSpawnCooldown /= stats.totalMilitarySpeedModifier(level)
+		(building as WarriorHut).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
+		(building as WarriorHut).lastAvailableWarriorHealth = stats.totalWarriorHealth(level)
 	activeBuildings.append(building)
+	recalculateLevel()
 	World.this.add_child(building)
 
 func samplePosForBuilding():
-	return MyMath.samplePosInsideRadius(campfire.global_position, 100)
+	return MyMath.samplePosInsideRadius(campfire.global_position, stats.getBuildingRange(level))
 	
+func buffRandomStat(factor: float, summand: float):
+	stats.buffRandomStat(factor, summand)
+	for building in activeBuildings: # let's just always update the damage stat
+		if building is WarriorHut || building is WatchTower:
+			building.lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
+		if building is WarriorHut:
+			building.lastAvailableWarriorHealth = stats.totalWarriorHealth(level)
+
+
+func recalculateLevel():
+	var buildings = len(activeBuildings)
+	var i = 0
+	while buildings >= stats.buildingBreakpointsForLevel[i] && i < len(stats.buildingBreakpointsForLevel):
+		i += 1
+	for building in activeBuildings:
+		if building is WarriorHut:
+			(building as WarriorHut).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
+			(building as WarriorHut).lastAvailableWarriorHealth = stats.totalWarriorHealth(level)
+		elif building is WatchTower:
+			(building as WatchTower).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
+	return i
+
+func removeBuilding(b: Building):
+	activeBuildings.erase(b)
+	recalculateLevel()
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		World.this.civilizations.erase(faction)

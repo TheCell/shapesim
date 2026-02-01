@@ -56,6 +56,14 @@ enum BuildingType {
 	WarriorHut,
 }
 
+static var lazyActualBuildingTypes: Array
+static func randomPlacableBuilding() -> BuildingType:
+	if !lazyActualBuildingTypes:
+		lazyActualBuildingTypes = BuildingType.values()
+		lazyActualBuildingTypes.erase(BuildingType.None)
+		lazyActualBuildingTypes.erase(BuildingType.Campfire)
+	return lazyActualBuildingTypes.pick_random()
+
 enum CivilizationStyle {
 	Slime,
 	Mushroom,

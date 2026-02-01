@@ -1,6 +1,6 @@
 class_name NewsTicker
 
-extends Node2D
+extends Control
 
 @onready var news_feed: VBoxContainer = $ScrollContainer/NewsFeed
 @onready var scroll_container: ScrollContainer = $ScrollContainer

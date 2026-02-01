@@ -6,6 +6,9 @@ var untilWarriorSpawn: float = 5
 static var warriorScene: PackedScene = preload("res://unit/unit.tscn")
 @export var spawnRadiusMax = 30
 
+var lastAvailableMilitaryModifier: float = 1.0
+var lastAvailableWarriorHealth: float = 100
+
 signal spawnedWarrior(unit: Unit)
 
 func _ready() -> void:
@@ -19,19 +22,24 @@ func _process(delta: float) -> void:
 	untilWarriorSpawn -= delta
 	
 	while (untilWarriorSpawn <= 0):
-		var randomSpawnAngle = randf() * TAU
-		var randomDistance = randf() * spawnRadiusMax
-		var spawn_pos : Vector2 = global_position + Vector2(cos(randomSpawnAngle), sin(randomSpawnAngle)) * randomDistance
+		spawnWarrior()
+
+func spawnWarrior():
+	var damageModifier = civilization.stats.totalDamageModifier(civilization.level) if is_instance_valid(civilization) else lastAvailableMilitaryModifier
+	var health = civilization.stats.totalWarriorHealth(civilization.level) if is_instance_valid(civilization) else lastAvailableWarriorHealth
 		
-		var warrior := spawn_warrior(spawn_pos, faction, civilizationStyle)
-		
-		warrior.target = global_position
-		
-		spawnedWarrior.emit(warrior)
-		World.this.factionToUnits[civilization.faction].append(warrior)
-		World.this.add_child(warrior)
-		
-		untilWarriorSpawn += warriorSpawnCooldown
+	var warrior = warriorScene.instantiate() as Unit # TODO: use spawn_warrior instead
+	var randomSpawnAngle = randf() * TAU
+	var randomDistance = randf() * spawnRadiusMax
+	warrior.global_position = global_position + Vector2(cos(randomSpawnAngle), sin(randomSpawnAngle)) * randomDistance
+	warrior.civilization = faction
+	warrior.civilizationStyle = civilizationStyle
+	warrior.damage *= damageModifier
+	warrior.health = health
+	spawnedWarrior.emit(warrior)
+	World.this.factionToUnits[faction].append(warrior)
+	World.this.add_child(warrior)
+	untilWarriorSpawn += warriorSpawnCooldown
 
 static func spawn_warrior(spawn_pos: Vector2, civilization : Constants.Civilization, civilizationStyle : Constants.CivilizationStyle) -> Unit:
 	var warrior := warriorScene.instantiate() as Unit
