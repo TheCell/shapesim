@@ -332,7 +332,11 @@ func apply_timed_ability():
 		for unit in units:
 				if unit is Unit && Civilization.allowedToSpawnUnit(unit.civilization):
 					var warrior : Unit = unit
-					WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
+					var clonedWarrior = WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
+					clonedWarrior.damage = warrior.damage
+					clonedWarrior.health = warrior.health
+					clonedWarrior.level = warrior.level
+					World.this.add_child(clonedWarrior)
 					warrior_count += 1
 				elif unit is Building && !(unit is Campfire):
 					var building: Building = unit

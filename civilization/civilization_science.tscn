@@ -17,4 +17,5 @@ buildingToScene = Dictionary[int, PackedScene]({
 style = 1
 personality = 1
 hostility = 0.2
+buildingPlaceCooldown = 6.0
 currentGoal = 3

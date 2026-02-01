@@ -241,4 +241,4 @@ func allowedToSpawnBuilding():
 	return len(activeBuildings) < MAX_BUILDINGS_CAP
 
 static func allowedToSpawnUnit(faction: Constants.Civilization):
-	return len(World.this.factionToUnits[faction]) < MAX_BUILDINGS_CAP
+	return len(World.this.factionToUnits[faction]) < MAX_UNIT_CAP

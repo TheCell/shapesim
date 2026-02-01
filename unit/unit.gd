@@ -46,9 +46,14 @@ func initSprite():
 
 func _process(delta: float) -> void:
 	health_bar.value = health
+	if is_dead:
+		last_attacked_building = null
+		last_attacked_enemy = null
 	if len(overlappingEnemyUnits) > 0 and not is_fighting and not is_dead:
-		attack_unit()
-	elif len(overlappingEnemyBuildings) and not is_fighting and not is_dead:
+		var living_overlapping_enemies = get_enemies_in_range()
+		if len(living_overlapping_enemies) > 0:
+			attack_unit(living_overlapping_enemies)
+	if len(overlappingEnemyBuildings) > 0 and not is_fighting and not is_dead:
 		attack_building()
 	
 	if !isRegisteredOnAbility && godAbility.is_inside_ability(global_position):
@@ -60,14 +65,14 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if target == Vector2.INF or len(overlappingEnemyBuildings) > 0 or len(overlappingEnemyUnits):
+	if is_dead or target == Vector2.INF or len(overlappingEnemyBuildings) > 0 or len(overlappingEnemyUnits) > 0:
 		velocity = Vector2.ZERO
 	else:
 		if nav.target_position != target:
 			nav.target_position = target
-		move_to_target()
+		set_velocity_to_target()
 		move_and_slide()
-	if global_position.distance_squared_to(target) < 2:
+	if global_position.distance_squared_to(target) < 10:
 		target = Vector2.INF
 
 func _velocity_computed(safe_velocity: Vector2):
@@ -77,7 +82,7 @@ func _actor_setup() -> void:
 	await get_tree().physics_frame
 	nav.target_position = target
 
-func move_to_target() -> void:
+func set_velocity_to_target() -> void:
 	#var stopwatch = Time.get_ticks_msec()
 	
 	if nav.is_navigation_finished():
@@ -92,68 +97,62 @@ func move_to_target() -> void:
 	_velocity_computed(new_velocity)
 	#print("pathfinding done in %s ms" % [Time.get_ticks_msec() - stopwatch])
 
-func attack_unit() -> void:
+func attack_unit(living_enemies_in_range) -> void:
 	is_fighting = true
-	var enemies_in_range := get_enemies_in_range()
-	if last_attacked_enemy == null and enemies_in_range.size() > 0:
-		last_attacked_enemy = enemies_in_range.pick_random()
+	if !is_instance_valid(last_attacked_enemy) || last_attacked_enemy == null:
+		last_attacked_enemy = living_enemies_in_range.pick_random()
 	await get_tree().create_timer(battle_timout).timeout
+	if is_dead || !is_instance_valid(last_attacked_enemy) || last_attacked_enemy.is_dead:
+		is_fighting = false
+		last_attacked_enemy = null
+		return
+	anim.seek(0)
 	anim.play("attack")
-	var random_damage_modifier := randf_range(1.0, 5.0)
-	if is_instance_valid(last_attacked_enemy):
-		last_attacked_enemy.hurt(self, damage + random_damage_modifier)
+	var random_damage_modifier := randf_range(1.0, 1.2)
+	last_attacked_enemy.hurt(self, damage * random_damage_modifier)
 	is_fighting = false
 
 func attack_building() -> void:
 	is_fighting = true
-	var enemies_in_range := get_buildings_in_range()
-	if last_attacked_building == null:
-		last_attacked_building = enemies_in_range.pick_random()
+	if !is_instance_valid(last_attacked_building) || last_attacked_building == null:
+		last_attacked_building = overlappingEnemyBuildings.keys().pick_random()
 	await get_tree().create_timer(battle_timout).timeout
+	if is_dead || !is_instance_valid(last_attacked_building):
+		is_fighting = false
+		last_attacked_building = null
+		return
+	anim.seek(0)
 	anim.play("attack")
-	var random_damage_modifier := randf_range(1.0, 5.0)
-	if is_instance_valid(last_attacked_building):
-		last_attacked_building.hurt(damage + random_damage_modifier)
+	var random_damage_modifier := randf_range(1.0, 1.2)
+	last_attacked_building.hurt(damage * random_damage_modifier)
 	is_fighting = false
 
 func get_enemies_in_range() -> Array[Unit]:
 	return overlappingEnemyUnits.keys().filter(
 		func(unit: Unit) -> bool:
-			return self.civilization != unit.civilization and not unit.is_dead
-	)
-
-func get_buildings_in_range() -> Array[Building]:
-	return overlappingEnemyBuildings.keys().filter(
-		func(building: Building) -> bool:
-			return !is_instance_valid(building.civilization) || self.civilization != building.faction
+			return !unit.is_dead
 	)
 
 func hurt(entity: Node2D, enemy_damage: float) -> void:
-	if health - enemy_damage > 0:
-		health -= enemy_damage
-	else:
-		disable()
+	health -= enemy_damage
+	health = clamp(health, 0, maxHealth)
+	if health <= 0:
+		is_dead = true
+		modulate = Color(1, 1, 1, 0.5)
 		dead_timer.start()
 		if entity is Unit:
 			Eventbus.this.unit_died.emit(entity.civilization, civilization, false)
 			Eventbus.this.died.emit(self)
 
 func heal(amount: float) -> void:
-	if is_dead:
+	health += amount
+	health = clamp(health, 0, maxHealth)
+	if is_dead && health > 0:
 		dead_timer.stop()
 		dead_timer.wait_time = 5.0
+		modulate = Color.WHITE
 		is_dead = false
-		enable()
-	if health + amount < maxHealth:
-		health += amount
 
-func disable() -> void:
-	is_dead = true
-	visible = false
-
-func enable() -> void:
-	is_dead = false
-	visible = true
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:

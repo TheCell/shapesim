@@ -28,24 +28,24 @@ func _process(delta: float) -> void:
 func spawnWarrior():
 	var damageModifier = civilization.stats.totalDamageModifier(civilization.level) if is_instance_valid(civilization) else lastAvailableMilitaryModifier
 	var health = civilization.stats.totalWarriorHealth(civilization.level) if is_instance_valid(civilization) else lastAvailableWarriorHealth
-		
-	var warrior = warriorScene.instantiate() as Unit # TODO: use spawn_warrior instead
+
 	var randomSpawnAngle = randf() * TAU
 	var randomDistance = randf() * spawnRadiusMax
-	warrior.global_position = global_position + Vector2(cos(randomSpawnAngle), sin(randomSpawnAngle)) * randomDistance
-	warrior.civilization = faction
-	warrior.civilizationStyle = civilizationStyle
+	
+	var warrior = spawn_warrior(global_position + Vector2(cos(randomSpawnAngle), sin(randomSpawnAngle)) * randomDistance, faction, civilizationStyle)
 	warrior.damage *= damageModifier
 	warrior.health = health
 	warrior.level = level
-	World.this.factionToUnits[faction].append(warrior)
-	Eventbus.this.civ_total_troops_equal.emit(faction, len(World.this.factionToUnits[faction]))
 	World.this.add_child(warrior)
 
-static func spawn_warrior(spawn_pos: Vector2, civilization : Constants.Civilization, civilizationStyle : Constants.CivilizationStyle) -> Unit:
+static func spawn_warrior(spawn_pos: Vector2, faction : Constants.Civilization, civilizationStyle : Constants.CivilizationStyle) -> Unit:
 	var warrior := warriorScene.instantiate() as Unit
 	warrior.global_position = spawn_pos
 	warrior.target = spawn_pos
-	warrior.civilization = civilization
+	warrior.civilization = faction
 	warrior.civilizationStyle = civilizationStyle
+
+	World.this.factionToUnits[faction].append(warrior)
+	Eventbus.this.civ_total_troops_equal.emit(faction, len(World.this.factionToUnits[faction]))
+	
 	return warrior

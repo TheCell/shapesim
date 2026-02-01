@@ -16,5 +16,5 @@ buildingToScene = Dictionary[int, PackedScene]({
 })
 style = 1
 hostility = 0.5
-buildingPlaceCooldown = 2.0
+buildingPlaceCooldown = 5.7
 redirectWarriorCooldown = 6.0

@@ -15,5 +15,6 @@ buildingToScene = Dictionary[int, PackedScene]({
 3: ExtResource("5_7ib0y")
 })
 personality = 4
+buildingPlaceCooldown = 6.0
 currentGoal = 1
 redirectWarriorCooldown = 6.0
