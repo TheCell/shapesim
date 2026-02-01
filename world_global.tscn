@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cj28gscsj2o3c" path="res://civilization/civilization_science.tscn" id="6_4fxlr"]
 [ext_resource type="PackedScene" uid="uid://bydew3rmvw0x4" path="res://score/score.tscn" id="10_r7nxj"]
 [ext_resource type="PackedScene" uid="uid://tmcmfoyknani" path="res://Camera/controllable_camera.tscn" id="11_763jv"]
+[ext_resource type="Theme" uid="uid://bn400ovbcummx" path="res://newsticker/article_theme.tres" id="11_qxxs8"]
 [ext_resource type="PackedScene" uid="uid://dj1ejgr1ubgdy" path="res://GodAbility/ability_selection.tscn" id="12_b30oh"]
 [ext_resource type="PackedScene" uid="uid://cnlsy5hngekwm" path="res://Sprites/GroundTiles/ground.tscn" id="13_qxxs8"]
 
@@ -44,14 +45,19 @@ activeAbility = 6
 [node name="NewsTicker" parent="CanvasLayer" unique_id=491788212 instance=ExtResource("5_7el6r")]
 
 [node name="Score" parent="CanvasLayer" unique_id=293657292 instance=ExtResource("10_r7nxj")]
-anchors_preset = 0
+anchors_preset = -1
 anchor_left = 0.0
-anchor_right = 0.0
-offset_left = 987.0
-offset_right = 1279.0
-offset_bottom = 31.0
+anchor_top = 1.0
+anchor_right = 0.28800002
+anchor_bottom = 1.0
+offset_left = 47.0
+offset_top = -35.0
+offset_right = -46.640015
+offset_bottom = -4.0
 grow_horizontal = 1
 size_flags_vertical = 0
+theme = ExtResource("11_qxxs8")
+metadata/_edit_use_anchors_ = true
 
 [node name="ControllableCamera" parent="." unique_id=2098577878 instance=ExtResource("11_763jv")]
 
