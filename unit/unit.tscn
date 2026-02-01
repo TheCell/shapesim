@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cei8oierqlab3" path="res://unit/unit.gd" id="1_hy15m"]
 [ext_resource type="Shader" uid="uid://r5f26ul0yfun" path="res://Sprites/Palettes/paletteSwap.gdshader" id="2_hs7ws"]
 [ext_resource type="Texture2D" uid="uid://bofgtygxeb675" path="res://defaultWarriorIcon.png" id="3_hs7ws"]
+[ext_resource type="Texture2D" uid="uid://ibjjj3mostj1" path="res://Sprites/Palettes/orsage.png" id="3_japly"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dvrw8"]
 
@@ -12,6 +13,7 @@ radius = 7.736397
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3k25b"]
 resource_local_to_scene = true
 shader = ExtResource("2_hs7ws")
+shader_parameter/palette = ExtResource("3_japly")
 
 [sub_resource type="Animation" id="Animation_japly"]
 length = 0.001

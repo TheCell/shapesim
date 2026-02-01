@@ -3,10 +3,12 @@
 [ext_resource type="Texture2D" uid="uid://8m01rykobaa6" path="res://placeholder_sprites/colored_packed.png" id="1_fon66"]
 [ext_resource type="Script" uid="uid://dkebgdlyklndt" path="res://civilization/building.gd" id="1_p3b7u"]
 [ext_resource type="Shader" uid="uid://r5f26ul0yfun" path="res://Sprites/Palettes/paletteSwap.gdshader" id="2_0c2ly"]
+[ext_resource type="Texture2D" uid="uid://ibjjj3mostj1" path="res://Sprites/Palettes/orsage.png" id="3_xj7dy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0c2ly"]
 resource_local_to_scene = true
 shader = ExtResource("2_0c2ly")
+shader_parameter/palette = ExtResource("3_xj7dy")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p3b7u"]
 atlas = ExtResource("1_fon66")
