@@ -19,6 +19,7 @@ var level: int
 var civilization: Civilization
 var faction: Constants.Civilization
 var civilizationStyle: Constants.CivilizationStyle
+var isRegisteredOnAbility : bool = false
 
 signal destroyed()
 
@@ -32,6 +33,13 @@ func _process(delta: float) -> void:
 	deteriorationCountdown -= delta
 	if deteriorationCountdown <= 0:
 		queue_free()
+	
+	if !isRegisteredOnAbility && GodAbility.this.is_inside_ability(global_position):
+		GodAbility.this.register_unit(self)
+		isRegisteredOnAbility = true
+	elif isRegisteredOnAbility && !GodAbility.this.is_inside_ability(global_position):
+		GodAbility.this.deregister_unit(self)
+		isRegisteredOnAbility = false
 	pushBuildingsAway(delta)
 	
 func pushBuildingsAway(delta: float):
@@ -45,7 +53,7 @@ func pushBuildingsAway(delta: float):
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		if is_instance_valid(civilization):
-			civilization.activeBuildings.erase(self)
+			civilization.removeBuilding(self)
 		destroyed.emit()
 
 func setColor():

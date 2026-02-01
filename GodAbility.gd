@@ -37,7 +37,7 @@ func register_unit(unit: Node) -> void:
 				modify_speed_warrior(warrior, 0.5)
 
 func deregister_unit(unit: Node) -> void:
-	if registered_units.has(unit) :
+	if registered_units.has(unit):
 		registered_units.erase(unit.get_instance_id())
 		
 		if unit.get_script() == unit:
@@ -73,7 +73,7 @@ func apply_timed_ability():
 		for unit in units:
 			if unit.get_script() == unit:
 				var warrior : Unit = unit
-				warrior.hurt(100)
+				warrior.hurt(self, 100)
 				log("hurt enemy %s" + unit.name)
 	
 	pass

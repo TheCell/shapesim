@@ -4,13 +4,6 @@
 [ext_resource type="Script" uid="uid://dskm7r05hjtjq" path="res://civilization/warrior_hut.gd" id="2_ipgye"]
 [ext_resource type="PackedScene" uid="uid://chkb8yps44ino" path="res://unit/unit.tscn" id="3_bei4r"]
 [ext_resource type="Texture2D" uid="uid://8m01rykobaa6" path="res://placeholder_sprites/colored_packed.png" id="3_kxld1"]
-[ext_resource type="Shader" uid="uid://bth67xq88ufow" path="res://civilization/building.gdshader" id="4_kxld1"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0l78d"]
-resource_local_to_scene = true
-shader = ExtResource("4_kxld1")
-shader_parameter/colorChoices = PackedColorArray(1, 0.6901961, 0, 1, 0, 0.6117647, 0, 1, 0.8392157, 0, 0, 1, 0, 0.7647059, 0.94509804, 1, 0.7876666, 0.51, 1, 1)
-shader_parameter/faction = 0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mnvfb"]
 atlas = ExtResource("3_kxld1")
@@ -24,5 +17,4 @@ spawnRadiusMax = 30
 buildingType = 3
 
 [node name="Sprite2D" parent="AnimationPivot" parent_id_path=PackedInt32Array(1095099242) index="0" unique_id=1927129681]
-material = SubResource("ShaderMaterial_0l78d")
 texture = SubResource("AtlasTexture_mnvfb")

@@ -11,7 +11,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3k25b"]
 resource_local_to_scene = true
 shader = ExtResource("2_hs7ws")
-shader_parameter/colorChoices = PackedColorArray(1, 0.6901961, 0, 1, 0, 0.6117647, 0, 1, 0.8392157, 0, 0, 1, 0, 0.7647059, 0.94509804, 1, 0.7876666, 0.51, 1, 1)
+shader_parameter/colorChoices = PackedColorArray(0.8392157, 0, 0, 1, 0, 0.7647059, 0.94509804, 1, 0, 0.6117647, 0, 1, 1, 0.6901961, 0, 1, 0.7876666, 0.51, 1, 1)
 shader_parameter/faction = 0
 
 [sub_resource type="Animation" id="Animation_japly"]
@@ -73,7 +73,6 @@ shape = SubResource("CircleShape2D_hy15m")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1088770684]
 simplify_path = true
-debug_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1929367902]
 material = SubResource("ShaderMaterial_3k25b")

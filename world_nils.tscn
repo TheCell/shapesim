@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c4m1xrhrpndd1" path="res://civilization/civilization_defensive.tscn" id="3_tv236"]
 [ext_resource type="PackedScene" uid="uid://sw7hfyfgh26t" path="res://civilization/civilization.tscn" id="4_7ykjs"]
 [ext_resource type="PackedScene" uid="uid://dn4bhohu6vaxt" path="res://civilization/civilization_fast.tscn" id="4_yyoef"]
+[ext_resource type="PackedScene" uid="uid://cj28gscsj2o3c" path="res://civilization/civilization_science.tscn" id="6_tv236"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_dposi"]
 vertices = PackedVector2Array(1783.0781, 1017.27344, -318.75, 1071.7188, -288.21875, -247.10156, 1667.8594, -267.89844)
@@ -1103,7 +1104,7 @@ civScenes = Dictionary[int, PackedScene]({
 1: ExtResource("4_7ykjs"),
 2: ExtResource("3_tv236"),
 3: ExtResource("4_yyoef"),
-4: ExtResource("4_7ykjs")
+4: ExtResource("6_tv236")
 })
 ground = NodePath("NavigationRegion2D/Ground")
 

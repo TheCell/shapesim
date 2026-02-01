@@ -14,7 +14,7 @@ var civilization: Constants.Civilization
 var civilizationStyle: Constants.CivilizationStyle
 var level: int = 0
 
-var target: Vector2
+var target: Vector2 = Vector2.INF
 var is_fighting: bool = false
 var last_attacked_enemy: Unit
 var last_attacked_building: Building
@@ -53,11 +53,13 @@ func _process(_delta: float) -> void:
 	
 
 func _physics_process(_delta: float) -> void:
-	if has_buildings_in_range() or has_enemies_in_range():
+	if target == Vector2.INF or has_buildings_in_range() or has_enemies_in_range():
 		velocity = Vector2.ZERO
 	else:
 		move_to_hub()
 	move_and_slide()
+	if global_position.distance_squared_to(target) < 2:
+		target = Vector2.INF
 
 func _velocity_computed(safe_velocity: Vector2):
 	velocity = safe_velocity
@@ -87,8 +89,8 @@ func attack_unit() -> void:
 	await get_tree().create_timer(battle_timout).timeout
 	anim.play("attack")
 	var random_damage_modifier := randf_range(1.0, 5.0)
-	if is_instance_valid(last_attacked_building):
-		last_attacked_enemy.hurt(damage + random_damage_modifier)
+	if is_instance_valid(last_attacked_enemy):
+		last_attacked_enemy.hurt(self, damage + random_damage_modifier)
 	is_fighting = false
 
 func attack_building() -> void:
@@ -127,11 +129,12 @@ func has_buildings_in_range() -> bool:
 			return !is_instance_valid(building.civilization) || self.civilization != building.faction
 	)
 
-func hurt(enemy_damage: float) -> void:
+func hurt(node: Node2D, enemy_damage: float) -> void:
 	if health - enemy_damage > 0:
 		health -= enemy_damage
 	else:
-		Events.unit_died.emit(last_attacked_enemy.civilization, civilization, false)
+		if node is Unit:
+			Events.unit_died.emit(node.civilization, civilization, false)
 		queue_free()
 
 func _notification(what: int) -> void:
