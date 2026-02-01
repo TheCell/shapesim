@@ -9,17 +9,18 @@ light_mode = 1
 [node name="NewsTicker" type="Node2D" unique_id=491788212]
 script = ExtResource("1_jdx5n")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1968678]
+offset_right = 400.0
+offset_bottom = 648.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.52, 0.32118666, 0.19759999, 1)
+
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1442420457]
 custom_minimum_size = Vector2(400, 600)
 offset_right = 200.0
 offset_bottom = 500.0
 vertical_scroll_mode = 3
-
-[node name="ColorRect" type="ColorRect" parent="ScrollContainer" unique_id=1968678]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0.52, 0.32118666, 0.19759999, 1)
 
 [node name="NewsFeed" type="VBoxContainer" parent="ScrollContainer" unique_id=809648248]
 material = SubResource("CanvasItemMaterial_jdx5n")
