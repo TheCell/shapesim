@@ -26,8 +26,8 @@ var is_dead: bool = false
 var isRegisteredOnAbility : bool = false
 var godAbility : GodAbility
 
-var overlappingUnits: Dictionary[Unit, bool] = {} # Hashset
-var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
+var overlappingEnemyUnits: Dictionary[Unit, bool] = {} # Hashset
+var overlappingEnemyBuildings: Dictionary[Building, bool] = {} # Hashset
 
 func _ready() -> void:
 	dead_timer.timeout.connect(_on_dead_timer_timeout)
@@ -41,9 +41,9 @@ func initSprite():
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.paletteFilePaths.pick_random()))
 
 func _process(_delta: float) -> void:
-	if has_enemies_in_range() and not is_fighting:
+	if len(overlappingEnemyUnits) > 0 and not is_fighting:
 		attack_unit()
-	elif has_buildings_in_range() and not is_fighting:
+	elif len(overlappingEnemyBuildings) and not is_fighting:
 		attack_building()
 	
 	
@@ -53,11 +53,10 @@ func _process(_delta: float) -> void:
 	elif isRegisteredOnAbility && !godAbility.is_inside_ability(global_position):
 		godAbility.deregister_unit(self)
 		isRegisteredOnAbility = false
-		
-	
+
 
 func _physics_process(_delta: float) -> void:
-	if target == Vector2.INF or has_buildings_in_range() or has_enemies_in_range():
+	if target == Vector2.INF or len(overlappingEnemyBuildings) > 0 or len(overlappingEnemyUnits):
 		velocity = Vector2.ZERO
 	else:
 		move_to_hub()
@@ -110,25 +109,13 @@ func attack_building() -> void:
 	is_fighting = false
 
 func get_enemies_in_range() -> Array[Unit]:
-	return overlappingUnits.keys().filter(
+	return overlappingEnemyUnits.keys().filter(
 		func(unit: Unit) -> bool:
 			return self.civilization != unit.civilization
 	)
 
 func get_buildings_in_range() -> Array[Building]:
-	return overlappingBuildings.keys().filter(
-		func(building: Building) -> bool:
-			return !is_instance_valid(building.civilization) || self.civilization != building.faction
-	)
-
-func has_enemies_in_range() -> bool:
-	return overlappingUnits.keys().any(
-		func(unit: Unit) -> bool:
-			return self.civilization != unit.civilization
-	)
-
-func has_buildings_in_range() -> bool:
-	return overlappingBuildings.keys().any(
+	return overlappingEnemyBuildings.keys().filter(
 		func(building: Building) -> bool:
 			return !is_instance_valid(building.civilization) || self.civilization != building.faction
 	)
@@ -175,18 +162,18 @@ func _on_dead_timer_timeout() -> void:
 		queue_free()
 
 func _on_attack_range_area_entered(area: Area2D) -> void:
-	if area is Building:
-		overlappingBuildings[area as Building] = true
+	if area is Building && (!is_instance_valid(area.civilization) || civilization != area.faction):
+		overlappingEnemyBuildings[area as Building] = true
 
 
 func _on_attack_range_area_exited(area: Area2D) -> void:
-	overlappingBuildings.erase(area as Building)
+	overlappingEnemyBuildings.erase(area as Building)
 
 
 func _on_attack_range_body_entered(body: Node2D) -> void:
-	if body is Unit:
-		overlappingUnits[body as Unit] = true
+	if body is Unit && civilization != body.civilization:
+		overlappingEnemyUnits[body as Unit] = true
 
 
 func _on_attack_range_body_exited(body: Node2D) -> void:
-	overlappingUnits.erase(body)
+	overlappingEnemyUnits.erase(body)
