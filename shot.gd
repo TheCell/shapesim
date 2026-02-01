@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	var unit: Unit = body as Unit
-	if unit && unit.civilization != faction && !collided:
+	if unit && unit.civilization != faction && !collided && !unit.is_dead:
 		unit.hurt(self, damage)
 		collided = true # prevent double collision in same frame.
 		queue_free()

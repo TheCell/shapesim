@@ -17,16 +17,22 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	untilShot -= delta
 	if untilShot <= 0 && len(enemiesInRange) > 0:
-		shoot()
+		var attackedUnit: Unit = null
+		for u in enemiesInRange.keys():
+			if is_instance_valid(u) && !u.is_dead:
+				attackedUnit = u
+				break
+		if attackedUnit:
+			shoot(attackedUnit)
 		
-func shoot():
+func shoot(target: Unit):
 	var damageMod = civilization.stats.totalDamageModifier(civilization.level) if is_instance_valid(civilization) else lastAvailableMilitaryModifier
-	var unit = enemiesInRange.keys().pick_random()
+	
 	var shot = shotScene.instantiate() as Shot
 	shot.faction = faction
 	shot.global_position = global_position
 	shot.damage *= damageMod
-	shot.direction = global_position.direction_to(unit.global_position)
+	shot.direction = global_position.direction_to(target.global_position)
 	untilShot = shotCooldown
 	World.this.add_child(shot)
 

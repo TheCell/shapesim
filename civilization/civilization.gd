@@ -223,14 +223,16 @@ func recalculateLevel():
 	var newLevel = i
 	
 	if newLevel > level:
-		campfire.maxHealth = stats.totalBuildingHealth(level)
-		campfire.health = campfire.maxHealth
+		if is_instance_valid(campfire):
+			campfire.maxHealth = stats.totalBuildingHealth(level)
+			campfire.health = campfire.maxHealth
 		Eventbus.this.civ_reached_level.emit(faction, newLevel)
 	elif newLevel < level:
 		Eventbus.this.civ_descended_level.emit(faction, newLevel)
 	level = newLevel
-	campfire.level = newLevel
-	campfire.setColor()
+	if is_instance_valid(campfire):
+		campfire.level = newLevel
+		campfire.setColor()
 
 func removeBuilding(b: Building):
 	activeBuildings.erase(b)
