@@ -1,7 +1,7 @@
 class_name CivilizationStat
 extends Resource
 
-@export var buildRangeFromCampfire: float = 200
+@export var buildRangeFromCampfire: float = 150
 
 @export var baseBuildingHealth: int = 100
 @export var baseWarriorHealth: int = 100
@@ -10,6 +10,7 @@ extends Resource
 @export var militaryActionFrequencyModifier: float = 1
 @export var buildingBreakpointsForLevel = [6, 16, 30, 1 << 62]
 
+var lazyBaseStats: Dictionary[String, float] = {}
 
 var stats = [
 	"baseBuildingHealth",
@@ -21,36 +22,37 @@ var stats = [
 
 func buffRandomStat(factor: float, summand: float):
 	var stat = stats.pick_random()
-	factor = 1.1
-	set(stat, get(stat) * factor + summand)
+	if !lazyBaseStats.has(stat):
+		lazyBaseStats[stat] = get(stat)
+	set(stat, get(stat) + factor * lazyBaseStats[stat])
 
 # TODO: stupid code
 static func getBuildingHealthModifierForLevel(level: int):
-	return 1.2 * level
+	return pow(1.2, level)
 
 static func getWarriorHealthModifierForLevel(level: int):
-	return 1.1 * level
+	return pow(1.1, level)
 
 static func getDamageModifierForLevel(level: int):
-	return 1.2 * level
+	return pow(1.2, level)
 	
-static func getMilitaryFrequencyodifierForLevel(level: int):
-	return 1.1 * level
+static func getMilitaryFrequencyModifierForLevel(level: int):
+	return pow(1.1, level)
 	
 static func getDecayCountdown(buildingType: Constants.BuildingType, level: int):
-	var base = 10
+	var base = 20
 	var r = base + randf() * base * 0.2 - base * 0.1
 	var growthByLevel = 1.3
 	return pow(growthByLevel, level) * r
 
 func getBuildingRange(level: int):
-	return 1.2 * level * buildRangeFromCampfire
+	return pow(1.2, level) * buildRangeFromCampfire
 
 func totalDamageModifier(level: int):
 	return militaryDamageModifier * getDamageModifierForLevel(level)
 
 func totalMilitarySpeedModifier(level: int):
-	return militaryActionFrequencyModifier * getMilitaryFrequencyodifierForLevel(level)
+	return militaryActionFrequencyModifier * getMilitaryFrequencyModifierForLevel(level)
 
 func totalBuildingHealth(level: int):
 	return baseBuildingHealth * getBuildingHealthModifierForLevel(level)

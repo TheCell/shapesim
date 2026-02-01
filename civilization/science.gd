@@ -4,7 +4,7 @@ extends Building
 @export var gainStatPointsCooldown = 3
 var untilGainStatPoints = 3
 
-@export var statIncreaseFactor = 1.1
+@export var statIncreaseFactor = 0.1
 @export var statIncreaseSummand = 0
 
 func _ready() -> void:
