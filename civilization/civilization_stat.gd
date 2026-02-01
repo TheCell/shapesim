@@ -21,23 +21,24 @@ var stats = [
 
 func buffRandomStat(factor: float, summand: float):
 	var stat = stats.pick_random()
+	factor = 1.1
 	set(stat, get(stat) * factor + summand)
 
 # TODO: stupid code
 static func getBuildingHealthModifierForLevel(level: int):
-	return pow(1.2, level)
+	return 1.2 * level
 
 static func getWarriorHealthModifierForLevel(level: int):
-	return pow(1.1, level)
+	return 1.1 * level
 
 static func getDamageModifierForLevel(level: int):
-	return pow(1.2, level)
+	return 1.2 * level
 	
 static func getMilitaryFrequencyodifierForLevel(level: int):
-	return pow(1.1, level)
+	return 1.1 * level
 
 func getBuildingRange(level: int):
-	return pow(1.2, level) * buildRangeFromCampfire
+	return 1.2 * level * buildRangeFromCampfire
 
 func totalDamageModifier(level: int):
 	return militaryDamageModifier * getDamageModifierForLevel(level)
