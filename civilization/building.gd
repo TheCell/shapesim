@@ -8,6 +8,7 @@ const MAX_HEALTH: float = 100.0
 
 @export var deteriorationCountdown: float = INF
 @export var health: float = 100.0
+var maxHealth: float
 @export var animation_player: AnimationPlayer
 @export var sprite_2d: Sprite2D
 @export var buildingType: Constants.BuildingType
@@ -29,6 +30,8 @@ signal destroyed()
 func _ready() -> void:
 	animation_player.play("spawn")
 	level = civilization.level
+	maxHealth = health
+	health_bar.max_value = maxHealth
 	setColor()
 	
 	godAbility = GodAbility.this

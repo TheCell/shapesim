@@ -1,4 +1,4 @@
-[gd_resource type="Theme" format=3 uid="uid://kl4xo2lge00r"]
+[gd_resource type="Theme" format=3 uid="uid://cneiupowucwnc"]
 
 [ext_resource type="StyleBox" uid="uid://dbf557g0mdb3j" path="res://Sprites/GodAbility/GodAbilityButton.tres" id="1_2toy1"]
 [ext_resource type="Texture2D" uid="uid://drgwrh3gdulx4" path="res://Sprites/GodAbility/AbilityButton_Active2.png" id="2_gcgcp"]

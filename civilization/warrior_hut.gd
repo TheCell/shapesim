@@ -9,7 +9,6 @@ static var warriorScene: PackedScene = preload("res://unit/unit.tscn")
 var lastAvailableMilitaryModifier: float = 1.0
 var lastAvailableWarriorHealth: float = 100
 
-signal spawnedWarrior(unit: Unit)
 
 func _ready() -> void:
 	super._ready()
@@ -21,8 +20,10 @@ func _process(delta: float) -> void:
 		return
 	untilWarriorSpawn -= delta
 	
-	while (untilWarriorSpawn <= 0):
+	if untilWarriorSpawn <= 0 && Civilization.allowedToSpawnUnit(faction):
 		spawnWarrior()
+		untilWarriorSpawn = warriorSpawnCooldown
+		
 
 func spawnWarrior():
 	var damageModifier = civilization.stats.totalDamageModifier(civilization.level) if is_instance_valid(civilization) else lastAvailableMilitaryModifier
@@ -37,11 +38,9 @@ func spawnWarrior():
 	warrior.damage *= damageModifier
 	warrior.health = health
 	warrior.level = level
-	spawnedWarrior.emit(warrior)
 	World.this.factionToUnits[faction].append(warrior)
 	Eventbus.this.civ_total_troops_equal.emit(faction, len(World.this.factionToUnits[faction]))
 	World.this.add_child(warrior)
-	untilWarriorSpawn += warriorSpawnCooldown
 
 static func spawn_warrior(spawn_pos: Vector2, civilization : Constants.Civilization, civilizationStyle : Constants.CivilizationStyle) -> Unit:
 	var warrior := warriorScene.instantiate() as Unit

@@ -26,6 +26,8 @@ func buffRandomStat(factor: float, summand: float):
 	var stat = stats.pick_random()
 	if !lazyBaseStats.has(stat):
 		lazyBaseStats[stat] = get(stat)
+	if stat == "militaryActionFrequencyModifier":
+		factor /= 2
 	set(stat, get(stat) + factor * lazyBaseStats[stat])
 
 # TODO: stupid code

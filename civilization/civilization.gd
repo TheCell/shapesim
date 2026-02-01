@@ -6,6 +6,8 @@ var debugLabel: Label
 
 var faction: Constants.Civilization
 const chillingDoNothingChance = 0.2
+const MAX_UNIT_CAP = 50
+const MAX_BUILDINGS_CAP = 60
 
 @export var buildingToScene: Dictionary[Constants.BuildingType, PackedScene] = {
 	Constants.BuildingType.Campfire: null,
@@ -63,16 +65,21 @@ func getRandomIncreasableStat():
 
 func makeCampfire():
 	campfire = buildingToScene[Constants.BuildingType.Campfire].instantiate() as Campfire
-	campfire.destroyed.connect(queue_free)
+	campfire.destroyed.connect(destroyCivilization)
 	campfire.global_position = global_position
 	campfire.civilization = self
 	campfire.faction = faction
 	activeBuildings.append(campfire)
 	World.this.add_child(campfire)
+	
+func destroyCivilization():
+	for w in World.this.factionToUnits[faction]:
+		w.queue_free()
+	queue_free()
 
 func _process(delta: float) -> void:
 	untilBuildingPlaced -= delta
-	while untilBuildingPlaced <= 0:
+	while untilBuildingPlaced <= 0 && allowedToSpawnBuilding():
 		placeRandomBuilding()
 		untilBuildingPlaced += max(buildingPlaceCooldown / stats.buildFrequencyModifier, 1)
 	untilWarriorsRedirect -= delta
@@ -215,6 +222,8 @@ func recalculateLevel():
 			(building as WatchTower).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
 	var newLevel = i
 	if newLevel > level:
+		campfire.maxHealth = stats.totalBuildingHealth(level)
+		campfire.health = campfire.maxHealth
 		Eventbus.this.civ_reached_level.emit(faction, newLevel)
 	elif newLevel < level:
 		Eventbus.this.civ_descended_level.emit(faction, newLevel)
@@ -227,3 +236,9 @@ func removeBuilding(b: Building):
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		World.this.civilizations.erase(faction)
+		
+func allowedToSpawnBuilding():
+	return len(activeBuildings) < MAX_BUILDINGS_CAP
+
+static func allowedToSpawnUnit(faction: Constants.Civilization):
+	return len(World.this.factionToUnits[faction]) < MAX_BUILDINGS_CAP

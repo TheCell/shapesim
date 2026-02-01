@@ -3,6 +3,8 @@ extends Node2D
 
 static var this : GodAbility
 
+const MAX_ENTITY_DUPLICATION_PER_INVOCATION = 12
+
 @export var ability_config_entries: Array[AbilityResource] = []
 
 var abilityConfigs: Dictionary = {} # AbilityType -> AbilityResource
@@ -89,6 +91,7 @@ func _ready() -> void:
 	print("abilityConfigs keys = ", abilityConfigs.keys())
 	
 	set_active_ability(activeAbility)
+	set_shader_sizes()
 
 func update_ability_sizes(modifier : float) :
 	circle_radius *= modifier
@@ -257,20 +260,26 @@ func apply_timed_ability():
 			
 			if unit is Unit:
 				var warrior : Unit = unit
-				hurt_warrior(warrior, max(damageAmount, warrior.health_bar.max_value / 3))
+				hurt_warrior(warrior, max(damageAmount, warrior.maxHealth / 3))
 			elif unit is Building:
 				var building : Building = unit
-				hurt_building(building, max(damageAmount, building.health_bar.max_value / 3))
+				var damage = max(damageAmount, building.maxHealth / 3)
+				if building is Campfire:
+					damage = building.maxHealth / 10
+				hurt_building(building, damage)
 	elif activeAbility == Constants.AbilityType.Heal:
 		activatedAbility = true
 		var warrior_count := 0
 		var building_count := 0
 		for unit in units:
-			if unit is Unit:
+			if warrior_count >= MAX_ENTITY_DUPLICATION_PER_INVOCATION && building_count >= MAX_ENTITY_DUPLICATION_PER_INVOCATION:
+				break
+				
+			if unit is Unit && warrior_count < MAX_ENTITY_DUPLICATION_PER_INVOCATION:
 				var warrior : Unit = unit
 				heal_warrior(warrior, healAmount)
 				warrior_count += 1
-			if unit is Building:
+			if unit is Building && building_count < MAX_ENTITY_DUPLICATION_PER_INVOCATION:
 				var building : Building = unit
 				heal_building(building, healAmount)
 				building_count += 1
@@ -321,14 +330,14 @@ func apply_timed_ability():
 		var warrior_count := 0
 		var building_count := 0
 		for unit in units:
-				if unit is Unit:
+				if unit is Unit && Civilization.allowedToSpawnUnit(unit.civilization):
 					var warrior : Unit = unit
 					WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
 					warrior_count += 1
 				elif unit is Building && !(unit is Campfire):
 					var building: Building = unit
-					building_count += 1
-					if building.civilization:
+					if building.civilization && building.civilization.allowedToSpawnBuilding():
+						building_count += 1
 						building.civilization.place(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
 					
 		Eventbus.this.warriors_duplicated.emit(warrior_count)

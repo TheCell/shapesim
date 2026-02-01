@@ -1,7 +1,7 @@
 class_name Unit
 extends CharacterBody2D
 
-var max_health: float = 100.0
+var maxHealth: float = 100.0
 @export var health: float = 100.0
 @export var damage: float = 10.0
 @export var speed: float = 100.0
@@ -31,7 +31,7 @@ var overlappingEnemyUnits: Dictionary[Unit, bool] = {} # Hashset
 var overlappingEnemyBuildings: Dictionary[Building, bool] = {} # Hashset
 
 func _ready() -> void:
-	max_health = health
+	maxHealth = health
 	health_bar.max_value = health
 	dead_timer.timeout.connect(_on_dead_timer_timeout)
 	_actor_setup.call_deferred()
@@ -143,7 +143,7 @@ func heal(amount: float) -> void:
 		dead_timer.wait_time = 5.0
 		is_dead = false
 		enable()
-	if health + amount < max_health:
+	if health + amount < maxHealth:
 		health += amount
 
 func disable() -> void:
