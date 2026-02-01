@@ -22,8 +22,7 @@ func _ready():
 	
 	for x in range(0, cornerBottomRight.x):
 		for y in range(0, cornerBottomRight.y):
-			var idx := rng.randi_range(0, tileCoords.size() - 1)
-			var atlas_coords: Vector2i = _pick_random_tile_nonzero()
+			var atlas_coords: Vector2i = tileCoords[tileCoords.size() - 1]
 			set_cell(Vector2i(x, y), 0, atlas_coords) # alternative_tile defaults to 0
 	
 	navigationRegion.bake_navigation_polygon()
@@ -39,26 +38,61 @@ func RefillDepletedCells() -> void:
 	depleted_cells_array.clear()
 
 
-func ApplyMeteorImpact(impactPositionLocal: Vector2i, radius: float) -> void:
-	radius = radius / 32
-	var r := int(ceil(radius))
-	var r2 := radius * radius
+func ApplyMeteorImpact(impactPositionLocal: Vector2, _radius_unused: float = 0.0) -> void:
+	# We now respect GodAbility's SDF shape. Radius parameter is ignored on purpose.
+	if GodAbility.this == null:
+		return
 	
-	var impactPosition : Vector2i = local_to_map(impactPositionLocal)
+	var ability := GodAbility.this
 	
-	for dx in range(-r, r + 1):
-		for dy in range(-r, r + 1):
-			var cell := impactPosition + Vector2i(dx, dy)
+	# Tile size (world units / pixels) — you said 32 px
+	var cell_size: Vector2 = Vector2(32, 32)
+	
+	# Padding so partially overlapping tiles count as "hit".
+	# Half-diagonal (~22.6 px) feels best for corners.
+	var padding: float = cell_size.length() * 0.5
+	
+	# Impact center in map space
+	var impact_cell: Vector2i = local_to_map(impactPositionLocal)
+	
+	# Conservative scan radius in world units from the current shape,
+	# then convert to cell radius for iteration.
+	var scan_extent_world: float = 0.0
+	match ability.shape:
+		ability.AbilityShape.CIRCLE:
+			scan_extent_world = ability.circle_radius
+		ability.AbilityShape.BOX:
+			scan_extent_world = maxf(ability.box_half_size.x, ability.box_half_size.y)
+		ability.AbilityShape.ROUNDED_BOX:
+			scan_extent_world = maxf(ability.box_half_size.x, ability.box_half_size.y) + ability.box_round_radius
+		ability.AbilityShape.CAPSULE:
+			scan_extent_world = ability.capsule_half_segment.length() + ability.capsule_radius
+		_:
+			scan_extent_world = 0.0
+	
+	# Add padding to the scan extent so we don't miss edge tiles
+	scan_extent_world += padding
+	
+	var r_cells_x := int(ceili(scan_extent_world / cell_size.x)) + 1
+	var r_cells_y := int(ceili(scan_extent_world / cell_size.y)) + 1
+	
+	for dx in range(-r_cells_x, r_cells_x + 1):
+		for dy in range(-r_cells_y, r_cells_y + 1):
+			var cell := impact_cell + Vector2i(dx, dy)
 			
-			# bounds check (your bounds are end-exclusive in _ready(), keep consistent)
+			# bounds check
 			if cell.x < 0 or cell.x >= cornerBottomRight.x:
 				continue
 			if cell.y < 0 or cell.y >= cornerBottomRight.y:
 				continue
 			
-			# circle check
-			var d2 := float(dx * dx + dy * dy)
-			if d2 > r2:
+			# Compute cell center in GLOBAL coords
+			var cell_local_center: Vector2 = map_to_local(cell) + cell_size * 0.5
+			var cell_global_center: Vector2 = to_global(cell_local_center)
+			
+			# SDF padded test: inside if distance <= padding
+			# (negative is inside, small positive means "near edge", include those tiles too)
+			if ability.sdf_world(cell_global_center) > padding:
 				continue
 			
 			# skip empty cells
@@ -67,9 +101,8 @@ func ApplyMeteorImpact(impactPositionLocal: Vector2i, radius: float) -> void:
 				continue
 			
 			# decrement atlas x (clamp at 0)
-			var new_x : int = max(atlas.x - 1, 0)
-			var new_atlas := Vector2i(new_x, atlas.y)
-			set_cell(cell, 0, new_atlas)
+			var new_x: int = max(atlas.x - 1, 0)
+			set_cell(cell, 0, Vector2i(new_x, atlas.y))
 			
 			# record cells that reached x == 0
 			if new_x == 0 and not depleted_cells.has(cell):
@@ -77,6 +110,8 @@ func ApplyMeteorImpact(impactPositionLocal: Vector2i, radius: float) -> void:
 				depleted_cells_array.append(cell)
 	
 	navigationRegion.bake_navigation_polygon()
+
+
 
 # NEW: helper – pick a random tile that is NOT (0, 0)
 func _pick_random_tile_nonzero() -> Vector2i:
