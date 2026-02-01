@@ -1,8 +1,9 @@
 shader_type canvas_item;
 uniform sampler2D palette;
+varying vec4 modulate;
 
 void vertex() {
-	// Called for every vertex the material is visible on.
+	modulate = COLOR;
 }
 
 void fragment() {
@@ -10,5 +11,5 @@ void fragment() {
 	vec4 swappedCol = texture(palette, vec2(bw.r, 0));
 	
 	COLOR = swappedCol;
-	COLOR.a = bw.a;
+	COLOR.a = bw.a * modulate.a;
 }
