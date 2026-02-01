@@ -1126,7 +1126,7 @@ activeAbility = 4
 
 [node name="NewsTicker" parent="CanvasLayer" unique_id=491788212 instance=ExtResource("5_7el6r")]
 
-[node name="Score" parent="." unique_id=293657292 instance=ExtResource("10_r7nxj")]
+[node name="Score" parent="CanvasLayer" unique_id=293657292 instance=ExtResource("10_r7nxj")]
 anchors_preset = 0
 anchor_left = 0.0
 anchor_right = 0.0
