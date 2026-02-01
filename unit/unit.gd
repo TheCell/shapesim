@@ -11,6 +11,7 @@ const MAX_HEALTH: float = 100.0
 @export var anim: AnimationPlayer
 @export var nav: NavigationAgent2D
 @export var dead_timer: Timer
+@export var health_bar: TextureProgressBar
 
 var civilization: Constants.Civilization
 var civilizationStyle: Constants.CivilizationStyle
@@ -41,6 +42,7 @@ func initSprite():
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[civilization]))
 
 func _process(_delta: float) -> void:
+	health_bar.value = health
 	if len(overlappingEnemyUnits) > 0 and not is_fighting and not is_dead:
 		attack_unit()
 	elif len(overlappingEnemyBuildings) and not is_fighting and not is_dead:
