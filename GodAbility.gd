@@ -54,26 +54,26 @@ func _enter_tree():
 
 func _ready() -> void:
 	abilityConfigs.clear()
-
+	
 	print("ability_config_entries size = ", ability_config_entries.size())
-
+	
 	for i in range(ability_config_entries.size()):
 		var e := ability_config_entries[i]
 		if e == null:
 			push_warning("ability_config_entries[%d] is null" % i)
 			continue
-
+		
 		print("entry[%d] type=%s abilityType=%s (%d)" % [
 			i,
 			e.get_class(),
 			Constants.AbilityType.keys()[int(e.abilityType)],
 			int(e.abilityType)
 		])
-
+		
 		# Guard against duplicate keys
 		if abilityConfigs.has(int(e.abilityType)):
 			push_warning("Duplicate abilityType: %s - overwriting previous config" % Constants.AbilityType.keys()[int(e.abilityType)])
-
+		
 		abilityConfigs[int(e.abilityType)] = e
 		
 		set_ability_shape(shape)
@@ -81,6 +81,8 @@ func _ready() -> void:
 
 
 	print("abilityConfigs keys = ", abilityConfigs.keys())
+	
+	set_active_ability(activeAbility)
 
 
 
@@ -208,13 +210,16 @@ func Set_Position(target: Vector2) -> void:
 
 func apply_timed_ability():
 	var units : Array[Node2D] = get_units_alive()
-	
 	var activatedAbility : bool = false
 	
 	if activeAbility == Constants.AbilityType.Meteorite:
 		activatedAbility = true
 		GroundController.this.ApplyMeteorImpact(global_position, radius)
 		for unit in units:
+			if GroundController.this and GroundController.this.is_world_pos_void(unit.global_position):
+				unit.queue_free()
+				continue
+
 			if unit is Unit:
 				var warrior : Unit = unit
 				hurt_warrior(warrior, damageAmount)
@@ -288,7 +293,8 @@ func apply_timed_ability():
 				if unit is Building:
 					var building: Building = unit
 					building_count += 1
-					building.civilization.place(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
+					if building.civilization:
+						building.civilization.place(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
 					
 		Eventbus.this.warriors_duplicated.emit(warrior_count)
 		Eventbus.this.buildings_duplicated.emit(building_count)

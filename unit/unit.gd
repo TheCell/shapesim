@@ -126,11 +126,11 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 	if health - enemy_damage > 0:
 		health -= enemy_damage
 	else:
+		disable()
+		dead_timer.start()
 		if entity is Unit:
 			Eventbus.this.unit_died.emit(entity.civilization, civilization, false)
 			Eventbus.this.died.emit(self)
-			disable()
-			dead_timer.start()
 
 func heal(amount: float) -> void:
 	if is_dead:

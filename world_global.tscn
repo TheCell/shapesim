@@ -32,7 +32,7 @@ civScenes = Dictionary[int, PackedScene]({
 navigation_polygon = SubResource("NavigationPolygon_dposi")
 
 [node name="Ground" parent="NavigationRegion2D" unique_id=109766996 instance=ExtResource("13_qxxs8")]
-cornerBottomRight = Vector2i(30, 20)
+cornerBottomRight = Vector2i(50, 30)
 
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
 activeAbility = 6

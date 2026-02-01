@@ -13,6 +13,9 @@ static var this: World
 }
 @export var ground: TileMapLayer
 
+@export var civRespawnTimer: float = 10
+var untilCivRespawn: float = 0
+
 var civilizations: Dictionary[Constants.Civilization, Civilization] = {}
 
 var factionToUnits: Dictionary[Constants.Civilization, Array] = {
@@ -25,17 +28,21 @@ var factionToUnits: Dictionary[Constants.Civilization, Array] = {
 
 func _ready() -> void:
 	this = self
+	untilCivRespawn = civRespawnTimer
 	init_civilizations()
 
 func init_civilizations():
 	for faction in Constants.Civilization.values():
-		var civ = civScenes[faction].instantiate() as Civilization
-		civ.position = Vector2(randf() * get_viewport_rect().grow(-100).size.x, randf() * get_viewport_rect().grow(-50).size.y)
-		civ.faction = faction
-		add_child(civ)
-		civilizations[faction] = civ
+		spawnCivilization(faction)
+		
+func spawnCivilization(faction: Constants.Civilization):
+	var civ = civScenes[faction].instantiate() as Civilization
+	civ.position = Vector2(randf() * get_viewport_rect().grow(-100).size.x, randf() * get_viewport_rect().grow(-50).size.y)
+	civ.faction = faction
+	add_child(civ)
+	civilizations[faction] = civ
 
-func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighting: Dictionary[Constants.Civilization, float]) -> Constants.Civilization:
+func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighting: Dictionary) -> Constants.Civilization:
 	var totalWeights = 0
 	for faction in weighting:
 		if faction == except:
@@ -66,7 +73,21 @@ func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighti
 
 func _process(delta: float) -> void:
 	spawn.call_deferred()
+	if len(civilizations) < len(Constants.Civilization.values()):
+		untilCivRespawn -= delta
+		if untilCivRespawn <= 0:
+			respawnNonPresentCiv()
+			untilCivRespawn = civRespawnTimer
+
+func respawnNonPresentCiv():
+	var dedCivs = Constants.Civilization.values()
+	for alive in civilizations.keys():
+		dedCivs.erase(alive)
 	
+	var toSpawn = dedCivs.pick_random()
+	spawnCivilization(toSpawn)
+	print("Respawned civ " + Constants.Civilization.find_key(toSpawn))
+
 func spawn():
 	#TODO: remove this test method.
 	if Input.is_action_just_pressed("ui_accept"):
