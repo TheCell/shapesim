@@ -10,7 +10,7 @@ var news_queue: Array[Dictionary] = []
 var news_article = preload("res://newsticker/news_article.tscn")
 var time_since_last_news := 0.0;
 var next_news_timestamp := 2.0 + randf() * 3.0;
-var max_news_count := 8;
+var max_news_count := 12;
 
 var generic_headline_usage: Dictionary = {}
 var generic_description_usage: Dictionary = {}
@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 		return
 		
 	time_since_last_news = 0.0;
-	next_news_timestamp = 2.0 + randf() * 3.0;
+	next_news_timestamp = get_next_news_timestamp();
 	#new_headline();
 	#new_styled_headline();
 	#var triggered_news = news_queue.front()
@@ -169,6 +169,33 @@ func clean_oldest_headline() -> void:
 		for n in children.size():
 			if  n < children.size() - max_news_count:
 				children[n].queue_free()
+
+func get_next_news_timestamp() -> float:
+	var next_time := 2.0
+	
+	if news_queue.size() > 6:
+		next_time = 0.2
+	elif news_queue.size() > 4:
+		next_time = 0.5
+	elif news_queue.size() > 3:
+		next_time = 1.0
+	elif news_queue.size() > 2:
+		next_time = 2.0
+	elif news_queue.size() <= 2:
+		next_time = 2.0 + randf() * 2.0
+	return next_time
+
+
+
+
+
+
+
+
+
+
+
+
 
 # News functions
 
