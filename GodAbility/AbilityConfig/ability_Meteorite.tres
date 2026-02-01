@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AbilityResource" format=3 uid="uid://c4ifr8t1k6gd1"]
+
+[ext_resource type="PackedScene" uid="uid://jomc87asdbud" path="res://GodAbility/AbilityConfig/AbilityPS.tscn" id="1_kxni5"]
+[ext_resource type="Script" uid="uid://ct711xnnya528" path="res://GodAbility/AbilityConfig/AbilityResource.gd" id="2_6ktbp"]
+
+[resource]
+script = ExtResource("2_6ktbp")
+abilityType = 3
+abilityParticleSystem = ExtResource("1_kxni5")
+abilityColour = Color(0.9719352, 0, 0.45177084, 1)

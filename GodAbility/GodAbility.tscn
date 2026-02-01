@@ -2,12 +2,23 @@
 
 [ext_resource type="Script" uid="uid://hh7yv5eip1hl" path="res://GodAbility.gd" id="1_bscov"]
 [ext_resource type="Texture2D" uid="uid://d3tolxm1x44sg" path="res://icon.svg" id="2_37ipy"]
+[ext_resource type="Script" uid="uid://ct711xnnya528" path="res://GodAbility/AbilityConfig/AbilityResource.gd" id="2_gxcpm"]
+[ext_resource type="Resource" uid="uid://0ryiyimk6tpd" path="res://GodAbility/AbilityConfig/ability_Speedup.tres" id="3_kh2yg"]
+[ext_resource type="Resource" uid="uid://c2c7njanu1pit" path="res://GodAbility/AbilityConfig/ability_duplicate.tres" id="4_4uetr"]
+[ext_resource type="Resource" uid="uid://cn3g70rjys5jm" path="res://GodAbility/AbilityConfig/ability_Heal.tres" id="4_cu7ui"]
+[ext_resource type="Resource" uid="uid://dd1ihxf6eurub" path="res://GodAbility/AbilityConfig/ability_Pull.tres" id="5_8m2rb"]
+[ext_resource type="Resource" uid="uid://dhb177j7yrpbu" path="res://GodAbility/AbilityConfig/ability_Slowdown.tres" id="5_nppyf"]
+[ext_resource type="Resource" uid="uid://c5cilyukfa20f" path="res://GodAbility/AbilityConfig/ability_Push.tres" id="6_np2x5"]
+[ext_resource type="Resource" uid="uid://c4ifr8t1k6gd1" path="res://GodAbility/AbilityConfig/ability_Meteorite.tres" id="9_pau5o"]
+[ext_resource type="Texture2D" uid="uid://bofgtygxeb675" path="res://defaultWarriorIcon.png" id="11_8m2rb"]
 
-[node name="GodAbility" type="Node2D" unique_id=61948950 node_paths=PackedStringArray("abilityTimer")]
+[node name="GodAbility" type="Node2D" unique_id=61948950 node_paths=PackedStringArray("abilityTimer", "particleSystem")]
 script = ExtResource("1_bscov")
+ability_config_entries = Array[ExtResource("2_gxcpm")]([ExtResource("4_4uetr"), ExtResource("4_cu7ui"), ExtResource("5_8m2rb"), ExtResource("6_np2x5"), ExtResource("5_nppyf"), ExtResource("3_kh2yg"), ExtResource("9_pau5o")])
 radius = 50.0
 abilityCooldown = 1.0
 abilityTimer = NodePath("Timer")
+particleSystem = NodePath("CPUParticles2D")
 healAmount = 50.0
 damageAmount = 100.0
 pushForce = 200.0
@@ -19,5 +30,18 @@ texture = ExtResource("2_37ipy")
 
 [node name="Timer" type="Timer" parent="." unique_id=1507320937]
 autostart = true
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1379888070]
+amount = 200
+texture = ExtResource("11_8m2rb")
+direction = Vector2(50, 120)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 40.0
+linear_accel_min = 40.0
+linear_accel_max = 120.0
+scale_amount_min = 0.01
+scale_amount_max = 0.2
 
 [connection signal="timeout" from="Timer" to="." method="apply_timed_ability"]

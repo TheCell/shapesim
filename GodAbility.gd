@@ -3,11 +3,18 @@ extends Node2D
 
 static var this : GodAbility
 
+@export var ability_config_entries: Array[AbilityResource] = []
+
+var abilityConfigs: Dictionary = {} # AbilityType -> AbilityResource
+
 @export var radius: float = 2.0
 @export var speed: float = 200.0 # pixels per second
 @export var activeAbility : Constants.AbilityType = Constants.AbilityType.Speedup
 @export var abilityCooldown : float = 5
 @export var abilityTimer : Timer
+var currentAbilityConfig = AbilityResource
+
+@export var particleSystem : CPUParticles2D
 
 @export var healAmount : float
 @export var damageAmount : float
@@ -41,6 +48,34 @@ var _knockbacks: Dictionary = {}
 func _enter_tree():
 	this = self
 	abilityTimer.wait_time = abilityCooldown
+
+func _ready() -> void:
+	abilityConfigs.clear()
+
+	print("ability_config_entries size = ", ability_config_entries.size())
+
+	for i in range(ability_config_entries.size()):
+		var e := ability_config_entries[i]
+		if e == null:
+			push_warning("ability_config_entries[%d] is null" % i)
+			continue
+
+		print("entry[%d] type=%s abilityType=%s (%d)" % [
+			i,
+			e.get_class(),
+			Constants.AbilityType.keys()[int(e.abilityType)],
+			int(e.abilityType)
+		])
+
+		# Guard against duplicate keys
+		if abilityConfigs.has(int(e.abilityType)):
+			push_warning("Duplicate abilityType: %s - overwriting previous config" % Constants.AbilityType.keys()[int(e.abilityType)])
+
+		abilityConfigs[int(e.abilityType)] = e
+
+	print("abilityConfigs keys = ", abilityConfigs.keys())
+
+
 
 func _process(_delta: float) -> void:
 	Set_Position(get_global_mouse_position())
@@ -110,6 +145,14 @@ func get_units_alive() -> Array[Node2D]:
 func set_active_ability(abilityType : Constants.AbilityType) -> void:
 	activeAbility = abilityType 
 	
+	currentAbilityConfig = abilityConfigs[activeAbility]
+	particleSystem.color = currentAbilityConfig.abilityColour
+	
+	if activeAbility == Constants.AbilityType.Speedup or activeAbility == Constants.AbilityType.Slowdown :
+		particleSystem.emitting = true
+	else :
+		particleSystem.emitting = false
+	
 func set_ability_shape(newAbilityShape : AbilityShape) -> void:
 	shape = newAbilityShape
 
@@ -123,7 +166,10 @@ func Set_Position(target: Vector2) -> void:
 func apply_timed_ability():
 	var units : Array[Node2D] = get_units_alive()
 	
+	var activatedAbility : bool = false
+	
 	if activeAbility == Constants.AbilityType.Meteorite:
+		activatedAbility = true
 		GroundController.this.ApplyMeteorImpact(global_position, radius)
 		for unit in units:
 			if unit is Unit:
@@ -133,6 +179,7 @@ func apply_timed_ability():
 				var building : Building = unit
 				hurt_building(building, damageAmount)
 	elif activeAbility == Constants.AbilityType.Heal:
+		activatedAbility = true
 		var warrior_count := 0
 		var building_count := 0
 		for unit in units:
@@ -149,6 +196,7 @@ func apply_timed_ability():
 		Eventbus.this.buildings_healed.emit(building_count)
 		
 	elif activeAbility == Constants.AbilityType.Push:
+		activatedAbility = true
 		var warrior_count := 0
 		var building_count := 0
 		for unit in units:
@@ -167,6 +215,7 @@ func apply_timed_ability():
 		Eventbus.this.buildings_pushed.emit(building_count)
 		
 	elif activeAbility == Constants.AbilityType.Pull:
+		activatedAbility = true
 		var warrior_count := 0
 		var building_count := 0
 		for unit in units:
@@ -185,6 +234,7 @@ func apply_timed_ability():
 		Eventbus.this.buildings_pulled.emit(building_count)
 		
 	elif activeAbility == Constants.AbilityType.Duplicate:
+		activatedAbility = true
 		var warrior_count := 0
 		var building_count := 0
 		for unit in units:
@@ -199,6 +249,13 @@ func apply_timed_ability():
 					
 		Eventbus.this.warriors_duplicated.emit(warrior_count)
 		Eventbus.this.buildings_duplicated.emit(building_count)
+	
+	if activatedAbility :
+		particleSystem.emitting = true
+		
+		await get_tree().create_timer(0.5).timeout
+		
+		particleSystem.emitting = false
 	
 	pass
 
