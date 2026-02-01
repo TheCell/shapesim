@@ -31,6 +31,7 @@ shader_parameter/effect_amount = 0.01
 script = ExtResource("1_bscov")
 ability_config_entries = Array[ExtResource("2_gxcpm")]([ExtResource("4_4uetr"), ExtResource("4_cu7ui"), ExtResource("5_8m2rb"), ExtResource("6_np2x5"), ExtResource("5_nppyf"), ExtResource("3_kh2yg"), ExtResource("9_pau5o")])
 radius = 8.0
+radiusIncrement = 50.0
 abilityCooldown = 1.0
 abilityTimer = NodePath("Timer")
 particleSystem = NodePath("CPUParticles2D")

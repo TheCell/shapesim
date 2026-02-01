@@ -11,6 +11,7 @@ const MAX_HEALTH: float = 100.0
 @export var animation_player: AnimationPlayer
 @export var sprite_2d: Sprite2D
 @export var buildingType: Constants.BuildingType
+@export var health_bar: TextureProgressBar
 
 var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
 var overlapVelocityPush: Vector2 = Vector2.ZERO
@@ -33,6 +34,8 @@ func _ready() -> void:
 	godAbility = GodAbility.this
 
 func _process(delta: float) -> void:
+
+	health_bar.value = health
 	deteriorationCountdown -= delta
 	if deteriorationCountdown <= 0:
 		queue_free()

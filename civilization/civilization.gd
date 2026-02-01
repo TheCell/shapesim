@@ -87,7 +87,7 @@ func _process(delta: float) -> void:
 
 func showDebugInfo():
 	if debugLabel:
-		var s = ["#BUILDINGS = " + str(len(activeBuildings)), "PERSONALITY = " + Constants.CivilizationPersonality.find_key(personality), "GOAL = " + Constants.CivilizationGoal.find_key(currentGoal),]
+		var s = ["#BUILDINGS = " + str(len(activeBuildings)), "PERSONALITY = " + Constants.CivilizationPersonality.find_key(personality), "GOAL = " + Constants.CivilizationGoal.find_key(currentGoal), "LEVEL = " + str(level)]
 		if is_instance_valid(campfire):
 			s.append("campfire health = " + str(campfire.health))
 		for stat in stats.stats:
@@ -204,7 +204,7 @@ func recalculateLevel():
 			(building as WarriorHut).lastAvailableWarriorHealth = stats.totalWarriorHealth(level)
 		elif building is WatchTower:
 			(building as WatchTower).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
-	return i
+	level = i
 
 func removeBuilding(b: Building):
 	activeBuildings.erase(b)

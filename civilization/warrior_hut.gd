@@ -36,6 +36,7 @@ func spawnWarrior():
 	warrior.civilizationStyle = civilizationStyle
 	warrior.damage *= damageModifier
 	warrior.health = health
+	warrior.level = level
 	spawnedWarrior.emit(warrior)
 	World.this.factionToUnits[faction].append(warrior)
 	World.this.add_child(warrior)
