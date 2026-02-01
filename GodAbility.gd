@@ -7,6 +7,8 @@ static var this : GodAbility
 
 var abilityConfigs: Dictionary = {} # AbilityType -> AbilityResource
 
+@onready var audioPlayer : AudioStreamPlayer = $AudioStreamPlayer
+
 @export var radiusIncrement : float = 0.2
 @export var speed: float = 200.0 # pixels per second
 @export var activeAbility : Constants.AbilityType = Constants.AbilityType.Speedup
@@ -246,6 +248,8 @@ func Set_Position(target: Vector2) -> void:
 func apply_timed_ability():
 	var units : Array[Node2D] = get_units_alive()
 	var activatedAbility : bool = false
+	
+	audioPlayer.play()
 	
 	if activeAbility == Constants.AbilityType.Meteorite:
 		activatedAbility = true
