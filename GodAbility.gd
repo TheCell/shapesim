@@ -94,6 +94,12 @@ func get_units_alive() -> Array[Node2D]:
 	
 	return result
 
+func set_active_ability(abilityType : Constants.AbilityType) -> void:
+	activeAbility = abilityType 
+	
+func set_ability_shape(newAbilityShape : AbilityShape) -> void:
+	shape = newAbilityShape
+
 func Set_Position(target: Vector2) -> void:
 	var to_target := target - global_position
 	if to_target.length() < 0.001:

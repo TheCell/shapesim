@@ -46,7 +46,7 @@ func _clamp_to_ground_bounds() -> void:
 	# IMPORTANT:
 	# Make sure GroundController REALLY has cornerBottomRight.
 	# If not, change this to boundsTopRight (or whatever your variable is).
-	var bottom_right := Vector2(GroundController.this.cornerBottomRight)
+	var bottom_right := Vector2(GroundController.this.cornerBottomRight) * 32
 	
 	# Half of visible size in world units (accounts for zoom)
 	var half_size := get_viewport_rect().size * 0.5 * zoom
