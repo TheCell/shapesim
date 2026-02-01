@@ -8,7 +8,7 @@ extends Node2D
 @export var check_interval := 1.0  # How often to evaluate news significance
 
 # Significance multipliers for each news type (adjust relative importance)
-@export var war_significance_weight := 1.0
+@export var war_significance_weight := 0.5
 @export var push_significance_weight := 0.7
 @export var pull_significance_weight := 0.7
 @export var duplicate_significance_weight := 2.0
@@ -28,6 +28,10 @@ var buildings_healed := 0
 
 # Track when each news type was last published (in game time)
 var last_published_time := {}  # Dictionary of NewsType -> time
+
+# Track recently published news types to prevent spam
+var recent_news_history: Array[int] = []  # Last 2 published news types
+@export var war_news_cooldown_count := 2  # War news can't appear if in last N news
 
 # Timer for checking significance
 var time_since_last_check := 0.0
@@ -85,7 +89,10 @@ func evaluate_and_publish_most_significant_news() -> void:
 	var best_count := 0
 	
 	# Calculate significance for each news type with their respective weights
-	var war_sig := calculate_significance(deathCount, Constants.NewsType.War, war_significance_weight)
+	# War news has a hard limit - skip if it was in the last N news
+	var war_sig := 0.0
+	if not recent_news_history.has(Constants.NewsType.War):
+		war_sig = calculate_significance(deathCount, Constants.NewsType.War, war_significance_weight)
 	if war_sig > best_significance:
 		best_significance = war_sig
 		best_news_type = Constants.NewsType.War
@@ -123,6 +130,11 @@ func evaluate_and_publish_most_significant_news() -> void:
 	if best_news_type != -1 && best_significance > 0:
 		publish_news(best_news_type, best_count)
 		last_published_time[best_news_type] = current_time
+		
+		# Update recent news history
+		recent_news_history.push_front(best_news_type)
+		if recent_news_history.size() > war_news_cooldown_count:
+			recent_news_history.pop_back()
 
 # Publish a specific news type and reset its count
 func publish_news(news_type: int, count: int) -> void:

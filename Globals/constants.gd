@@ -27,8 +27,8 @@ const CIV_COLORS := {
 const EVENT_COLORS := {
 	"death":   Color("#ff4444"),
 	"science": Color("#66ccff"),
-	"event":   Color("#ffff55"),
-	"heal":    Color("#55ff55"),
+	"event":   Color("9c9c33ff"),
+	"heal":    Color("349e34ff"),
 	"push_pull": Color("#5599ff"),
 }
 
