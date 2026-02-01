@@ -32,13 +32,13 @@ const EVENT_COLORS := {
 	"push_pull": Color("#5599ff"),
 }
 
-const paletteFilePaths = [
-	"res://Sprites/Palettes/aqua.png",
-	"res://Sprites/Palettes/flamingo.png",
-	"res://Sprites/Palettes/orsage.png",
-	"res://Sprites/Palettes/moss.png",
-	"res://Sprites/Palettes/lightpurple.png",
-]
+const civsToPaletteFilePaths = {
+	Civilization.Blue: "res://Sprites/Palettes/aqua.png",
+	Civilization.Red: "res://Sprites/Palettes/flamingo.png",
+	Civilization.Yellow: "res://Sprites/Palettes/orsage.png",
+	Civilization.Green: "res://Sprites/Palettes/moss.png",
+	Civilization.Purple: "res://Sprites/Palettes/lightpurple.png",
+}
 
 
 enum CivilizationGoal {

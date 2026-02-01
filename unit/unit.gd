@@ -38,7 +38,7 @@ func _ready() -> void:
 
 func initSprite():
 	sprite_2d.texture = Constants.getWarriorTexture(civilizationStyle, level)
-	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.paletteFilePaths.pick_random()))
+	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[civilization]))
 
 func _process(_delta: float) -> void:
 	if len(overlappingEnemyUnits) > 0 and not is_fighting:
