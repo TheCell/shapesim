@@ -45,8 +45,9 @@ var last_war_declaration: Dictionary = {}  # {attacking_civ, receiving_civ}
 var last_published_time := {}  # Dictionary of NewsType -> time
 
 # Track recently published news types to prevent spam
-var recent_news_history: Array[int] = []  # Last 2 published news types
+var recent_news_history: Array[Dictionary] = []  # [{type: NewsType, time: timestamp}]
 @export var war_news_cooldown_count := 2  # War news can't appear if in last N news
+@export var news_history_expire_time := 10.0  # Seconds before news is removed from history
 
 # Timer for checking significance
 var time_since_last_check := 0.0
@@ -79,10 +80,22 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	time_since_last_check += delta
 	
+	# Clean up expired news from history
+	clean_expired_news_history()
+	
 	# Periodically evaluate which news is most significant
 	if time_since_last_check >= check_interval:
 		evaluate_and_publish_most_significant_news()
 		time_since_last_check = 0.0
+
+# Remove news from history that are older than the expire time
+func clean_expired_news_history() -> void:
+	var current_time := Time.get_ticks_msec() / 1000.0
+	var i := recent_news_history.size() - 1
+	while i >= 0:
+		if current_time - recent_news_history[i].time > news_history_expire_time:
+			recent_news_history.remove_at(i)
+		i -= 1
 
 # Calculate significance score for a news type based on count and recency
 func calculate_significance(count: int, news_type: int, weight: float) -> float:
@@ -112,7 +125,13 @@ func evaluate_and_publish_most_significant_news() -> void:
 	# Calculate significance for each news type with their respective weights
 	# War news has a hard limit - skip if it was in the last N news
 	var war_sig := 0.0
-	if not recent_news_history.has(Constants.NewsType.War):
+	var war_in_recent_history := false
+	for entry in recent_news_history:
+		if entry.type == Constants.NewsType.War:
+			war_in_recent_history = true
+			break
+	
+	if not war_in_recent_history:
 		war_sig = calculate_significance(deathCount, Constants.NewsType.War, war_significance_weight)
 	if war_sig > best_significance:
 		best_significance = war_sig
@@ -202,8 +221,8 @@ func evaluate_and_publish_most_significant_news() -> void:
 		publish_news(best_news_type, best_count)
 		last_published_time[best_news_type] = current_time
 		
-		# Update recent news history
-		recent_news_history.push_front(best_news_type)
+		# Update recent news history with timestamp
+		recent_news_history.push_front({"type": best_news_type, "time": current_time})
 		if recent_news_history.size() > war_news_cooldown_count:
 			recent_news_history.pop_back()
 

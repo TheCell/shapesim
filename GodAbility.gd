@@ -23,6 +23,9 @@ var currentAbilityConfig = AbilityResource
 
 @export var pushDuration: float = 0.4
 
+@export var sprite : Sprite2D
+@export var spriteWorldSize : float
+
 #SHAPES
 enum AbilityShape { CIRCLE, BOX, ROUNDED_BOX, CAPSULE }
 
@@ -72,7 +75,11 @@ func _ready() -> void:
 			push_warning("Duplicate abilityType: %s - overwriting previous config" % Constants.AbilityType.keys()[int(e.abilityType)])
 		
 		abilityConfigs[int(e.abilityType)] = e
-	
+		
+		set_ability_shape(shape)
+		
+
+
 	print("abilityConfigs keys = ", abilityConfigs.keys())
 	
 	set_active_ability(activeAbility)
@@ -157,6 +164,42 @@ func set_active_ability(abilityType : Constants.AbilityType) -> void:
 	
 func set_ability_shape(newAbilityShape : AbilityShape) -> void:
 	shape = newAbilityShape
+
+	var mat := sprite.material as ShaderMaterial
+	if not mat:
+		push_error("Sprite material is not a ShaderMaterial!")
+		return
+	
+	# Set the shape type
+	mat.set_shader_parameter("sdf_type", int(shape))
+	
+	# Set the size based on the shape
+	match shape:
+		AbilityShape.CIRCLE:
+			var size_in_uv = circle_radius / spriteWorldSize
+			mat.set_shader_parameter("sdf_size", size_in_uv)
+			
+		AbilityShape.BOX:
+			# Box uses half-size, so we need to convert both dimensions
+			var size_in_uv = box_half_size.x / spriteWorldSize
+			mat.set_shader_parameter("sdf_size", size_in_uv)
+			
+		AbilityShape.ROUNDED_BOX:
+			var size_in_uv = box_half_size.x / spriteWorldSize
+			var round_in_uv = box_round_radius / spriteWorldSize
+			mat.set_shader_parameter("sdf_size", size_in_uv)
+			mat.set_shader_parameter("shape_param", round_in_uv)
+			
+		AbilityShape.CAPSULE:
+			var size_in_uv = capsule_radius / spriteWorldSize
+			var point_a_uv = -capsule_half_segment / spriteWorldSize
+			var point_b_uv = capsule_half_segment / spriteWorldSize
+			mat.set_shader_parameter("sdf_size", size_in_uv)
+			mat.set_shader_parameter("capsule_point_a", point_a_uv)
+			mat.set_shader_parameter("capsule_point_b", point_b_uv)
+	
+
+
 
 func Set_Position(target: Vector2) -> void:
 	var to_target := target - global_position
