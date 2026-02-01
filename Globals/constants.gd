@@ -48,6 +48,15 @@ enum CivilizationGoal {
 	Science,
 }
 
+enum CivPersonalities {
+	Fickle,
+	Polarizing,
+	Secular,
+	
+}
+
+#static func sampleGoalTransition():
+
 enum BuildingType {
 	None = -1,
 	Campfire = 0,

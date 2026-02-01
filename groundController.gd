@@ -109,7 +109,10 @@ func ApplyMeteorImpact(impactPositionLocal: Vector2, _radius_unused: float = 0.0
 				depleted_cells[cell] = true
 				depleted_cells_array.append(cell)
 	
-	navigationRegion.bake_navigation_polygon()
+	var stopwatch = Time.get_ticks_msec()
+	if !navigationRegion.is_baking():
+		navigationRegion.bake_navigation_polygon()
+	print("Baked in %s ms" % [Time.get_ticks_msec() - stopwatch])
 
 
 

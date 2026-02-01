@@ -74,7 +74,8 @@ monitorable = false
 shape = SubResource("CircleShape2D_hy15m")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1088770684]
-simplify_path = true
+path_postprocessing = 2
+path_search_max_polygons = 100
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1929367902]
 material = SubResource("ShaderMaterial_3k25b")
