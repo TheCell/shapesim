@@ -18,7 +18,7 @@ var overlapVelocityPush: Vector2 = Vector2.ZERO
 
 var isRegisteredOnAbility : bool = false
 var godAbility : GodAbility
-
+var multiplier: float = 0
 var level: int
 var civilization: Civilization
 var faction: Constants.Civilization
@@ -34,9 +34,8 @@ func _ready() -> void:
 	godAbility = GodAbility.this
 
 func _process(delta: float) -> void:
-
 	health_bar.value = health
-	deteriorationCountdown -= delta
+	deteriorationCountdown -= delta * multiplier
 	if deteriorationCountdown <= 0:
 		Eventbus.this.building_decayed.emit(faction, buildingType)
 		queue_free()
@@ -48,13 +47,6 @@ func _process(delta: float) -> void:
 		GodAbility.this.deregister_unit(self)
 		isRegisteredOnAbility = false
 	pushBuildingsAway(delta)
-	
-	if !isRegisteredOnAbility && godAbility.is_inside_ability(global_position):
-		godAbility.register_unit(self)
-		isRegisteredOnAbility = true
-	elif isRegisteredOnAbility && !godAbility.is_inside_ability(global_position):
-		godAbility.deregister_unit(self)
-		isRegisteredOnAbility = false
 	
 func pushBuildingsAway(delta: float):
 	overlapVelocityPush *= OVERLAP_VELOCITY_DECAY ** delta

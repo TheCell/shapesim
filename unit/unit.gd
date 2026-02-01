@@ -1,7 +1,7 @@
 class_name Unit
 extends CharacterBody2D
 
-const MAX_HEALTH: float = 100.0
+var max_health: float = 100.0
 @export var health: float = 100.0
 @export var damage: float = 10.0
 @export var speed: float = 100.0
@@ -31,6 +31,8 @@ var overlappingEnemyUnits: Dictionary[Unit, bool] = {} # Hashset
 var overlappingEnemyBuildings: Dictionary[Building, bool] = {} # Hashset
 
 func _ready() -> void:
+	max_health = health
+	health_bar.max_value = health
 	dead_timer.timeout.connect(_on_dead_timer_timeout)
 	_actor_setup.call_deferred()
 	nav.velocity_computed.connect(_velocity_computed)
@@ -41,7 +43,7 @@ func initSprite():
 	sprite_2d.texture = Constants.getWarriorTexture(civilizationStyle, level)
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[civilization]))
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	health_bar.value = health
 	if len(overlappingEnemyUnits) > 0 and not is_fighting and not is_dead:
 		attack_unit()
@@ -78,6 +80,7 @@ func move_to_target() -> void:
 	#var stopwatch = Time.get_ticks_msec()
 	
 	if nav.is_navigation_finished():
+		target = Vector2.INF
 		return
 
 	var current_position := global_position
@@ -140,7 +143,7 @@ func heal(amount: float) -> void:
 		dead_timer.wait_time = 5.0
 		is_dead = false
 		enable()
-	if health + amount < MAX_HEALTH:
+	if health + amount < max_health:
 		health += amount
 
 func disable() -> void:

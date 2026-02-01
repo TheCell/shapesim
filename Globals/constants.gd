@@ -307,7 +307,7 @@ static func randomPlacableBuilding() -> BuildingType:
 enum CivilizationStyle {
 	Slime,
 	Mushroom,
-	FishPeople
+	Frog
 }
 
 enum AbilityType{

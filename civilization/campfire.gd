@@ -5,4 +5,4 @@ func _ready() -> void:
 	super._ready()
 
 func _process(delta: float) -> void:
-	pass
+	super._process(delta)
