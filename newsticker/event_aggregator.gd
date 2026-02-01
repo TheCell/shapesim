@@ -100,7 +100,7 @@ func news_on_heal_count() -> void:
 # Event subscriptions
 func _on_died(unit: Unit) -> void:
 	deathCount += 1;
-	print_debug("deathCount", deathCount)
+	#print_debug("deathCount", deathCount)
 
 func _on_unit_died(attacker_civ: Constants.Civilization, attacked_civ: Constants.Civilization, was_god_intervention: bool) -> void:
 	print_debug(attacked_civ, attacked_civ, was_god_intervention)
