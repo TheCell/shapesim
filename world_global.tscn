@@ -1119,4 +1119,6 @@ tile_set = SubResource("TileSet_tv236")
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
 activeAbility = 4
 
-[node name="NewsTicker" parent="." unique_id=491788212 instance=ExtResource("5_7el6r")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1614583572]
+
+[node name="NewsTicker" parent="CanvasLayer" unique_id=491788212 instance=ExtResource("5_7el6r")]
