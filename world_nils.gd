@@ -2,6 +2,7 @@ class_name World
 extends Node2D
 
 static var this: World
+@onready var controllable_camera: Camera2D = $ControllableCamera
 
 
 @export var civScenes: Dictionary[Constants.Civilization, PackedScene] = {
@@ -33,6 +34,7 @@ func _ready() -> void:
 	this = self
 	untilCivRespawn = civRespawnTimer
 	GroundController.this.set_ground(ground_size)
+	controllable_camera.set_camera_startpos()
 	init_civilizations()
 
 func init_civilizations():
