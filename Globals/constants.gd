@@ -324,9 +324,9 @@ const spriteFolder = "res://Sprites/"
 
 static func getWarriorTexture(civStyle: CivilizationStyle, level: int) -> Texture2D:
 	var path = spriteFolder.path_join(CivilizationStyle.find_key(civStyle)).path_join("Warriors").path_join("%s.tres" % [level])
-	if !FileAccess.file_exists(path):
+	if !ResourceLoader.exists(path):
 		return load("res://defaultWarriorIcon.png")
-	return load(path)
+	return ResourceLoader.load(path)
 
 static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: BuildingType, level: int) -> Texture2D:
 	var path = spriteFolder.path_join(
@@ -334,9 +334,9 @@ static func getBuildingTexture(civStyle: CivilizationStyle, buildingType: Buildi
 		).path_join(
 			BuildingType.find_key(buildingType)
 		).path_join("%s.tres" % [level])
-	if !FileAccess.file_exists(path):
+	if !ResourceLoader.exists(path):
 		return load("res://icon.png")
-	return load(path)
+	return ResourceLoader.load(path)
 
 # News types and texts
 enum NewsType {
