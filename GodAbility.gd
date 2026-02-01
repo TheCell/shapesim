@@ -7,7 +7,7 @@ static var this : GodAbility
 
 var abilityConfigs: Dictionary = {} # AbilityType -> AbilityResource
 
-@export var radius: float = 2.0
+@export var radiusIncrement : float = 0.2
 @export var speed: float = 200.0 # pixels per second
 @export var activeAbility : Constants.AbilityType = Constants.AbilityType.Speedup
 @export var abilityCooldown : float = 5
@@ -52,6 +52,13 @@ func _enter_tree():
 	this = self
 	abilityTimer.wait_time = abilityCooldown
 
+func _input(event):
+	
+	if event.is_action_pressed("IncrementRadius") :
+		update_ability_sizes(1 + radiusIncrement)
+	elif event.is_action_pressed("DecrementRadius") :
+		update_ability_sizes(1 - radiusIncrement)
+
 func _ready() -> void:
 	abilityConfigs.clear()
 	
@@ -77,13 +84,21 @@ func _ready() -> void:
 		abilityConfigs[int(e.abilityType)] = e
 		
 		set_ability_shape(shape)
-		
-
-
+	
+	
 	print("abilityConfigs keys = ", abilityConfigs.keys())
 	
 	set_active_ability(activeAbility)
 
+func update_ability_sizes(modifier : float) :
+	circle_radius *= modifier
+	capsule_radius *= modifier
+	capsule_half_segment *= modifier
+	box_round_radius *= modifier
+	box_half_size *= modifier
+	
+	set_shader_sizes()
+	
 
 
 func _process(_delta: float) -> void:
@@ -173,6 +188,11 @@ func set_ability_shape(newAbilityShape : AbilityShape) -> void:
 	# Set the shape type
 	mat.set_shader_parameter("sdf_type", int(shape))
 	
+	set_shader_sizes()
+
+func set_shader_sizes() :
+	
+	var mat := sprite.material as ShaderMaterial
 	# Set the size based on the shape
 	match shape:
 		AbilityShape.CIRCLE:
@@ -197,7 +217,6 @@ func set_ability_shape(newAbilityShape : AbilityShape) -> void:
 			mat.set_shader_parameter("sdf_size", size_in_uv)
 			mat.set_shader_parameter("capsule_point_a", point_a_uv)
 			mat.set_shader_parameter("capsule_point_b", point_b_uv)
-	
 
 
 
@@ -214,7 +233,7 @@ func apply_timed_ability():
 	
 	if activeAbility == Constants.AbilityType.Meteorite:
 		activatedAbility = true
-		GroundController.this.ApplyMeteorImpact(global_position, radius)
+		GroundController.this.ApplyMeteorImpact(global_position)
 		for unit in units:
 			if GroundController.this and GroundController.this.is_world_pos_void(unit.global_position):
 				unit.queue_free()
