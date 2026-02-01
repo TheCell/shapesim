@@ -76,7 +76,10 @@ func ApplyMeteorImpact(impactPositionLocal: Vector2i, radius: float) -> void:
 				depleted_cells[cell] = true
 				depleted_cells_array.append(cell)
 	
-	navigationRegion.bake_navigation_polygon()
+	var stopwatch = Time.get_ticks_msec()
+	if !navigationRegion.is_baking():
+		navigationRegion.bake_navigation_polygon()
+	print("Baked in %s ms" % [Time.get_ticks_msec() - stopwatch])
 
 # NEW: helper – pick a random tile that is NOT (0, 0)
 func _pick_random_tile_nonzero() -> Vector2i:

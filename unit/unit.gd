@@ -59,8 +59,10 @@ func _physics_process(_delta: float) -> void:
 	if target == Vector2.INF or len(overlappingEnemyBuildings) > 0 or len(overlappingEnemyUnits):
 		velocity = Vector2.ZERO
 	else:
-		move_to_hub()
-	move_and_slide()
+		if nav.target_position != target:
+			nav.target_position = target
+		move_to_target()
+		move_and_slide()
 	if global_position.distance_squared_to(target) < 2:
 		target = Vector2.INF
 
@@ -71,8 +73,8 @@ func _actor_setup() -> void:
 	await get_tree().physics_frame
 	nav.target_position = target
 
-func move_to_hub() -> void:
-	nav.target_position = target
+func move_to_target() -> void:
+	#var stopwatch = Time.get_ticks_msec()
 	
 	if nav.is_navigation_finished():
 		return
@@ -83,6 +85,7 @@ func move_to_hub() -> void:
 	var new_velocity := current_position.direction_to(next_position) * speed
 
 	_velocity_computed(new_velocity)
+	#print("pathfinding done in %s ms" % [Time.get_ticks_msec() - stopwatch])
 
 func attack_unit() -> void:
 	is_fighting = true
