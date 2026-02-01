@@ -66,6 +66,7 @@ func _notification(what: int) -> void:
 		destroyed.emit()
 
 func setColor():
+	health_bar.material.set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[faction]))
 	sprite_2d.texture = Constants.getBuildingTexture(civilization.style, buildingType, level)
 	(sprite_2d.material as ShaderMaterial).set_shader_parameter("palette", load(Constants.civsToPaletteFilePaths[faction]))
 
