@@ -171,8 +171,11 @@ func clean_oldest_headline() -> void:
 				children[n].queue_free()
 
 func get_next_news_timestamp() -> float:
-	var next_time := 2.0 + randf() * 3.0
-	if news_queue.size() > 4:
+	var next_time := 2.0
+	
+	if news_queue.size() > 6:
+		next_time = 0.2
+	elif news_queue.size() > 4:
 		next_time = 0.5
 	elif news_queue.size() > 3:
 		next_time = 1.0
