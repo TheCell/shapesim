@@ -15,3 +15,4 @@ buildingToScene = Dictionary[int, PackedScene]({
 3: ExtResource("5_e07w0")
 })
 style = 1
+personality = 3

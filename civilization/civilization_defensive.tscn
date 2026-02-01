@@ -15,5 +15,6 @@ buildingToScene = Dictionary[int, PackedScene]({
 3: ExtResource("5_a8pxg")
 })
 style = 1
+personality = 4
 hostility = 0.1
 currentGoal = 2

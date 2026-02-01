@@ -48,14 +48,216 @@ enum CivilizationGoal {
 	Science,
 }
 
-enum CivPersonalities {
+enum CivilizationPersonality {
 	Fickle,
 	Polarizing,
 	Secular,
-	
+	Normal,
+	Conservative,
 }
 
-#static func sampleGoalTransition():
+const personalityTransitionDict = {
+		CivilizationPersonality.Fickle: {
+			CivilizationGoal.Chilling: {
+				CivilizationGoal.Chilling: 0.2,
+				CivilizationGoal.War: 1.1,
+				CivilizationGoal.Defense: 0.8,
+				CivilizationGoal.Science: 1.2
+			},
+			CivilizationGoal.War: {
+				CivilizationGoal.Chilling: 1.0,
+				CivilizationGoal.War: 0.3,
+				CivilizationGoal.Defense: 2.4,
+				CivilizationGoal.Science: 1.2
+			},
+			CivilizationGoal.Defense: {
+				CivilizationGoal.Chilling: 1.1,
+				CivilizationGoal.War: 1.0,
+				CivilizationGoal.Defense: 0.2,
+				CivilizationGoal.Science: 1.3
+			},
+			CivilizationGoal.Science: {
+				CivilizationGoal.Chilling: 1.2,
+				CivilizationGoal.War: 1.1,
+				CivilizationGoal.Defense: 0.9,
+				CivilizationGoal.Science: 0.3
+			}
+		},
+		CivilizationPersonality.Polarizing: {
+			CivilizationGoal.Chilling: {
+				CivilizationGoal.Chilling: 1.5,
+				CivilizationGoal.War: 1.2,
+				CivilizationGoal.Defense: 0.2,
+				CivilizationGoal.Science: 0.1
+			},
+			CivilizationGoal.War: {
+				CivilizationGoal.Chilling: 0.4,
+				CivilizationGoal.War: 2.0,
+				CivilizationGoal.Defense: 0.3,
+				CivilizationGoal.Science: 0.1
+			},
+			CivilizationGoal.Defense: {
+				CivilizationGoal.Chilling: 0.8,
+				CivilizationGoal.War: 0.9,
+				CivilizationGoal.Defense: 0.3,
+				CivilizationGoal.Science: 0.2
+			},
+			CivilizationGoal.Science: {
+				CivilizationGoal.Chilling: 0.6,
+				CivilizationGoal.War: 3.0,
+				CivilizationGoal.Defense: 0.2,
+				CivilizationGoal.Science: 1.0
+			}
+		},
+		CivilizationPersonality.Secular: {
+			CivilizationGoal.Chilling: {
+				CivilizationGoal.Chilling: 1.6,
+				CivilizationGoal.War: 0.1,
+				CivilizationGoal.Defense: 1.2,
+				CivilizationGoal.Science: 0.8
+			},
+			CivilizationGoal.War: {
+				CivilizationGoal.Chilling: 0.2,
+				CivilizationGoal.War: 4.0,
+				CivilizationGoal.Defense: 0.2,
+				CivilizationGoal.Science: 1.0
+			},
+			CivilizationGoal.Defense: {
+				CivilizationGoal.Chilling: 1.1,
+				CivilizationGoal.War: 0.3,
+				CivilizationGoal.Defense: 2.5,
+				CivilizationGoal.Science: 0.6
+			},
+			CivilizationGoal.Science: {
+				CivilizationGoal.Chilling: 1.0,
+				CivilizationGoal.War: 0.2,
+				CivilizationGoal.Defense: 0.9,
+				CivilizationGoal.Science: 1.2
+			}
+		},
+		CivilizationPersonality.Normal: {
+			CivilizationGoal.Chilling: {
+				CivilizationGoal.Chilling: 1.3,
+				CivilizationGoal.War: 0.4,
+				CivilizationGoal.Defense: 0.9,
+				CivilizationGoal.Science: 0.8
+			},
+			CivilizationGoal.War: {
+				CivilizationGoal.Chilling: 0.6,
+				CivilizationGoal.War: 1.4,
+				CivilizationGoal.Defense: 1.0,
+				CivilizationGoal.Science: 0.4
+			},
+			CivilizationGoal.Defense: {
+				CivilizationGoal.Chilling: 0.9,
+				CivilizationGoal.War: 0.8,
+				CivilizationGoal.Defense: 1.3,
+				CivilizationGoal.Science: 0.7
+			},
+			CivilizationGoal.Science: {
+				CivilizationGoal.Chilling: 0.8,
+				CivilizationGoal.War: 1.0,
+				CivilizationGoal.Defense: 0.7,
+				CivilizationGoal.Science: 1.4
+			}
+		},
+		CivilizationPersonality.Conservative: {
+			CivilizationGoal.Chilling: {
+				CivilizationGoal.Chilling: 3.0,
+				CivilizationGoal.War: 0.1,
+				CivilizationGoal.Defense: 1.0,
+				CivilizationGoal.Science: 0.3
+			},
+			CivilizationGoal.War: {
+				CivilizationGoal.Chilling: 0.2,
+				CivilizationGoal.War: 2.5,
+				CivilizationGoal.Defense: 0.5,
+				CivilizationGoal.Science: 0.1
+			},
+			CivilizationGoal.Defense: {
+				CivilizationGoal.Chilling: 0.7,
+				CivilizationGoal.War: 0.3,
+				CivilizationGoal.Defense: 2.2,
+				CivilizationGoal.Science: 0.4
+			},
+			CivilizationGoal.Science: {
+				CivilizationGoal.Chilling: 0.8,
+				CivilizationGoal.War: 0.2,
+				CivilizationGoal.Defense: 1.2,
+				CivilizationGoal.Science: 4.0
+			}
+		}
+	}
+
+static func random_enum_except(e, excluded_value: int) -> int:
+	var values = []
+	for v in e.values():
+		if v != excluded_value:
+			values.append(v)
+	return values.pick_random()
+
+static func performGoalTransition(civilization: Civilization):
+	var personality = civilization.personality
+	var currentGoal = civilization.currentGoal
+	var transitionDict = personalityTransitionDict[personality][currentGoal]
+	var s = 0
+	for goal in transitionDict.keys():
+		s += transitionDict[goal]
+	var r = randf() * s
+	var newGoal = -1
+	for goal in transitionDict.keys():
+		var currentWeight = transitionDict[goal]
+		if r < currentWeight:
+			newGoal = goal
+			break
+		r -= currentWeight
+		
+	
+	const genocideChance = 0.2
+	
+	if newGoal != currentGoal:
+		var tryingToGenocide = randf() < genocideChance
+		if newGoal == CivilizationGoal.War:
+			civilization.hostility = clamp(civilization.hostility * 1.1, 0, 1)
+			if tryingToGenocide:
+				var genocideTarget = random_enum_except(Civilization, civilization.faction)
+				civilization.otherCivToHostilityValue[genocideTarget] = 1.0
+				for civ in civilization.otherCivToHostilityValue:
+					if civ == genocideTarget:
+						civilization.otherCivToHostilityValue[civ] = 1.0
+					else:
+						civilization.otherCivToHostilityValue[civ] = 0.0
+		elif newGoal == CivilizationGoal.Defense || newGoal == CivilizationGoal.Chilling:
+			civilization.hostility = clamp(civilization.hostility / 1.1, 0, 1)
+
+		if !tryingToGenocide:
+			var newDist = mellow_distribution(civilization.otherCivToHostilityValue)
+			civilization.otherCivToHostilityValue = newDist
+	
+	civilization.currentGoal = newGoal
+	print("civ {} (personality {}) from goal {} to goal {}".format([Constants.Civilization.find_key(civilization.faction), Constants.CivilizationPersonality.find_key(civilization.personality), Constants.CivilizationGoal.find_key(currentGoal), Constants.CivilizationGoal.find_key(newGoal)], "{}"))
+
+static func mellow_distribution(
+	dict: Dictionary,       # Key -> float (assumed >= 0)
+	alpha: float = 0.7,     # < 1 flattens, > 1 sharpens
+	flatSum: float = 0.1
+) -> Dictionary:
+	
+	var result = {}
+
+	var sum = 0	
+	for k in dict.keys():
+		var v = dict[k]
+		v = pow(v, alpha) + flatSum
+		sum += v
+		result[k] = v
+
+	for k in dict.keys():
+		result[k] /= sum
+
+	return result
+
+	
 
 enum BuildingType {
 	None = -1,

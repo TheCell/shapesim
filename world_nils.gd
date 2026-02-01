@@ -35,7 +35,7 @@ func init_civilizations():
 		add_child(civ)
 		civilizations[faction] = civ
 
-func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighting: Dictionary[Constants.Civilization, float]) -> Constants.Civilization:
+func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighting: Dictionary) -> Constants.Civilization:
 	var totalWeights = 0
 	for faction in weighting:
 		if faction == except:
