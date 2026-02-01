@@ -6,6 +6,8 @@ const DIST_SQR_FOR_MAX_REPELLANT_FORCE = 25
 const OVERLAP_VELOCITY_DECAY = 0.10
 const MAX_HEALTH: float = 100.0
 
+@onready var audioPlayer : AudioStreamPlayer2D = $AudioStreamPlayer2D
+
 @export var deteriorationCountdown: float = INF
 @export var health: float = 100.0
 @export var animation_player: AnimationPlayer
@@ -58,6 +60,8 @@ func pushBuildingsAway(delta: float):
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
+		audioPlayer.play()
+		
 		if is_instance_valid(civilization):
 			civilization.removeBuilding(self)
 		destroyed.emit()
