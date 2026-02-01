@@ -141,7 +141,8 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 		is_dead = true
 		modulate = Color(1, 1, 1, 0.5)
 		dead_timer.start()
-		audioPlayer.play()
+		if randf() > 0.7:
+			audioPlayer.play()
 		if entity is Unit:
 			Eventbus.this.unit_died.emit(entity.civilization, civilization, false)
 			Eventbus.this.died.emit(self)
