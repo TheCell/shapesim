@@ -103,6 +103,7 @@ path_postprocessing = 2
 path_search_max_polygons = 100
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1929367902]
+y_sort_enabled = true
 material = SubResource("ShaderMaterial_3k25b")
 texture = ExtResource("3_hs7ws")
 

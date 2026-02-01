@@ -81,5 +81,6 @@ color = Color(1, 1, 1, 0.28627452)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1739444459]
 stream = ExtResource("13_pau5o")
+volume_db = -8.0
 
 [connection signal="timeout" from="Timer" to="." method="apply_timed_ability"]
