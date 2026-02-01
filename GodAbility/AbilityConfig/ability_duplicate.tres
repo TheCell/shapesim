@@ -7,4 +7,4 @@
 script = ExtResource("2_1dsik")
 abilityType = 6
 abilityParticleSystem = ExtResource("1_ed7jh")
-abilityColour = Color(0.6576709, 0.5134688, 7.70092e-07, 1)
+abilityColour = Color(0.9999997, 0.85039496, 0.46373218, 0.39215687)
