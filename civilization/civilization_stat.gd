@@ -8,7 +8,7 @@ extends Resource
 @export var militaryDamageModifier: float = 1
 @export var buildFrequencyModifier: float = 1
 @export var militaryActionFrequencyModifier: float = 1
-@export var buildingBreakpointsForLevel = [6, 16, 30, 1 << 62]
+@export var buildingBreakpointsForLevel = [10, 30, 1 << 62]
 
 var totalBuffCount = 0
 var lazyBaseStats: Dictionary[String, float] = {}

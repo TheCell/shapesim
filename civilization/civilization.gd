@@ -1,7 +1,7 @@
 class_name Civilization
 extends Node2D
 
-const DEBUG = true
+const DEBUG = false
 var debugLabel: Label
 
 var faction: Constants.Civilization

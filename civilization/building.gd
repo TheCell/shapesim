@@ -34,7 +34,6 @@ func _ready() -> void:
 	godAbility = GodAbility.this
 
 func _process(delta: float) -> void:
-
 	health_bar.value = health
 	deteriorationCountdown -= delta
 	if deteriorationCountdown <= 0:
@@ -48,13 +47,6 @@ func _process(delta: float) -> void:
 		GodAbility.this.deregister_unit(self)
 		isRegisteredOnAbility = false
 	pushBuildingsAway(delta)
-	
-	if !isRegisteredOnAbility && godAbility.is_inside_ability(global_position):
-		godAbility.register_unit(self)
-		isRegisteredOnAbility = true
-	elif isRegisteredOnAbility && !godAbility.is_inside_ability(global_position):
-		godAbility.deregister_unit(self)
-		isRegisteredOnAbility = false
 	
 func pushBuildingsAway(delta: float):
 	overlapVelocityPush *= OVERLAP_VELOCITY_DECAY ** delta

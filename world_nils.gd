@@ -39,6 +39,16 @@ func spawnCivilization(faction: Constants.Civilization):
 	var civ = civScenes[faction].instantiate() as Civilization
 	civ.position = Vector2(randf() * get_viewport_rect().grow(-100).size.x, randf() * get_viewport_rect().grow(-50).size.y)
 	civ.faction = faction
+	
+	
+	var availableStyles = Constants.CivilizationStyle.values()
+	for alive in civilizations.keys():
+		availableStyles.erase(civilizations[alive].style)
+	if len(availableStyles) == 0:
+		availableStyles = Constants.CivilizationStyle.values()
+	var randomStyle = availableStyles.pick_random()
+	civ.style = randomStyle
+	
 	add_child(civ)
 	civilizations[faction] = civ
 

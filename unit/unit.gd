@@ -78,6 +78,7 @@ func move_to_target() -> void:
 	#var stopwatch = Time.get_ticks_msec()
 	
 	if nav.is_navigation_finished():
+		target = Vector2.INF
 		return
 
 	var current_position := global_position

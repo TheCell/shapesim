@@ -309,7 +309,7 @@ func apply_timed_ability():
 					var warrior : Unit = unit
 					WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
 					warrior_count += 1
-				if unit is Building:
+				elif unit is Building && !(unit is Campfire):
 					var building: Building = unit
 					building_count += 1
 					if building.civilization:
