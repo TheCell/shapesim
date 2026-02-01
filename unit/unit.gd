@@ -138,7 +138,6 @@ func heal(amount: float) -> void:
 		dead_timer.wait_time = 5.0
 		is_dead = false
 		enable()
-		print("REVIVED: ", self.name)
 	if health + amount < MAX_HEALTH:
 		health += amount
 

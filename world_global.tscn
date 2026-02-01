@@ -35,7 +35,7 @@ navigation_polygon = SubResource("NavigationPolygon_dposi")
 [node name="Ground" parent="NavigationRegion2D" unique_id=109766996 instance=ExtResource("13_qxxs8")]
 
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
-activeAbility = 3
+activeAbility = 6
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1614583572]
 
