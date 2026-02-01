@@ -72,9 +72,38 @@ func handle_queued_news(news: Dictionary) -> void:
 			var ctx := {
 				"civ": news.civ,
 				"level": news.level,
-				"god": news.god
+				"god": false
 			}
 			var news_desc := spawn_news(Constants.CIV_LEVEL, ctx)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
+
+		Constants.NewsType.CivLevelDown:
+			var ctx := {
+				"civ": news.civ,
+				"level": news.level,
+				"god": false
+			}
+			var news_desc := spawn_news(Constants.CIV_LEVEL_DOWN, ctx)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
+
+		Constants.NewsType.BuildingDestroyed:
+			var news_desc := spawn_news(Constants.BUILDING_DESTROYED, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
+
+		Constants.NewsType.BuildingDecayed:
+			var news_desc := spawn_news(Constants.BUILDING_DECAYED, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
+
+		Constants.NewsType.StrategyChange:
+			var news_desc := spawn_news(Constants.STRATEGY_CHANGE, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
+
+		Constants.NewsType.WarDeclaration:
+			var news_desc := spawn_news(Constants.WAR_DECLARATION, news)
+			Eventbus.this.update_score_from_text.emit(news_desc, false)
+
+		Constants.NewsType.ScienceBreakthrough:
+			var news_desc := spawn_news(Constants.SCIENCE_BREAKTHROUGH, news)
 			Eventbus.this.update_score_from_text.emit(news_desc, false)
 
 		Constants.NewsType.Push:
@@ -241,6 +270,10 @@ func format_text(template: String, ctx: Dictionary) -> String:
 		t = t.replace("{COUNT}", str(ctx.count))
 	if "{LEVEL}" in t:
 		t = t.replace("{LEVEL}", str(ctx.level))
+	if "{OLD_STRATEGY}" in t:
+		t = t.replace("{OLD_STRATEGY}", Constants.CivilizationGoal.keys()[ctx.old_strategy])
+	if "{NEW_STRATEGY}" in t:
+		t = t.replace("{NEW_STRATEGY}", Constants.CivilizationGoal.keys()[ctx.new_strategy])
 	if "{DEATH}" in t:
 		var death_words = ["perished", "died", "decomposed", "succumbed"]
 		t = t.replace("{DEATH}", death(death_words[randi_range(0, death_words.size() - 1)]))
