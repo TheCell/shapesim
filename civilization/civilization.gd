@@ -221,6 +221,7 @@ func recalculateLevel():
 		elif building is WatchTower:
 			(building as WatchTower).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
 	var newLevel = i
+	
 	if newLevel > level:
 		campfire.maxHealth = stats.totalBuildingHealth(level)
 		campfire.health = campfire.maxHealth
@@ -228,6 +229,8 @@ func recalculateLevel():
 	elif newLevel < level:
 		Eventbus.this.civ_descended_level.emit(faction, newLevel)
 	level = newLevel
+	campfire.level = newLevel
+	campfire.setColor()
 
 func removeBuilding(b: Building):
 	activeBuildings.erase(b)
