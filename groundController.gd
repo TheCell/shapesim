@@ -109,10 +109,10 @@ func ApplyMeteorImpact(impactPositionLocal: Vector2, _radius_unused: float = 0.0
 				depleted_cells[cell] = true
 				depleted_cells_array.append(cell)
 	
-	var stopwatch = Time.get_ticks_msec()
+	#var stopwatch = Time.get_ticks_msec()
 	if !navigationRegion.is_baking():
 		navigationRegion.bake_navigation_polygon()
-	print("Baked in %s ms" % [Time.get_ticks_msec() - stopwatch])
+	#print("Baked in %s ms" % [Time.get_ticks_msec() - stopwatch])
 
 
 
@@ -135,9 +135,3 @@ func _pick_random_tile_nonzero() -> Vector2i:
 			return c
 	
 	return Vector2i(0, 0)
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
