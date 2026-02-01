@@ -158,9 +158,9 @@ func placeRandomBuilding():
 	if chosenBuilding != Constants.BuildingType.None:
 		place(buildingToScene[chosenBuilding])
 
-func place(buildingScene: PackedScene):
+func place(buildingScene: PackedScene, optional_pos: Vector2 = samplePosForBuilding()):
 	var building = buildingScene.instantiate() as Building
-	building.global_position = samplePosForBuilding()
+	building.global_position = optional_pos
 	building.civilization = self
 	building.faction = faction
 	building.civilizationStyle = style

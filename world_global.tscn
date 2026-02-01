@@ -36,7 +36,7 @@ navigation_polygon = SubResource("NavigationPolygon_dposi")
 cornerBottomRight = Vector2i(30, 20)
 
 [node name="GodAbility" parent="." unique_id=61948950 instance=ExtResource("4_14xng")]
-activeAbility = 3
+activeAbility = 6
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1614583572]
 
