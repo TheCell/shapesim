@@ -22,3 +22,4 @@ func increaseStatPoint():
 	if !is_instance_valid(civilization):
 		return
 	civilization.buffRandomStat(statIncreaseFactor, statIncreaseSummand)
+	Eventbus.this.civ_science_upgrade.emit(faction, civilization.stats.totalBuffCount, civilization.stats)

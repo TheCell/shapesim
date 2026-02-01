@@ -38,6 +38,7 @@ func _process(delta: float) -> void:
 	health_bar.value = health
 	deteriorationCountdown -= delta
 	if deteriorationCountdown <= 0:
+		Eventbus.this.building_decayed.emit(faction, buildingType)
 		queue_free()
 	
 	if !isRegisteredOnAbility && GodAbility.this.is_inside_ability(global_position):
