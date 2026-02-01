@@ -2,6 +2,9 @@ class_name Unit
 extends CharacterBody2D
 
 var max_health: float = 100.0
+
+@onready var audioPlayer : AudioStreamPlayer2D = $AudioStreamPlayer2D
+
 @export var health: float = 100.0
 @export var damage: float = 10.0
 @export var speed: float = 100.0
@@ -134,6 +137,7 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 	else:
 		disable()
 		dead_timer.start()
+		audioPlayer.play()
 		if entity is Unit:
 			Eventbus.this.unit_died.emit(entity.civilization, civilization, false)
 			Eventbus.this.died.emit(self)

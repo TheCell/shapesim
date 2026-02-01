@@ -17,11 +17,11 @@ const CIV_NAMES := {
 }
 
 const CIV_COLORS := {
-	Civilization.Red:    Color("#ff5555"),
-	Civilization.Blue:   Color("#5599ff"),
-	Civilization.Green:  Color("#55ff99"),
-	Civilization.Yellow: Color("#ffff55"),
-	Civilization.Purple: Color("#ff66ff"),
+	Civilization.Red:    Color("db7baeff"),
+	Civilization.Blue:   Color("82c8caff"),
+	Civilization.Green:  Color("82a16dff"),
+	Civilization.Yellow: Color("bf531dff"),
+	Civilization.Purple: Color("c17fdbff"),
 }
 
 const EVENT_COLORS := {

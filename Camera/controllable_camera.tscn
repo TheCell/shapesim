@@ -4,3 +4,6 @@
 
 [node name="ControllableCamera" type="Camera2D" unique_id=2098577878]
 script = ExtResource("1_aw303")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=1243672440]
+current = true

@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://c4ifr8t1k6gd1" path="res://GodAbility/AbilityConfig/ability_Meteorite.tres" id="9_pau5o"]
 [ext_resource type="Shader" uid="uid://b4bj44app0onc" path="res://GodAbility/godAbilitySDF.gdshader" id="10_np2x5"]
 [ext_resource type="Texture2D" uid="uid://dogs3hxdivt2r" path="res://Sprites/Projectile/Projectile.png" id="12_5rmik"]
+[ext_resource type="AudioStream" uid="uid://wuroo6xubvev" path="res://Audio/Audio_Ability_Used.wav" id="13_pau5o"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8m2rb"]
 shader = ExtResource("10_np2x5")
@@ -77,5 +78,8 @@ linear_accel_min = 40.0
 linear_accel_max = 120.0
 scale_amount_min = 0.5
 color = Color(1, 1, 1, 0.28627452)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1739444459]
+stream = ExtResource("13_pau5o")
 
 [connection signal="timeout" from="Timer" to="." method="apply_timed_ability"]
