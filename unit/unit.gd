@@ -129,7 +129,7 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 			Eventbus.this.died.emit(self)
 			disable()
 			dead_timer.start()
-			print("UNIT IS DEAD")
+			#print("UNIT IS DEAD")
 		#else:
 			# todo for god intervention
 			#Eventbus.this.unit_died.emit()
