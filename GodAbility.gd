@@ -193,8 +193,9 @@ func apply_timed_ability():
 					WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
 					warrior_count += 1
 				if unit is Building:
+					var building: Building = unit
 					building_count += 1
-					print("HOW DO I SPAWN A BUILDING SO IT DOES ITS SHIIII")
+					building.civilization.place(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
 					
 		Eventbus.this.warriors_duplicated.emit(warrior_count)
 		Eventbus.this.buildings_duplicated.emit(building_count)

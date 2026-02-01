@@ -2,6 +2,7 @@ extends Camera2D
 
 @export var drag_button: MouseButton = MOUSE_BUTTON_LEFT
 @export var drag_sensitivity: float = 1.0
+@export var center_offset: Vector2 = Vector2(100, 0)  # Offset to account for UI elements (e.g., news feed on left)
 
 # Zoom (editor-controlled)
 @export var zoom_step: float = 0.1
@@ -12,6 +13,8 @@ var _dragging := false
 
 func _ready() -> void:
 	make_current()
+	# Apply initial offset to center ground with UI in mind
+	global_position += center_offset
 	_clamp_to_ground_bounds()
 
 # Use _input so UI doesn't block dragging.
@@ -51,16 +54,19 @@ func _clamp_to_ground_bounds() -> void:
 	# Half of visible size in world units (accounts for zoom)
 	var half_size := get_viewport_rect().size * 0.5 * zoom
 	
-	var min_x := top_left.x + half_size.x
-	var max_x := bottom_right.x - half_size.x
-	var min_y := top_left.y + half_size.y
-	var max_y := bottom_right.y - half_size.y
+	# Apply center offset to adjust for UI elements
+	var effective_center := center_offset * zoom
+	
+	var min_x := top_left.x + half_size.x + effective_center.x
+	var max_x := bottom_right.x - half_size.x + effective_center.x
+	var min_y := top_left.y + half_size.y + effective_center.y
+	var max_y := bottom_right.y - half_size.y + effective_center.y
 	# If world smaller than view, center camera
 	if min_x > max_x:
-		global_position.x = (top_left.x + bottom_right.x) * 0.5
+		global_position.x = (top_left.x + bottom_right.x) * 0.5 + effective_center.x
 	else:
 		global_position.x = clamp(global_position.x, min_x, max_x)
 	if min_y > max_y:
-		global_position.y = (top_left.y + bottom_right.y) * 0.5
+		global_position.y = (top_left.y + bottom_right.y) * 0.5 + effective_center.y
 	else:
 		global_position.y = clamp(global_position.y, min_y, max_y)
