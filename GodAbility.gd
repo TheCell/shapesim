@@ -252,13 +252,13 @@ func apply_timed_ability():
 			if GroundController.this and GroundController.this.is_world_pos_void(unit.global_position):
 				unit.queue_free()
 				continue
-
+			
 			if unit is Unit:
 				var warrior : Unit = unit
-				hurt_warrior(warrior, damageAmount)
-			if unit is Building:
+				hurt_warrior(warrior, max(damageAmount, warrior.health_bar.max_value / 3))
+			elif unit is Building:
 				var building : Building = unit
-				hurt_building(building, damageAmount)
+				hurt_building(building, max(damageAmount, building.health_bar.max_value / 3))
 	elif activeAbility == Constants.AbilityType.Heal:
 		activatedAbility = true
 		var warrior_count := 0
