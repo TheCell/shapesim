@@ -245,7 +245,8 @@ func apply_timed_ability():
 				if unit is Building:
 					var building: Building = unit
 					building_count += 1
-					building.civilization.place(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
+					if building.civilization:
+						building.civilization.place(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
 					
 		Eventbus.this.warriors_duplicated.emit(warrior_count)
 		Eventbus.this.buildings_duplicated.emit(building_count)

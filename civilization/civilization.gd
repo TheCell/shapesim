@@ -15,6 +15,7 @@ const chillingDoNothingChance = 0.2
 }
 
 @export var style: Constants.CivilizationStyle
+@export var personality: Constants.CivilizationPersonality
 
 @export var hostility: float = 1.0 # Ranges [0, 1]. How likely this civ is to attack others.
 @export var reactivity: float = 1.0 # Ranges [0, 1]. How likely this civ is to get mad at other civs when the others kill this civ's buildings or troops
@@ -22,7 +23,7 @@ const chillingDoNothingChance = 0.2
 @export var buildingPlaceCooldown: float = 3
 var untilBuildingPlaced: float = 3
 @export var currentGoal: Constants.CivilizationGoal = Constants.CivilizationGoal.Chilling
-@export var reevaluateGoalCooldown: float = 20
+@export var reevaluateGoalCooldown: float = 5
 var untilReevaluateGoal: float = 5
 
 @export var redirectWarriorCooldown: float = 2
@@ -36,12 +37,12 @@ var activeBuildings: Array = []
 var campfire: Campfire
 
 # the specific hostility values against a particular foreign civ.
-@export var otherCivToHostilityValue: Dictionary[Constants.Civilization, float] = {
+@export var otherCivToHostilityValue: Dictionary = {
 	Constants.Civilization.Red: 0.5,
 	Constants.Civilization.Blue: 0.5,
 	Constants.Civilization.Green: 0.5,
 	Constants.Civilization.Yellow: 0.5,
-	Constants.Civilization.Purple: 0,
+	Constants.Civilization.Purple: 0.5,
 }
 
 func _ready() -> void:
@@ -85,7 +86,7 @@ func _process(delta: float) -> void:
 
 func showDebugInfo():
 	if debugLabel:
-		var s = ["#BUILDINGS = " + str(len(activeBuildings)), "GOAL = " + Constants.CivilizationGoal.find_key(currentGoal)]
+		var s = ["#BUILDINGS = " + str(len(activeBuildings)), "PERSONALITY = " + Constants.CivilizationPersonality.find_key(personality), "GOAL = " + Constants.CivilizationGoal.find_key(currentGoal)]
 		for stat in stats.stats:
 			s.append("{} = {}".format([stat, stats.get(stat)], "{}"))
 		debugLabel.text = "\n".join(s)
@@ -136,7 +137,7 @@ func formWarriorGroups(warriors: Array, groupSize: int, groups: Array) -> Array:
 
 
 func reevaluateCivilizationGoals():
-	currentGoal = sampleCivilizationGoal()
+	Constants.performGoalTransition(self)
 
 func sampleCivilizationGoal():
 	return Constants.CivilizationGoal.values().pick_random()
@@ -162,6 +163,7 @@ func place(buildingScene: PackedScene, optional_pos: Vector2 = samplePosForBuild
 	var building = buildingScene.instantiate() as Building
 	building.global_position = optional_pos
 	building.civilization = self
+	building.deteriorationCountdown = stats.getDecayCountdown(building.buildingType, level)
 	building.faction = faction
 	building.civilizationStyle = style
 	building.health = stats.baseBuildingHealth * stats.getBuildingHealthModifierForLevel(level)
