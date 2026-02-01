@@ -135,3 +135,9 @@ func _pick_random_tile_nonzero() -> Vector2i:
 			return c
 	
 	return Vector2i(0, 0)
+
+func is_world_pos_void(world_pos: Vector2) -> bool:
+	var cell := local_to_map(to_local(world_pos))
+	var atlas := get_cell_atlas_coords(cell)
+	# void means "no tile" OR your depleted/void atlas at x == 0
+	return atlas == Vector2i(-1, -1) or atlas.x == 0

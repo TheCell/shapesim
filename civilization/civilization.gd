@@ -46,6 +46,7 @@ var campfire: Campfire
 }
 
 func _ready() -> void:
+	personality = Constants.CivilizationPersonality.values().pick_random()
 	untilBuildingPlaced = buildingPlaceCooldown
 	untilReevaluateGoal = reevaluateGoalCooldown
 	makeCampfire()
@@ -86,7 +87,9 @@ func _process(delta: float) -> void:
 
 func showDebugInfo():
 	if debugLabel:
-		var s = ["#BUILDINGS = " + str(len(activeBuildings)), "PERSONALITY = " + Constants.CivilizationPersonality.find_key(personality), "GOAL = " + Constants.CivilizationGoal.find_key(currentGoal)]
+		var s = ["#BUILDINGS = " + str(len(activeBuildings)), "PERSONALITY = " + Constants.CivilizationPersonality.find_key(personality), "GOAL = " + Constants.CivilizationGoal.find_key(currentGoal),]
+		if is_instance_valid(campfire):
+			s.append("campfire health = " + str(campfire.health))
 		for stat in stats.stats:
 			s.append("{} = {}".format([stat, stats.get(stat)], "{}"))
 		debugLabel.text = "\n".join(s)
@@ -163,10 +166,10 @@ func place(buildingScene: PackedScene, optional_pos: Vector2 = samplePosForBuild
 	var building = buildingScene.instantiate() as Building
 	building.global_position = optional_pos
 	building.civilization = self
-	building.deteriorationCountdown = stats.getDecayCountdown(building.buildingType, level)
+	building.deteriorationCountdown = CivilizationStat.getDecayCountdown(building.buildingType, level)
 	building.faction = faction
 	building.civilizationStyle = style
-	building.health = stats.baseBuildingHealth * stats.getBuildingHealthModifierForLevel(level)
+	building.health = stats.baseBuildingHealth * CivilizationStat.getBuildingHealthModifierForLevel(level)
 	if building is WatchTower:
 		(building as WatchTower).shotCooldown /= stats.totalMilitarySpeedModifier(level)
 		(building as WatchTower).lastAvailableMilitaryModifier = stats.totalDamageModifier(level)
