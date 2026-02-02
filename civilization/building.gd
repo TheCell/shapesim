@@ -6,7 +6,7 @@ const DIST_SQR_FOR_MAX_REPELLANT_FORCE = 25
 const OVERLAP_VELOCITY_DECAY = 0.10
 const MAX_HEALTH: float = 100.0
 
-@onready var audioPlayer : AudioStreamPlayer2D = $AudioStreamPlayer2D
+@export var audioPlayer: AudioStreamPlayer2D
 
 @export var deteriorationCountdown: float = INF
 @export var health: float = 100.0
@@ -39,6 +39,7 @@ func _process(delta: float) -> void:
 	health_bar.value = health
 	deteriorationCountdown -= delta * GodAbility.this.getTimewarpModifier(isRegisteredOnAbility)
 	if deteriorationCountdown <= 0:
+		audioPlayer.play()
 		Eventbus.this.building_decayed.emit(faction, buildingType)
 		queue_free()
 	
@@ -60,8 +61,6 @@ func pushBuildingsAway(delta: float):
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
-		#audioPlayer.play()
-		
 		if is_instance_valid(civilization):
 			civilization.removeBuilding(self)
 		destroyed.emit()
@@ -75,6 +74,9 @@ func hurt(damage: float):
 	health -= damage
 	take_damage_player.play("blink")
 	if health <= 0:
+		audioPlayer.play()
+		audioPlayer.reparent(World.this)
+		audioPlayer.finished.connect(audioPlayer.queue_free)
 		queue_free()
 
 func heal(amount: float) -> void:

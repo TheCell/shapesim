@@ -225,6 +225,10 @@ func apply_timed_ability():
 		GroundController.this.ApplyMeteorImpact(global_position)
 		for unit in units:
 			if GroundController.this and GroundController.this.is_world_pos_void(unit.global_position):
+				if unit is Unit:
+					(unit as Unit).hurt(self, INF)
+				if unit is Building:
+					(unit as Building).hurt(INF)
 				unit.queue_free()
 				continue
 			

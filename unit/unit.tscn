@@ -183,8 +183,10 @@ texture_progress = ExtResource("6_2ul3e")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=2056803475]
 stream = ExtResource("7_2ul3e")
+volume_db = 5.0
 max_distance = 500.0
 attenuation = 5.0
+max_polyphony = 30
 
 [node name="HealthChangePlayer" type="AnimationPlayer" parent="." unique_id=1001449046]
 libraries/ = SubResource("AnimationLibrary_4xbu7")

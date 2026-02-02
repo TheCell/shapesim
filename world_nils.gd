@@ -4,7 +4,6 @@ extends Node2D
 static var this: World
 @onready var controllable_camera: Camera2D = $ControllableCamera
 
-
 @export var civScenes: Dictionary[Constants.Civilization, PackedScene] = {
 	Constants.Civilization.Red: null,
 	Constants.Civilization.Blue: null,

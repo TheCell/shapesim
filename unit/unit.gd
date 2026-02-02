@@ -155,14 +155,14 @@ func hurt(entity: Node2D, enemy_damage: float) -> void:
 	health_change_player.seek(0)
 	health_change_player.play("blink")
 	if health <= 0:
+		if !is_dead:
+			audioPlayer.play()
 		is_dead = true
 		anim.seek(0, true)
 		anim.stop()
 		sendDeathUpdateForUnitsWantingNotify(true)
 		modulate = Color(1, 1, 1, 0.5)
 		dead_timer.start()
-		if randf() > 0.7:
-			audioPlayer.play()
 		if entity is Unit:
 			Eventbus.this.unit_died.emit(entity.civilization, civilization, false)
 			Eventbus.this.died.emit(self)

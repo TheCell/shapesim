@@ -13,7 +13,7 @@
 [ext_resource type="Theme" uid="uid://bn400ovbcummx" path="res://newsticker/article_theme.tres" id="11_qxxs8"]
 [ext_resource type="PackedScene" uid="uid://dj1ejgr1ubgdy" path="res://GodAbility/ability_selection.tscn" id="12_b30oh"]
 [ext_resource type="PackedScene" uid="uid://cnlsy5hngekwm" path="res://Sprites/GroundTiles/ground.tscn" id="13_qxxs8"]
-[ext_resource type="AudioStream" uid="uid://ctsaeof57mi2m" path="res://Audio/GoddingAround_1_large.wav" id="14_am1h8"]
+[ext_resource type="AudioStream" uid="uid://c54mkmvbypqbi" path="res://Audio/GoddingAround_5.wav" id="14_am1h8"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_dposi"]
 vertices = PackedVector2Array(1783.0781, 1017.27344, -318.75, 1071.7188, -288.21875, -247.10156, 1667.8594, -267.89844)
@@ -66,5 +66,4 @@ metadata/_edit_use_anchors_ = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2013187851]
 stream = ExtResource("14_am1h8")
-volume_db = 5.0
 autoplay = true

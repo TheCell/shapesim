@@ -120,10 +120,11 @@ _data = {
 &"blink": SubResource("Animation_nh3cx")
 }
 
-[node name="Building" type="Area2D" unique_id=843902316 node_paths=PackedStringArray("animation_player", "take_damage_player", "sprite_2d", "health_bar")]
+[node name="Building" type="Area2D" unique_id=843902316 node_paths=PackedStringArray("audioPlayer", "animation_player", "take_damage_player", "sprite_2d", "health_bar")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_p3b7u")
+audioPlayer = NodePath("AudioStreamPlayer2D")
 animation_player = NodePath("AnimationPlayer")
 take_damage_player = NodePath("TakeDamagePlayer")
 sprite_2d = NodePath("AnimationPivot/Sprite2D")
@@ -154,13 +155,13 @@ stretch_margin_right = 2
 texture_under = ExtResource("5_lror5")
 texture_progress = ExtResource("6_07rr8")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=99938498]
-stream = ExtResource("7_07rr8")
-max_distance = 1000.0
-attenuation = 5.0
-
 [node name="TakeDamagePlayer" type="AnimationPlayer" parent="." unique_id=181549006]
 libraries/ = SubResource("AnimationLibrary_wsxos")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=938159387]
+stream = ExtResource("7_07rr8")
+volume_db = -5.0
+max_polyphony = 30
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
