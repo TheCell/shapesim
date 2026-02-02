@@ -92,7 +92,7 @@ func _process(delta: float) -> void:
 func clean_expired_news_history() -> void:
 	var current_time := Time.get_ticks_msec() / 1000.0
 	var i := recent_news_history.size() - 1
-	while i >= 0:
+	while i >= 2:
 		if current_time - recent_news_history[i].time > news_history_expire_time:
 			recent_news_history.remove_at(i)
 		i -= 1
@@ -222,9 +222,9 @@ func evaluate_and_publish_most_significant_news() -> void:
 		last_published_time[best_news_type] = current_time
 		
 		# Update recent news history with timestamp
-		recent_news_history.push_front({"type": best_news_type, "time": current_time})
+		recent_news_history.push_back({"type": best_news_type, "time": current_time})
 		if recent_news_history.size() > war_news_cooldown_count:
-			recent_news_history.pop_back()
+			recent_news_history.pop_front()
 
 # Publish a specific news type and reset its count
 func publish_news(news_type: int, count: int) -> void:
