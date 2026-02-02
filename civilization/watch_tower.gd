@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
-	untilShot -= delta
+	untilShot -= delta * GodAbility.this.getTimewarpModifier(isRegisteredOnAbility)
 	if untilShot <= 0 && len(enemiesInRange) > 0:
 		var attackedUnit: Unit = null
 		for u in enemiesInRange.keys():

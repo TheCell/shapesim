@@ -10,7 +10,6 @@ var cornerBottomRight : Vector2i
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 var depleted_cells: Dictionary = {}        # Vector2i -> true (hashset)
-var depleted_cells_array: Array[Vector2i] = []  # positions in order (optional but requested)
 
 func _enter_tree():
 	this = self
@@ -30,7 +29,9 @@ func set_ground(ground_size: Vector2i) -> void:
 	
 	navigationRegion.bake_navigation_polygon()
 
-# NEW: refill all recorded positions, avoid atlas coords (0,0), then clear the dictionary
+func get_ground_rectangle() -> Rect2:
+	return Rect2(Vector2.ZERO, Vector2(cornerBottomRight.x, cornerBottomRight.y) * 32)
+
 func RefillDepletedCells() -> void:
 	for cell in depleted_cells.keys():
 		var atlas_coords := _pick_random_tile_nonzero()
@@ -38,7 +39,6 @@ func RefillDepletedCells() -> void:
 			set_cell(cell, 0, atlas_coords)
 	
 	depleted_cells.clear()
-	depleted_cells_array.clear()
 
 
 func ApplyMeteorImpact(impactPositionLocal: Vector2, _radius_unused: float = 0.0) -> void:
@@ -110,7 +110,6 @@ func ApplyMeteorImpact(impactPositionLocal: Vector2, _radius_unused: float = 0.0
 			# record cells that reached x == 0
 			if new_x == 0 and not depleted_cells.has(cell):
 				depleted_cells[cell] = true
-				depleted_cells_array.append(cell)
 	
 	#var stopwatch = Time.get_ticks_msec()
 	if !navigationRegion.is_baking():
@@ -118,8 +117,6 @@ func ApplyMeteorImpact(impactPositionLocal: Vector2, _radius_unused: float = 0.0
 	#print("Baked in %s ms" % [Time.get_ticks_msec() - stopwatch])
 
 
-
-# NEW: helper – pick a random tile that is NOT (0, 0)
 func _pick_random_tile_nonzero() -> Vector2i:
 	if tileCoords.is_empty():
 		return Vector2i(0, 0)

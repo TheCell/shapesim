@@ -85,15 +85,8 @@ func getRandomWeightedCivilizationTarget(except: Constants.Civilization, weighti
 			break
 		r -= currentWeight
 	return sampledFaction
-		
-		
-	var target = except
-	while target == except:
-		target = Constants.Civilization.values().pick_random()
-	return target
 
 func _process(delta: float) -> void:
-	spawn.call_deferred()
 	if len(civilizations) < len(Constants.Civilization.values()):
 		untilCivRespawn -= delta
 		if untilCivRespawn <= 0:
@@ -109,13 +102,3 @@ func respawnNonPresentCiv():
 	var newCiv = spawnCivilization(toSpawn)
 	Eventbus.this.civ_rebirthed.emit(newCiv.faction, newCiv.style, newCiv.personality)
 	print("Respawned civ " + Constants.Civilization.find_key(toSpawn))
-
-func spawn():
-	#TODO: remove this test method.
-	if Input.is_action_just_pressed("ui_accept"):
-		var building = load("res://civilization/watch_tower.tscn").instantiate() as Building
-		building.position = get_global_mouse_position()
-		building.faction = Constants.Civilization.Blue
-		building.civilization = civilizations[Constants.Civilization.Blue]
-		World.this.add_child(building)
-		pass

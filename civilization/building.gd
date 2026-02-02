@@ -12,6 +12,7 @@ const MAX_HEALTH: float = 100.0
 @export var health: float = 100.0
 var maxHealth: float
 @export var animation_player: AnimationPlayer
+@export var take_damage_player: AnimationPlayer
 @export var sprite_2d: Sprite2D
 @export var buildingType: Constants.BuildingType
 @export var health_bar: TextureProgressBar
@@ -20,8 +21,6 @@ var overlappingBuildings: Dictionary[Building, bool] = {} # Hashset
 var overlapVelocityPush: Vector2 = Vector2.ZERO
 
 var isRegisteredOnAbility : bool = false
-var godAbility : GodAbility
-var multiplier: float = 0
 var level: int
 var civilization: Civilization
 var faction: Constants.Civilization
@@ -35,12 +34,10 @@ func _ready() -> void:
 	maxHealth = health
 	health_bar.max_value = maxHealth
 	setColor()
-	
-	godAbility = GodAbility.this
 
 func _process(delta: float) -> void:
 	health_bar.value = health
-	deteriorationCountdown -= delta * multiplier
+	deteriorationCountdown -= delta * GodAbility.this.getTimewarpModifier(isRegisteredOnAbility)
 	if deteriorationCountdown <= 0:
 		Eventbus.this.building_decayed.emit(faction, buildingType)
 		queue_free()
@@ -76,6 +73,7 @@ func setColor():
 
 func hurt(damage: float):
 	health -= damage
+	take_damage_player.play("blink")
 	if health <= 0:
 		queue_free()
 

@@ -28,9 +28,9 @@ var untilBuildingPlaced: float = 3
 @export var reevaluateGoalCooldown: float = 5
 var untilReevaluateGoal: float = 5
 
-@export var redirectWarriorCooldown: float = 2
+@export var redirectWarriorCooldown: float = 1.5
 @export var redirectWarriorRandomness: float = 0.2
-var untilWarriorsRedirect: float = 4
+var untilWarriorsRedirect: float = 1.5
 
 var stats: CivilizationStat = CivilizationStat.new()
 var level = 0
@@ -78,15 +78,15 @@ func destroyCivilization():
 	queue_free()
 
 func _process(delta: float) -> void:
-	untilBuildingPlaced -= delta
+	untilBuildingPlaced -= delta * GodAbility.this.getTimewarpModifier(campfire.isRegisteredOnAbility)
 	while untilBuildingPlaced <= 0 && allowedToSpawnBuilding():
 		placeRandomBuilding()
 		untilBuildingPlaced += max(buildingPlaceCooldown / stats.buildFrequencyModifier, 1)
-	untilWarriorsRedirect -= delta
+	untilWarriorsRedirect -= delta * GodAbility.this.getTimewarpModifier(campfire.isRegisteredOnAbility)
 	if untilWarriorsRedirect <= 0:
 		untilWarriorsRedirect = redirectWarriorCooldown * (1 + redirectWarriorRandomness * randf() - redirectWarriorRandomness / 2)
 		chooseWarriorTargets()
-	untilReevaluateGoal -= delta
+	untilReevaluateGoal -= delta * GodAbility.this.getTimewarpModifier(campfire.isRegisteredOnAbility)
 	if untilReevaluateGoal <= 0:
 		reevaluateCivilizationGoals()
 		untilReevaluateGoal = reevaluateGoalCooldown
@@ -116,7 +116,7 @@ func chooseWarriorTargets():
 			continue
 		for w in warriorGroups[i]:
 			var warrior: Unit = w as Unit
-			warrior.target = World.this.civilizations[civTarget].campfire.global_position # TODO: will become invalid when campfire gone.
+			warrior.target = World.this.civilizations[civTarget].campfire.global_position + Vector2(randf() * 20 - 10, randf() * 20 - 10)
 		Eventbus.this.civ_sends_troops.emit(faction, civTarget, len(warriorGroups[i]))
 
 	for j in range(sentOutGroups, len(warriorGroups)):
@@ -175,9 +175,10 @@ func placeRandomBuilding():
 			chosenBuilding = Constants.BuildingType.Science if randf() < 0.7 else Constants.randomPlacableBuilding()
 
 	if chosenBuilding != Constants.BuildingType.None:
-		place(buildingToScene[chosenBuilding])
+		var b = makeBuilding(buildingToScene[chosenBuilding])
+		World.this.add_child(b)
 
-func place(buildingScene: PackedScene, optional_pos: Vector2 = samplePosForBuilding()):
+func makeBuilding(buildingScene: PackedScene, optional_pos: Vector2 = samplePosForBuilding()) -> Building:
 	var building = buildingScene.instantiate() as Building
 	building.global_position = optional_pos
 	building.civilization = self
@@ -195,7 +196,7 @@ func place(buildingScene: PackedScene, optional_pos: Vector2 = samplePosForBuild
 	activeBuildings.append(building)
 	Eventbus.this.civ_total_buildings_equal.emit(faction, len(activeBuildings))
 	recalculateLevel()
-	World.this.add_child(building)
+	return building
 
 func samplePosForBuilding():
 	return MyMath.samplePosInsideRadius(campfire.global_position, stats.getBuildingRange(level))

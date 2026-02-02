@@ -11,5 +11,6 @@ void fragment() {
 	vec4 swappedCol = texture(palette, vec2(bw.r, 0));
 	
 	COLOR = swappedCol;
-	COLOR.a = bw.a * modulate.a;
+	COLOR.a = bw.a;
+	COLOR *= modulate;
 }

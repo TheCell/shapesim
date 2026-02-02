@@ -83,11 +83,49 @@ _data = {
 resource_local_to_scene = true
 shader = ExtResource("2_0c2ly")
 
-[node name="Building" type="Area2D" unique_id=843902316 node_paths=PackedStringArray("animation_player", "sprite_2d", "health_bar")]
+[sub_resource type="Animation" id="Animation_07rr8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPivot/Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nh3cx"]
+resource_name = "blink"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPivot/Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1.8247963, 1.8247963, 1.8247963, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wsxos"]
+_data = {
+&"RESET": SubResource("Animation_07rr8"),
+&"blink": SubResource("Animation_nh3cx")
+}
+
+[node name="Building" type="Area2D" unique_id=843902316 node_paths=PackedStringArray("animation_player", "take_damage_player", "sprite_2d", "health_bar")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_p3b7u")
 animation_player = NodePath("AnimationPlayer")
+take_damage_player = NodePath("TakeDamagePlayer")
 sprite_2d = NodePath("AnimationPivot/Sprite2D")
 health_bar = NodePath("HealthBar")
 
@@ -120,6 +158,9 @@ texture_progress = ExtResource("6_07rr8")
 stream = ExtResource("7_07rr8")
 max_distance = 1000.0
 attenuation = 5.0
+
+[node name="TakeDamagePlayer" type="AnimationPlayer" parent="." unique_id=181549006]
+libraries/ = SubResource("AnimationLibrary_wsxos")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

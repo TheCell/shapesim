@@ -123,56 +123,22 @@ func register_unit(node: Node) -> void:
 		return
 	
 	registered_units[node.get_instance_id()] = weakref(node)
-	
-	if node is Unit:
-		var warrior : Unit = node
-		 
-		match activeAbility :
-			Constants.AbilityType.Speedup:
-				modify_speed_warrior(warrior, 2)
-			Constants.AbilityType.Slowdown: 
-				modify_speed_warrior(warrior, 0.5)
-	elif node is Building:
-		var building: Building = node
-		match activeAbility:
-			Constants.AbilityType.Speedup:
-				modify_detirioration_building(building, 2)
-			Constants.AbilityType.Slowdown:
-				modify_detirioration_building(building, 0.5)
-		if node is WarriorHut:
-			var hut: WarriorHut = node
-			match activeAbility:
-				Constants.AbilityType.Speedup:
-					modify_warrior_hut_production(hut, 0.5)
-				Constants.AbilityType.Slowdown:
-					modify_warrior_hut_production(hut, 2)
+
+func getTimewarpModifier(isRegistered: bool) -> float:
+	if !isRegistered:
+		return 1.0
+	match activeAbility:
+		Constants.AbilityType.Speedup:
+			return 2
+		Constants.AbilityType.Slowdown:
+			return 0.5
+		_:
+			return 1
 
 func deregister_unit(node: Node) -> void:
 	var id := node.get_instance_id()
 	if registered_units.has(id):
 		registered_units.erase(id)
-		
-		if node is Unit:
-			var warrior : Unit = node
-			match activeAbility :
-				Constants.AbilityType.Speedup:
-					modify_speed_warrior(warrior, 0.5)
-				Constants.AbilityType.Slowdown: 
-					modify_speed_warrior(warrior, 2)
-		elif node is Building:
-			var building: Building = node
-			match activeAbility:
-				Constants.AbilityType.Speedup:
-					modify_detirioration_building(building, 0.5)
-				Constants.AbilityType.Slowdown:
-					modify_detirioration_building(building, 2)
-			if node is WarriorHut:
-				var hut: WarriorHut = node
-				match activeAbility:
-					Constants.AbilityType.Speedup:
-						modify_warrior_hut_production(hut, 2)
-					Constants.AbilityType.Slowdown:
-						modify_warrior_hut_production(hut, 0.5)
 
 func get_units_alive() -> Array[Node2D]:
 	var result: Array[Node2D] = []
@@ -336,7 +302,7 @@ func apply_timed_ability():
 		for unit in units:
 				if unit is Unit && !unit.is_dead && Civilization.allowedToSpawnUnit(unit.civilization):
 					var warrior : Unit = unit
-					var clonedWarrior = WarriorHut.spawn_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
+					var clonedWarrior = WarriorHut.make_warrior(unit.global_position, unit.civilization, unit.civilizationStyle)
 					clonedWarrior.damage = warrior.damage
 					clonedWarrior.health = warrior.health
 					clonedWarrior.level = warrior.level
@@ -344,10 +310,13 @@ func apply_timed_ability():
 					warrior_count += 1
 				elif unit is Building && !(unit is Campfire):
 					var building: Building = unit
-					if building.civilization && building.civilization.allowedToSpawnBuilding():
+					if building.civilization && building.civilization.allowedToSpawnBuilding() && building.health > 0:
 						building_count += 1
-						building.civilization.place(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
-					
+						var clone = building.civilization.makeBuilding(load(building.scene_file_path), building.global_position + Vector2(randf() - 0.5, randf() - 0.5))
+						clone.level = building.level
+						clone.health = building.health
+						World.this.add_child(clone)
+
 		Eventbus.this.warriors_duplicated.emit(warrior_count)
 		Eventbus.this.buildings_duplicated.emit(building_count)
 	
@@ -359,15 +328,6 @@ func apply_timed_ability():
 		particleSystem.emitting = false
 	
 	pass
-
-func modify_speed_warrior(unit : Unit, mult : float):
-	unit.speed = unit.speed * mult
-
-func modify_warrior_hut_production(hut: WarriorHut, mult: float) -> void:
-	hut.warriorSpawnCooldown = hut.warriorSpawnCooldown * mult
-
-func modify_detirioration_building(building: Building, mult: float) -> void:
-	building.multiplier = mult
 
 func hurt_warrior(unit: Unit, amount : float):
 	unit.hurt(self, amount)

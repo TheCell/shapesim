@@ -1,7 +1,7 @@
 class_name Science
 extends Building
 
-@export var gainStatPointsCooldown = 3
+@export var gainStatPointsCooldown = 4
 var untilGainStatPoints = 3
 
 @export var statIncreaseFactor = 0.1
@@ -13,7 +13,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
-	untilGainStatPoints -= delta
+	untilGainStatPoints -= delta * GodAbility.this.getTimewarpModifier(isRegisteredOnAbility)
 	if untilGainStatPoints <= 0:
 		increaseStatPoint()
 		untilGainStatPoints = gainStatPointsCooldown
